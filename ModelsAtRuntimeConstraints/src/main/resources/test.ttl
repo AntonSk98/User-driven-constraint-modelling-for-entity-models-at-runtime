@@ -1,0 +1,33 @@
+@prefix dash: <http://datashapes.org/dash#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <http://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix association: <http://deepmodel.de/association_data/> .
+@prefix attribute:   <http://deepmodel.de/attribute_data/>.
+@prefix dm:          <http://deepmodel.de/> .
+
+schema:ProjectShape
+    a dm:4282980a-bf20-4f75-8f7a-434f6f8e7a54 ;
+    sh:targetClass dm:Project;
+    sh:property [
+          sh:path attribute:Project-854c2eaf-5201-458a-aaf8-273ba23e3cc5-Deadline ;
+          sh:node dm:hello ;
+          sh:node dm:Project-854c2eaf-5201-458a-aaf8-273ba23e3cc5-Deadline-value ;
+      ] ;.
+
+
+dm:hello a sh:NodeShape ;
+         sh:property [
+               sh:path attribute:value ;
+               sh:datatype xsd:int ;
+           ] ;
+.
+
+dm:Project-854c2eaf-5201-458a-aaf8-273ba23e3cc5-Deadline-value a sh:NodeShape ;
+                                                               sh:property [
+                                                                     sh:path attribute:value ;
+                                                                     sh:in ( "1" "2" ) ;
+                                                                 ] ;
+.

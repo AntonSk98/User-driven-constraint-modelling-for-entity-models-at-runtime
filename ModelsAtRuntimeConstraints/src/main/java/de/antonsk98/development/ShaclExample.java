@@ -86,7 +86,6 @@ public final class ShaclExample {
                 .addProperty(SH.property, model.createResource()
                         .addProperty(SH.path, SchemaDO.address)
                         .addProperty(SH.node, model.createResource(SchemaDO.NS + "AddressShape")));
-
         model.createResource(SchemaDO.NS + "AddressShape", SH.NodeShape)
                 .addProperty(SH.closed, "true", XSDDatatype.XSDboolean)
                 .addProperty(SH.property, model.createResource()

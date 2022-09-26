@@ -22,4 +22,8 @@ public class ShaclApi {
         CodiModel codiModel1 = new ObjectMapper().readValue(codiModel, CodiModel.class);
         return transformer.transform(codiModel1);
     }
+
+    public String validateConstraints(String codiModel) {
+        return "valid";
+    }
 }
