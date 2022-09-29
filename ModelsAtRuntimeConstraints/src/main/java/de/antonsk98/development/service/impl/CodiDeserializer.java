@@ -9,7 +9,7 @@ import de.antonsk98.development.domain.codi.CodiModel;
 import de.antonsk98.development.domain.codi.deepInstance.*;
 import de.antonsk98.development.domain.codi.model.Model;
 import de.antonsk98.development.domain.codi.model.ModelElement;
-import de.antonsk98.development.service.abs.Deserializer;
+import de.antonsk98.development.service.api.Deserializer;
 import lombok.SneakyThrows;
 
 import java.io.IOException;

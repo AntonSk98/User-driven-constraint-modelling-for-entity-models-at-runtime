@@ -1,4 +1,4 @@
-package de.antonsk98.development.service.abs;
+package de.antonsk98.development.service.api;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;

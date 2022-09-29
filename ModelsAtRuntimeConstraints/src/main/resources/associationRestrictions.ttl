@@ -1,0 +1,78 @@
+@prefix association: <http://deepmodel.de/association_data/> .
+@prefix attribute:   <http://deepmodel.de/attribute_data/> .
+@prefix dm:          <http://deepmodel.de/> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:        <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
+@prefix schema: <http://schema.org/> .
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+
+
+schema:Test
+    a sh:NodeShape ;
+    sh:targetClass dm:PremiumProject-854c2eaf-5201-458a-aaf8-273ba23e3cc5;
+    sh:property [
+          sh:path association:Project-854c2eaf-5201-458a-aaf8-273ba23e3cc5-hasPart ;
+          sh:qualifiedMinCount 2 ;
+          sh:qualifiedMaxCount 2 ;
+          sh:qualifiedValueShape [
+                      sh:class dm:Todo-854c2eaf-5201-458a-aaf8-273ba23e3cc5 ;
+                  ]; ];
+
+    sh:property [
+          sh:path association:Project-854c2eaf-5201-458a-aaf8-273ba23e3cc5-hasPart ;
+          sh:qualifiedMinCount 2 ;
+          sh:qualifiedMaxCount 2 ;
+          sh:qualifiedValueShape [
+                      sh:class dm:Todo2-854c2eaf-5201-458a-aaf8-273ba23e3cc5 ;
+                  ]; ];
+
+
+.
+##########################
+##########################
+##########################
+@prefix association: <http://deepmodel.de/association_data/> .
+@prefix attribute:   <http://deepmodel.de/attribute_data/> .
+@prefix dm:          <http://deepmodel.de/> .
+@prefix rdfs:        <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
+
+
+dm:PremiumProject-854c2eaf-5201-458a-aaf8-273ba23e3cc5
+    rdfs:subClassOf  dm:NamedElement-854c2eaf-5201-458a-aaf8-273ba23e3cc5 , dm:Project-854c2eaf-5201-458a-aaf8-273ba23e3cc5 .
+
+dm:Todo-854c2eaf-5201-458a-aaf8-273ba23e3cc5  rdfs:subClassOf dm:ProjectItem-854c2eaf-5201-458a-aaf8-273ba23e3cc5 .
+
+dm:Todo2-854c2eaf-5201-458a-aaf8-273ba23e3cc5  rdfs:subClassOf dm:ProjectItem-854c2eaf-5201-458a-aaf8-273ba23e3cc5 .
+
+dm:Project-854c2eaf-5201-458a-aaf8-273ba23e3cc5
+    rdfs:subClassOf  dm:NamedElement-854c2eaf-5201-458a-aaf8-273ba23e3cc5 .
+
+dm:4282980a-bf20-4f75-8f7a-434f6f8e7a54
+    a       dm:PremiumProject-854c2eaf-5201-458a-aaf8-273ba23e3cc5 ;
+
+    association:Project-854c2eaf-5201-458a-aaf8-273ba23e3cc5-hasPart
+            [ a       dm:Todo-854c2eaf-5201-458a-aaf8-273ba23e3cc5 ] ;
+
+    association:Project-854c2eaf-5201-458a-aaf8-273ba23e3cc5-hasPart
+            [ a       dm:Todo-854c2eaf-5201-458a-aaf8-273ba23e3cc5 ] ;
+
+    association:Project-854c2eaf-5201-458a-aaf8-273ba23e3cc5-hasPart
+            [ a       dm:Todo2-854c2eaf-5201-458a-aaf8-273ba23e3cc5 ] ;
+
+    association:Project-854c2eaf-5201-458a-aaf8-273ba23e3cc5-hasPart
+            [ a       dm:Todo2-854c2eaf-5201-458a-aaf8-273ba23e3cc5 ] ;
+
+    attribute:NamedElement-854c2eaf-5201-458a-aaf8-273ba23e3cc5-Title
+            "Premium project item" , "" ;
+    attribute:PremiumProject-854c2eaf-5201-458a-aaf8-273ba23e3cc5-budget
+            "10000"^^xsd:int ;
+    attribute:PremiumProject-854c2eaf-5201-458a-aaf8-273ba23e3cc5-fullName
+            "Premium project" ;
+    attribute:PremiumProject-854c2eaf-5201-458a-aaf8-273ba23e3cc5-state
+            "NOT STARTED" ;
+    attribute:Project-854c2eaf-5201-458a-aaf8-273ba23e3cc5-Deadline
+            "" ;
+    attribute:Project-854c2eaf-5201-458a-aaf8-273ba23e3cc5-Responsible
+            "Anton Skripin" .

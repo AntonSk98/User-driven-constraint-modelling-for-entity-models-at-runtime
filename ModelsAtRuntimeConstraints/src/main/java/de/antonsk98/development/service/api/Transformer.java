@@ -1,4 +1,4 @@
-package de.antonsk98.development.service.abs;
+package de.antonsk98.development.service.api;
 
 /**
  * Abstract transformer of a source model to a target model.
