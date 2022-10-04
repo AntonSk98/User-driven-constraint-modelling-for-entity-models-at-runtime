@@ -1,7 +1,9 @@
 package de.antonsk98.development.util;
 
 import de.antonsk98.development.domain.codi.model.ConstraintType;
+import de.antonsk98.development.domain.codi.model.Function;
 import de.antonsk98.development.domain.shacl.DeepModel;
+import de.antonsk98.development.domain.shacl.ShaclDAO;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
@@ -10,9 +12,8 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.vocabulary.XSD;
 import org.topbraid.shacl.vocabulary.SH;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.BiConsumer;
 
 /**
  * Helper class to dynamically resolve function-related properties into SHACL domain.
@@ -24,6 +25,8 @@ public class ShaclFunctionsUtils {
     private static final Map<String, Pair<Property, XSDDatatype>> coreConstraintFunctions = new HashMap<>();
     private static final Map<String, Property> resourceFunctions = new HashMap<>();
     private static final Map<String, Resource> datatypeFunctions = new HashMap<>();
+
+    private static final Map<String, BiConsumer<Function, ShaclDAO>> customConstraintFunctions = new HashMap<>();
 
     static {
         coreConstraintFunctions.put("maxCount", new ImmutablePair<>(SH.maxCount, XSDDatatype.XSDinteger));
@@ -45,6 +48,90 @@ public class ShaclFunctionsUtils {
     static {
         datatypeFunctions.put("integer", XSD.integer);
         datatypeFunctions.put("string", XSD.xstring);
+    }
+
+    static {
+        String functionName = "ofType";
+        customConstraintFunctions.put(functionName, (function, shaclContainer) -> {
+            String ofClass = "ofClass";
+            String minCardinality = "minCardinality";
+            String maxCardinality = "maxCardinality";
+            String ofClassValue = getParameterValueByParameterName(function, ofClass, functionName);
+            String minCardinalityValue = getParameterValueByParameterNameOrDefault(function, minCardinality, "0");
+            String maxCardinalityValue = getParameterValueByParameterNameOrDefault(function, maxCardinality, String.valueOf(Integer.MAX_VALUE));
+            shaclContainer.getConstraintResource().addProperty(SH.qualifiedMinCount, minCardinalityValue, XSDDatatype.XSDinteger);
+            shaclContainer.getConstraintResource().addProperty(SH.qualifiedMaxCount, maxCardinalityValue, XSDDatatype.XSDinteger);
+            shaclContainer
+                    .getConstraintResource()
+                    .addProperty(
+                            SH.qualifiedValueShape,
+                            shaclContainer
+                                    .getModel()
+                                    .createResource()
+                                    .addProperty(SH.class_, shaclContainer.getModel().createConstraintResource(ofClassValue)));
+        });
+    }
+
+    /**
+     * Retrieves a parameter value for a given parameter. If it is not present, then {@link IllegalArgumentException} is thrown.
+     *
+     * @param function      {@link Function}
+     * @param parameterName parameter name for which a value should be retrieved
+     * @param functionName  custom function name
+     * @return a parameter value for a given parameter
+     */
+    private static String getParameterValueByParameterName(Function function, String parameterName, String functionName) {
+        return getOptionalParameterValueByParameterName(function, parameterName)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format("%s is not present in function %s", parameterName, functionName)));
+    }
+
+    /**
+     * Retrieves a parameter value for a given parameter. If it is not present, then a default value is returned.
+     *
+     * @param function      {@link Function}
+     * @param parameterName parameter name for which a value should be retrieved
+     * @param defaultValue  default value
+     * @return a parameter value for a given parameter
+     */
+    private static String getParameterValueByParameterNameOrDefault(Function function, String parameterName, String defaultValue) {
+        return getOptionalParameterValueByParameterName(function, parameterName)
+                .orElse(defaultValue);
+    }
+
+    /**
+     * Returns optional value of the parameter by its name for a given function.
+     *
+     * @param function      {@link Function}
+     * @param parameterName parameter name for which a value should be retrieved
+     * @return {@link Optional} of a parameter value
+     */
+    private static Optional<String> getOptionalParameterValueByParameterName(Function function, String parameterName) {
+        return function.getNestedFunctions()
+                .stream()
+                .filter(nestedFunction -> nestedFunction.getName().equals(parameterName))
+                .map(Function::getValue)
+                .findFirst();
+    }
+
+    /**
+     * Whether the following function is a custom constraint function.
+     *
+     * @param functionName function name
+     * @return true if a given function is a custom function
+     */
+    public static boolean isCustomConstraintFunction(String functionName) {
+        return Objects.nonNull(customConstraintFunctions.get(functionName));
+    }
+
+    /**
+     * Returns a custom function for a given function name.
+     *
+     * @param functionName function name
+     * @return {@link BiConsumer} function
+     */
+    public static BiConsumer<Function, ShaclDAO> getCustomConstraintFunction(String functionName) {
+        return customConstraintFunctions.get(functionName);
     }
 
     /**

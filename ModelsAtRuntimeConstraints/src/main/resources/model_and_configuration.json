@@ -16,7 +16,7 @@
             "message": "Constraint on 'Title' attribute is violated",
             "functions": [
               {
-                "name": "and",
+                "name": "or",
                 "nestedFunctions": [
                   {
                     "name": "datatype",
@@ -64,6 +64,32 @@
           "ccee6469-cfb6-4c8a-8bbc-e18350e7f506:state:String:true",
           "99d9bbca-ab5a-4ec3-ac08-113eaff3ccff:budget:String:true",
           "918ec21d-14e1-4078-b192-01066d94ff6a:fullName:String:false"
+        ],
+        "constraints": [
+          {
+            "focusProperty": "PremiumProject-854c2eaf-5201-458a-aaf8-273ba23e3cc5-hasPart",
+            "constraintType": "association",
+            "message": "Association constraint is violated",
+            "functions": [
+              {
+                "name": "ofType",
+                "nestedFunctions": [
+                  {
+                    "name": "ofClass",
+                    "value": "Todo-854c2eaf-5201-458a-aaf8-273ba23e3cc5"
+                  },
+                  {
+                    "name": "minCardinality",
+                    "value": "2"
+                  },
+                  {
+                    "name": "maxCardinality",
+                    "value": "2"
+                  }
+                ]
+              }
+            ]
+          }
         ],
         "values": [
           "aa58405d-fb7a-4bc8-a6f7-107f6018afbe:ATTRIBUTE:(Premium project:true)"

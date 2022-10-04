@@ -5,7 +5,7 @@ import de.antonsk98.development.domain.codi.model.Constraint;
 import de.antonsk98.development.domain.codi.model.Function;
 import de.antonsk98.development.domain.codi.model.ModelElement;
 import de.antonsk98.development.domain.shacl.DeepModel;
-import de.antonsk98.development.domain.shacl.ShaclContainer;
+import de.antonsk98.development.domain.shacl.ShaclDAO;
 import de.antonsk98.development.service.api.Transformer;
 import de.antonsk98.development.util.ShaclFunctionsUtils;
 import lombok.SneakyThrows;
@@ -55,19 +55,19 @@ public class CodiToShapeModelTransformer implements Transformer<Model, CodiModel
                 ShaclFunctionsUtils.getNamespaceByConstraintType(constraint.getConstraintType()),
                 constraint.getFocusProperty());
 
-        ShaclContainer shaclContainer = new ShaclContainer(
+        ShaclDAO shaclDAO = new ShaclDAO(
                 deepModel,
                 deepModel.createResource()
                         .addProperty(SH.path, deepModel.createProperty(pathUri))
                         .addProperty(SH.message, constraint.getMessage()),
                 new ArrayList<>());
 
-        processComplexFunction(function, shaclContainer);
+        processComplexFunction(function, shaclDAO);
 
         String modelName = modelElement.getName().replace(":", "-");
         deepModel.createResource(DeepModel.getShapeName(modelName), SH.NodeShape)
                 .addProperty(SH.targetClass, deepModel.createResource(DeepModel.getShapeTargetClass(modelName)))
-                .addProperty(SH.property, shaclContainer.getConstraintResource());
+                .addProperty(SH.property, shaclDAO.getConstraintResource());
         return deepModel;
     }
 
@@ -89,15 +89,15 @@ public class CodiToShapeModelTransformer implements Transformer<Model, CodiModel
      * --------------------------------------------------------------------
      * 5) Repeat all the steps until the function tree is not fully processed from its bottom to the root element
      *
-     * @param function       {@link Function}
-     * @param shaclContainer {@link ShaclContainer}
+     * @param function {@link Function}
+     * @param shaclDAO {@link ShaclDAO}
      */
-    private void processComplexFunction(Function function, ShaclContainer shaclContainer) {
+    private void processComplexFunction(Function function, ShaclDAO shaclDAO) {
         if (Objects.isNull(function)) {
             return;
         }
         function.checkValidCompositeFunction();
-        transformFunction(Objects.requireNonNullElse(function.getDeepestCompositeFunction(), function), shaclContainer);
+        transformFunction(Objects.requireNonNullElse(function.getDeepestCompositeFunction(), function), shaclDAO);
     }
 
     /**
@@ -106,64 +106,77 @@ public class CodiToShapeModelTransformer implements Transformer<Model, CodiModel
      * 1) composite - function that contains an arbitrary number of nested functions.
      * 2) non-composite - function that has no nested functions.
      *
-     * @param function       {@link  Function}
-     * @param shaclContainer {@link ShaclContainer}
+     * @param function {@link  Function}
+     * @param shaclDAO {@link ShaclDAO}
      */
-    private void transformFunction(Function function, ShaclContainer shaclContainer) {
+    private void transformFunction(Function function, ShaclDAO shaclDAO) {
         function.setProcessed(true);
-        if (function.isNotCompositeFunction()) {
-            transformNotCompositeFunction(function, shaclContainer);
+        if (ShaclFunctionsUtils.isCustomConstraintFunction(function.getName())) {
+            processCustomFunction(function, shaclDAO);
+        } else if (function.isNotCompositeFunction()) {
+            transformNotCompositeFunction(function, shaclDAO);
         } else {
-            transformCompositeFunction(function, shaclContainer);
+            transformCompositeFunction(function, shaclDAO);
         }
+        processComplexFunction(function.getParent(), shaclDAO);
+    }
+
+    /**
+     * Transforms a given custom function into a SHACL function constraint.
+     *
+     * @param function {@link Function}
+     * @param shaclDAO {@link ShaclDAO}
+     */
+    private void processCustomFunction(Function function, ShaclDAO shaclDAO) {
+        function.setProcessed(true);
+        function.getNestedFunctions().forEach(nestedFunction -> nestedFunction.setProcessed(true));
+        ShaclFunctionsUtils.getCustomConstraintFunction(function.getName()).accept(function, shaclDAO);
     }
 
     /**
      * Transforms composite function and all its nested functions into a SHACL resource constraint.
      *
-     * @param function       {@link  Function}
-     * @param shaclContainer {@link  ShaclContainer}
+     * @param function {@link  Function}
+     * @param shaclDAO {@link  ShaclDAO}
      */
     @SneakyThrows
-    private void transformCompositeFunction(Function function, ShaclContainer shaclContainer) {
+    private void transformCompositeFunction(Function function, ShaclDAO shaclDAO) {
         Resource resource = function.isRootFunction()
-                ? shaclContainer.getConstraintResource()
-                : shaclContainer.getModel().createResource();
+                ? shaclDAO.getConstraintResource()
+                : shaclDAO.getModel().createResource();
 
-        List<Resource> nonCompositeResources = processAllNonCompositeFunctions(function, shaclContainer);
+        List<Resource> nonCompositeResources = processAllNonCompositeFunctions(function, shaclDAO);
 
         if (function.isLeaf()) {
-            shaclContainer.addResource(resource);
+            shaclDAO.addResource(resource);
         } else {
-            nonCompositeResources.addAll(shaclContainer.getResourceList());
-            shaclContainer.clearResourceList();
-            shaclContainer.addResource(resource);
+            nonCompositeResources.addAll(shaclDAO.getResourceList());
+            shaclDAO.clearResourceList();
+            shaclDAO.addResource(resource);
         }
 
         resource.addProperty(ShaclFunctionsUtils.getShaclFunctionByName(function.getName()),
-                shaclContainer.getModel().createList(
+                shaclDAO.getModel().createList(
                         nonCompositeResources
                                 .stream()
                                 .iterator()));
-
-        processComplexFunction(function.getParent(), shaclContainer);
     }
 
     /**
      * Constructs resources for all non-composite functions contained in a composite function.
      *
-     * @param function       not processed composite function
-     * @param shaclContainer {@link ShaclContainer}
+     * @param function not processed composite function
+     * @param shaclDAO {@link ShaclDAO}
      * @return list of constructed resources for the model
      */
-    private List<Resource> processAllNonCompositeFunctions(Function function, ShaclContainer shaclContainer) {
+    private List<Resource> processAllNonCompositeFunctions(Function function, ShaclDAO shaclDAO) {
         List<Resource> resourceList = new ArrayList<>();
         function
                 .getNestedFunctions()
                 .stream()
                 .filter(nestedFunction -> !nestedFunction.isCompositeFunction())
                 .forEach(nestedNonCompositeFunction -> {
-                    resourceList.add(addPropertyDynamically(nestedNonCompositeFunction, shaclContainer.getModel().createResource()));
+                    resourceList.add(addPropertyDynamically(nestedNonCompositeFunction, shaclDAO.getModel().createResource()));
                     nestedNonCompositeFunction.setProcessed(true);
                 });
         return resourceList;
@@ -172,17 +185,17 @@ public class CodiToShapeModelTransformer implements Transformer<Model, CodiModel
     /**
      * Construct a constraint resource for a non-composite function.
      *
-     * @param function       function for which a resource shall be constructed
-     * @param shaclContainer {@link ShaclContainer}
+     * @param function function for which a resource shall be constructed
+     * @param shaclDAO {@link ShaclDAO}
      */
     @SneakyThrows
-    private void transformNotCompositeFunction(Function function, ShaclContainer shaclContainer) {
-        addPropertyDynamically(function, shaclContainer.getConstraintResource());
-        processComplexFunction(function.getParent(), shaclContainer);
+    private void transformNotCompositeFunction(Function function, ShaclDAO shaclDAO) {
+        addPropertyDynamically(function, shaclDAO.getConstraintResource());
     }
 
     /**
      * Function that constructs a SHACL constraint using the functionality of {@link ShaclFunctionsUtils}
+     *
      * @param function function
      * @param resource resource used to construct a constraint
      * @return {@link Resource}
@@ -193,9 +206,9 @@ public class CodiToShapeModelTransformer implements Transformer<Model, CodiModel
             return resource;
         }
         resource.addProperty(
-                        ShaclFunctionsUtils.getShaclFunctionByName(function.getName()),
-                        function.getValue(),
-                        ShaclFunctionsUtils.getShaclFunctionTypeByName(function.getName()));
+                ShaclFunctionsUtils.getShaclFunctionByName(function.getName()),
+                function.getValue(),
+                ShaclFunctionsUtils.getShaclFunctionTypeByName(function.getName()));
         return resource;
     }
 }

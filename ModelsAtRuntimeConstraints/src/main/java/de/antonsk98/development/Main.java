@@ -21,9 +21,9 @@ public class Main {
     public static void main(String[] args) {
         ShaclApi shaclApi = new ShaclApi(new CodiToDataModelTransformer(), new CodiToShapeModelTransformer());
         String content = Files.readString(Path.of(Resources.getResource("model_and_configuration.json").toURI()));
-        RDFDataMgr.write(System.out, shaclApi.getShapeModelFromCodiModel(content), Lang.TTL);
-        shaclApi.validateConstraints(content);
-        RDFDataMgr.write(System.out, shaclApi.getDataModelFromCodiModel(content), Lang.TTL);
+//        RDFDataMgr.write(System.out, shaclApi.getShapeModelFromCodiModel(content), Lang.TTL);
+        RDFDataMgr.write(System.out, shaclApi.validateConstraints(content).getModel(), Lang.TTL);
+//        RDFDataMgr.write(System.out, shaclApi.getDataModelFromCodiModel(content), Lang.TTL);
         System.out.println();
         System.out.println();
         System.out.println();

@@ -71,6 +71,15 @@ public class DeepModel extends ModelCom {
     }
 
     /**
+     * Creates a new resource for a target constraint.
+     * @param targetConstraint target constraint
+     * @return {@link  Resource}
+     */
+    public Resource createConstraintResource(String targetConstraint) {
+        return super.createResource(DEEPMODEL + targetConstraint);
+    }
+
+    /**
      * Constructs an attribute property for a given attribute id.
      *
      * @param attributeId attribute id

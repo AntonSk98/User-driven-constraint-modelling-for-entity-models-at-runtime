@@ -43,8 +43,6 @@ public class ShaclApi {
         Model shapeModel = codiToShapeModelTransformer.transform(deserializedModel);
         Shapes shapes = Shapes.parse(shapeModel.getGraph());
         ValidationReport report = ShaclValidator.get().validate(shapes, dataModel.getGraph());
-        RDFDataMgr.write(System.out, report.getModel(), Lang.TTL);
-        ShLib.printReport(report);
         return report;
     }
 }
