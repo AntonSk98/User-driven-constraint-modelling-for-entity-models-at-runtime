@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.Set;
 
 /**
- * Container collecting all clabjects of a deep-instance hierarchy.
+ * Domain collecting all {@link Clabject} of a deep-instance hierarchy.
  *
  * @author Anton Skripin
  */

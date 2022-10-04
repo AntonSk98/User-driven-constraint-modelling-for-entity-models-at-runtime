@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.Set;
 
 /**
- * Container for a model-space of the deep-instance hierarchy containing a set of model elements.
+ * Domain of a model-space containing a set of {@link ModelElement}.
  *
  * @author Anton Skripin
  */

@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Container for clabject metadata.
+ * Domain of {@link Clabject} metadata.
  *
  * @author Anton Skripin
  */

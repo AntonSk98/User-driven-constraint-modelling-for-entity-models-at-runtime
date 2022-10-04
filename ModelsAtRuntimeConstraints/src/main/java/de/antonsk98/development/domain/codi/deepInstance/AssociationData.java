@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Container for an association of a clabject.
+ * Domain of an association of a {@link Clabject}.
  *
  * @author Anton Skripin.
  */

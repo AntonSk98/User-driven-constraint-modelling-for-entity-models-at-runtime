@@ -9,6 +9,32 @@
         "attributes": [
           "9d696f3c-d33c-4c00-b6bf-b53c1400bb36:Title:String:true"
         ],
+        "constraints": [
+          {
+            "focusProperty": "NamedElement-854c2eaf-5201-458a-aaf8-273ba23e3cc5-Title",
+            "constraintType": "attribute",
+            "message": "Constraint on 'Title' attribute is violated",
+            "functions": [
+              {
+                "name": "and",
+                "nestedFunctions": [
+                  {
+                    "name": "datatype",
+                    "value": "integer"
+                  },
+                  {
+                    "name": "datatype",
+                    "value": "string"
+                  }
+                ]
+              },
+              {
+                "name": "minCount",
+                "value": "1"
+              }
+            ]
+          }
+        ],
         "values": []
       },
       {

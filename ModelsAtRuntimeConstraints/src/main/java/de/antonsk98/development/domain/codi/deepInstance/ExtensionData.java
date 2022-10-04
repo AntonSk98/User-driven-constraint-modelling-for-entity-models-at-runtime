@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
- * Container for instantiated data.
+ * Domain of extension data for {@link Clabject}.
  *
  * @author Anton Skripin
  */

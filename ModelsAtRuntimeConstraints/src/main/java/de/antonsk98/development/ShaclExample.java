@@ -4,6 +4,7 @@ package de.antonsk98.development;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
 import org.apache.jena.shacl.ShaclValidator;
@@ -14,8 +15,13 @@ import org.apache.jena.vocabulary.SchemaDO;
 import org.apache.jena.vocabulary.XSD;
 import org.topbraid.shacl.vocabulary.SH;
 
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Shacl example class that showcases the data graph and model graph construction.
+ *
+ * @author Anton Skripin
  */
 public final class ShaclExample {
 
@@ -28,6 +34,8 @@ public final class ShaclExample {
         Model shapeModel = constructShapeModel();
         Shapes shapes = Shapes.parse(shapeModel.getGraph());
         RDFDataMgr.write(System.out, constructDataModel(), Lang.TTL);
+        System.out.println();
+        RDFDataMgr.write(System.out, constructShapeModel(), Lang.TTL);
         ValidationReport report = ShaclValidator.get().validate(shapes, dataModel.getGraph());
         ShLib.printReport(report);
         System.out.println();
@@ -86,6 +94,7 @@ public final class ShaclExample {
                 .addProperty(SH.property, model.createResource()
                         .addProperty(SH.path, SchemaDO.address)
                         .addProperty(SH.node, model.createResource(SchemaDO.NS + "AddressShape")));
+        Iterator<Resource> resources = List.of(model.createResource().addProperty(SH.datatype, XSD.xstring), model.createResource().addProperty(SH.datatype, XSD.xint)).iterator();
         model.createResource(SchemaDO.NS + "AddressShape", SH.NodeShape)
                 .addProperty(SH.closed, "true", XSDDatatype.XSDboolean)
                 .addProperty(SH.property, model.createResource()
@@ -94,12 +103,10 @@ public final class ShaclExample {
                 .addProperty(SH.property, model.createResource()
                         .addProperty(SH.path, SchemaDO.postalCode)
                         .addProperty(SH.or, model
-                                .createList(
-                                        model.createResource().addProperty(SH.datatype, XSD.xstring),
-                                        model.createResource().addProperty(SH.datatype, XSD.xint)
-                                ))
+                                .createList(resources))
                         .addProperty(SH.minInclusive, "1", XSDDatatype.XSDint)
                         .addProperty(SH.maxInclusive, "100", XSDDatatype.XSDint));
+
         return model;
     }
 

@@ -8,7 +8,7 @@ import lombok.Setter;
 import java.util.Set;
 
 /**
- * Clabject representations of a codi model.
+ * Domain for clabject.
  *
  * @author Anton Skripin
  */

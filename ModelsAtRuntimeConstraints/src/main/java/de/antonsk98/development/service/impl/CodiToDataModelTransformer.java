@@ -6,7 +6,6 @@ import de.antonsk98.development.domain.codi.model.ModelElement;
 import de.antonsk98.development.domain.shacl.DeepModel;
 import de.antonsk98.development.service.api.Transformer;
 import de.antonsk98.development.util.RdfUtils;
-import org.apache.commons.lang3.RandomUtils;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -25,39 +24,33 @@ import java.util.stream.Collectors;
  *
  * @author Anton Skripin
  */
-public class CodiToRdfTransformer implements Transformer<Model, CodiModel> {
-
+public class CodiToDataModelTransformer implements Transformer<Model, CodiModel> {
     /**
      * {@inheritDoc}
      */
     @Override
     public Model transform(CodiModel model) {
-        Model m = ModelFactory.createDefaultModel();
-        m.setNsPrefix("dm", DeepModel.DEEPMODEL);
-        m.setNsPrefix("attribute", DeepModel.ATTRIBUTE_DATA);
-        m.setNsPrefix("association", DeepModel.ASSOCIATION_DATA);
-        m.setNsPrefix("xsd", XSDDatatype.XSD + "#");
-        m.setNsPrefix("rdfs", RDFS.uri);
+        DeepModel deepModel = new DeepModel();
         model.getDeepInstance().getClabjects().forEach(deepClabject -> {
-            constructClabjectHierarchy(m, model.getDeepInstance(), deepClabject);
+            constructClabjectHierarchy(deepModel, model.getDeepInstance(), deepClabject);
             ClabjectData clabjectData = deepClabject.getClabjectData();
-            Resource instanceResource = DeepModel.createInstanceResource(m, clabjectData.getInstanceId(), clabjectData.getInstanceOf(), clabjectData.getIdentity());
+            Resource instanceResource = deepModel.createInstanceResource( clabjectData.getInstanceId(), clabjectData.getInstanceOf(), clabjectData.getIdentity());
             getDeepClabjectHierarchy(model.getDeepInstance(), deepClabject).forEach(clabject -> {
-                addAttribute(m, instanceResource, clabject);
-                addAssociation(m, instanceResource, clabject, model.getModel().getModelElement());
+                addAttribute(deepModel, instanceResource, clabject);
+                addAssociation(deepModel, instanceResource, clabject, model.getModel().getModelElement());
             });
         });
-        return m;
+        return deepModel;
     }
 
     /**
      * Constructs rdfs child-of triples for each clabject being present in the deep instance hierarchy.
      *
-     * @param m            RDF model
+     * @param deepModel            RDF model
      * @param deepInstance Deep instance hierarchy
      * @param clabject     Given clabject for which the child-of relationship is constructed
      */
-    private void constructClabjectHierarchy(Model m, DeepInstance deepInstance, Clabject clabject) {
+    private void constructClabjectHierarchy(DeepModel deepModel, DeepInstance deepInstance, Clabject clabject) {
         String childInstanceOf = clabject.getClabjectData().getInstanceOf();
         String childIdentity = clabject.getClabjectData().getIdentity();
         clabject.getExtensionData().stream().map(ExtensionData::getParentInstanceId).collect(Collectors.toList())
@@ -67,24 +60,24 @@ public class CodiToRdfTransformer implements Transformer<Model, CodiModel> {
                             .stream()
                             .map(Clabject::getClabjectData)
                             .filter(clabjectData -> clabjectData.getInstanceId().equals(instanceId))
-                            .forEach(clabjectData -> m.add(
-                                    DeepModel.createClassResource(m, childInstanceOf, childIdentity),
+                            .forEach(clabjectData -> deepModel.add(
+                                    deepModel.createClassResource(childInstanceOf, childIdentity),
                                     RDFS.subClassOf,
-                                    DeepModel.createClassResource(m, clabjectData.getInstanceOf(), clabjectData.getIdentity())));
+                                    deepModel.createClassResource(clabjectData.getInstanceOf(), clabjectData.getIdentity())));
                 });
     }
 
     /**
      * Adds attributes of a given clabject to RDF model.
      *
-     * @param m                RDF model
+     * @param deepModel                RDF model
      * @param instanceResource Resource representing a clabject in RDF
      * @param clabject         Given clabject which attributes are constructed in RDF
      */
-    private void addAttribute(Model m, Resource instanceResource, Clabject clabject) {
+    private void addAttribute(DeepModel deepModel, Resource instanceResource, Clabject clabject) {
         Set<AttributeData> attributeDataSet = clabject.getAttributeData();
-        attributeDataSet.forEach(attributeData -> instanceResource.addProperty(DeepModel
-                .createAttributeProperty(m,
+        attributeDataSet.forEach(attributeData -> instanceResource.addProperty(deepModel
+                .createAttributeProperty(
                         String.format("%s-%s-%s",
                                 clabject.getClabjectData().getInstanceOf(),
                                 clabject.getClabjectData().getIdentity(),
@@ -94,23 +87,23 @@ public class CodiToRdfTransformer implements Transformer<Model, CodiModel> {
     /**
      * Add associations of a given clabject to RDF model.
      *
-     * @param m                RDF model
+     * @param deepModel                RDF model
      * @param instanceResource Resource representing a clabject in RDF
      * @param clabject         Given clabject which attributes are constructed in RDF
      * @param modelElement     Model element
      */
-    private void addAssociation(Model m, Resource instanceResource, Clabject clabject, Set<ModelElement> modelElement) {
+    private void addAssociation(DeepModel deepModel, Resource instanceResource, Clabject clabject, Set<ModelElement> modelElement) {
         Set<AssociationData> associationDataSet = clabject.getAssociationData();
         associationDataSet.forEach(associationData -> {
             getTargetModelType(modelElement, associationData)
                     .forEach(targetModeType -> instanceResource
-                            .addProperty(DeepModel.createAssociationProperty(m,
+                            .addProperty(deepModel.createAssociationProperty(
                                     String.format("%s-%s-%s",
                                             clabject.getClabjectData().getInstanceOf(),
                                             clabject.getClabjectData().getIdentity(),
                                             associationData.getByRelation())),
-                                    m.createResource(
-                                            DeepModel.createClassResource(m, "Todo", "854c2eaf-5201-458a-aaf8-273ba23e3cc5"))));
+                                    deepModel.createResource(
+                                            deepModel.createClassResource("Todo", "854c2eaf-5201-458a-aaf8-273ba23e3cc5"))));
         });
     }
 

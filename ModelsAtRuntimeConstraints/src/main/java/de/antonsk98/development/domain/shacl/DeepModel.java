@@ -1,49 +1,105 @@
 package de.antonsk98.development.domain.shacl;
 
 import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.impl.ModelCom;
+import org.apache.jena.shacl.vocabulary.SHACL;
+import org.apache.jena.sparql.ARQConstants;
+import org.apache.jena.vocabulary.RDFS;
 
 /**
- * RDF vocabulary for the deep model dialect.
+ * Extended {@link Model} with deep modelling support.
  *
  * @author Anton Skripin
  */
-public class DeepModel {
+public class DeepModel extends ModelCom {
 
     public static final String DEEPMODEL = "http://deepmodel.de/";
     public static final String ATTRIBUTE_DATA = DEEPMODEL + "attribute_data/";
     public static final String ASSOCIATION_DATA = DEEPMODEL + "association_data/";
 
-    private static final Model m = ModelFactory.createDefaultModel();
-
-    public static Resource createInstanceResource(Model model, String instanceId, String instanceOf, String identity) {
-        return model.createResource(DEEPMODEL + instanceId, createClassResource(model, instanceOf, identity));
+    /**
+     * Constructor.
+     */
+    public DeepModel() {
+        super(org.apache.jena.graph.Factory.createGraphMem());
+        this.setUpNamespaces();
     }
 
-    public static Resource createClassResource(Model model, String instanceOf, String identity) {
-        return model.createResource(DEEPMODEL + instanceOf + "-" + identity);
+    /**
+     * Return shape constraint name by model name.
+     *
+     * @param modelName model name
+     * @return name of the constraint shape
+     */
+    public static String getShapeName(String modelName) {
+        return String.format("%sShape-%s", DEEPMODEL, modelName);
     }
 
-    public static final Property attributeId = m.createProperty(ATTRIBUTE_DATA + "id");
-    public static final Property attributeInstanceId = m.createProperty(ATTRIBUTE_DATA + "instanceId");
-    public static final Property attributeKey = m.createProperty(ATTRIBUTE_DATA + "key");
-    public static final Property attributeValue = m.createProperty(ATTRIBUTE_DATA + "value");
-    public static final Property isFinalAttribute = m.createProperty(ATTRIBUTE_DATA + "isFinal");
-
-    public static Property createAttributeProperty(Model m, String attributeId) {
-        return m.createProperty(ATTRIBUTE_DATA + attributeId);
+    /**
+     * Return shape target class by model name.
+     *
+     * @param modelName model name
+     * @return name of the target class constraint
+     */
+    public static String getShapeTargetClass(String modelName) {
+        return DEEPMODEL + modelName;
     }
 
-    public static final Property associationId = m.createProperty(ASSOCIATION_DATA + "id");
-    public static final Property associationByRelation = m.createProperty(ASSOCIATION_DATA + "byRelation");
-    public static final Property associationInstanceId = m.createProperty(ASSOCIATION_DATA + "instanceId");
-    public static final Property associationTargetInstanceId = m.createProperty(ASSOCIATION_DATA + "targetInstanceId");
-    public static final Property associationIsFinal = m.createProperty(ASSOCIATION_DATA + "isFinal");
+    /**
+     * Creates instance resource for a {@link DeepModel}.
+     *
+     * @param instanceId instance id
+     * @param instanceOf instance of
+     * @param identity   identity
+     * @return new instance resource
+     */
+    public Resource createInstanceResource(String instanceId, String instanceOf, String identity) {
+        return super.createResource(DEEPMODEL + instanceId, createClassResource(instanceOf, identity));
+    }
 
-    public static Property createAssociationProperty(Model m, String associationId) {
-        return m.createProperty(ASSOCIATION_DATA + associationId);
+    /**
+     * Creates class resource for a {@link DeepModel}.
+     *
+     * @param instanceOf instance of
+     * @param identity   identity
+     * @return new class resource
+     */
+    public Resource createClassResource(String instanceOf, String identity) {
+        return super.createResource(DEEPMODEL + instanceOf + "-" + identity);
+    }
+
+    /**
+     * Constructs an attribute property for a given attribute id.
+     *
+     * @param attributeId attribute id
+     * @return attribute property
+     */
+    public Property createAttributeProperty(String attributeId) {
+        return super.createProperty(ATTRIBUTE_DATA + attributeId);
+    }
+
+    /**
+     * Constructs an association property for a given association id.
+     *
+     * @param associationId association id
+     * @return association property
+     */
+    public Property createAssociationProperty(String associationId) {
+        return super.createProperty(ASSOCIATION_DATA + associationId);
+    }
+
+    /**
+     * Sets up default namespace for {@link DeepModel}.
+     */
+    private void setUpNamespaces() {
+        super.setNsPrefix("deep_model", DeepModel.DEEPMODEL);
+        super.setNsPrefix("attribute", DeepModel.ATTRIBUTE_DATA);
+        super.setNsPrefix("association", DeepModel.ASSOCIATION_DATA);
+        super.setNsPrefix("xsd", ARQConstants.xsdPrefix);
+        super.setNsPrefix("rdfs", RDFS.uri);
+        super.setNsPrefix("sh", SHACL.NS);
     }
 
 

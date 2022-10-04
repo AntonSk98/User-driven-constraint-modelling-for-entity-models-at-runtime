@@ -5,10 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 /**
- * Container for a model element.
+ * Domain of a single model element.
  *
  * @author Anton Skripin.
  */
@@ -23,4 +25,16 @@ public class ModelElement {
     private Set<String> associations;
     private Set<String> attributes;
     private Set<String> values;
+    private Set<Constraint> constraints;
+
+    /**
+     * Getter for {@link #constraints}.
+     * @return {@link #constraints}
+     */
+    public Set<Constraint> getConstraints() {
+        if (Objects.isNull(constraints)) {
+            this.constraints = new HashSet<>();
+        }
+        return this.constraints;
+    }
 }
