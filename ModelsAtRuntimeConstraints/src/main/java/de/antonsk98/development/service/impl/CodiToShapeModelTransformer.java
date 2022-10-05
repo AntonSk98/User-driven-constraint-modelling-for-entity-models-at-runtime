@@ -9,6 +9,8 @@ import de.antonsk98.development.domain.shacl.ShaclDAO;
 import de.antonsk98.development.service.api.Transformer;
 import de.antonsk98.development.util.ShaclFunctionsUtils;
 import lombok.SneakyThrows;
+import org.apache.commons.collections4.multimap.ArrayListValuedHashMap;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Resource;
 import org.topbraid.shacl.vocabulary.SH;
@@ -60,7 +62,7 @@ public class CodiToShapeModelTransformer implements Transformer<Model, CodiModel
                 deepModel.createResource()
                         .addProperty(SH.path, deepModel.createProperty(pathUri))
                         .addProperty(SH.message, constraint.getMessage()),
-                new ArrayList<>());
+                new ArrayListValuedHashMap<>());
 
         processComplexFunction(function, shaclDAO);
 
@@ -130,7 +132,24 @@ public class CodiToShapeModelTransformer implements Transformer<Model, CodiModel
     private void processCustomFunction(Function function, ShaclDAO shaclDAO) {
         function.setProcessed(true);
         function.getNestedFunctions().forEach(nestedFunction -> nestedFunction.setProcessed(true));
-        ShaclFunctionsUtils.getCustomConstraintFunction(function.getName()).accept(function, shaclDAO);
+        ShaclFunctionsUtils
+                .getCustomConstraintFunction(function.getName())
+                .accept(function, new ImmutablePair<>(shaclDAO.getModel(), assignResource(function, shaclDAO)));
+    }
+
+    /**
+     * Dynamic function that resolves for which resource a custom constraint should be assigned.
+     * @param function {@link Function}
+     * @param shaclDAO {@link ShaclDAO}
+     * @return {@link Resource}
+     */
+    private static Resource assignResource(Function function, ShaclDAO shaclDAO) {
+        if (function.isRootFunction()) {
+            return shaclDAO.getConstraintResource();
+        }
+        Resource resource = shaclDAO.getModel().createResource();
+        shaclDAO.addResource(Integer.toHexString(function.getParent().hashCode()), resource);
+        return resource;
     }
 
     /**
@@ -148,11 +167,13 @@ public class CodiToShapeModelTransformer implements Transformer<Model, CodiModel
         List<Resource> nonCompositeResources = processAllNonCompositeFunctions(function, shaclDAO);
 
         if (function.isLeaf()) {
-            shaclDAO.addResource(resource);
+            shaclDAO.addResource(Integer.toHexString(function.hashCode()), resource);
         } else {
-            nonCompositeResources.addAll(shaclDAO.getResourceList());
-            shaclDAO.clearResourceList();
-            shaclDAO.addResource(resource);
+            nonCompositeResources.addAll(shaclDAO.getResourcesByParentId(Integer.toHexString(function.hashCode())));
+            shaclDAO.deleteAllResourcesByParentId(Integer.toHexString(function.hashCode()));
+            if (!function.isRootFunction()) {
+                shaclDAO.addResource(Integer.toHexString(function.getParent().hashCode()), resource);
+            }
         }
 
         resource.addProperty(ShaclFunctionsUtils.getShaclFunctionByName(function.getName()),

@@ -3,7 +3,6 @@ package de.antonsk98.development.util;
 import de.antonsk98.development.domain.codi.model.ConstraintType;
 import de.antonsk98.development.domain.codi.model.Function;
 import de.antonsk98.development.domain.shacl.DeepModel;
-import de.antonsk98.development.domain.shacl.ShaclDAO;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
@@ -26,7 +25,7 @@ public class ShaclFunctionsUtils {
     private static final Map<String, Property> resourceFunctions = new HashMap<>();
     private static final Map<String, Resource> datatypeFunctions = new HashMap<>();
 
-    private static final Map<String, BiConsumer<Function, ShaclDAO>> customConstraintFunctions = new HashMap<>();
+    private static final Map<String, BiConsumer<Function, Pair<DeepModel, Resource>>> customConstraintFunctions = new HashMap<>();
 
     static {
         coreConstraintFunctions.put("maxCount", new ImmutablePair<>(SH.maxCount, XSDDatatype.XSDinteger));
@@ -51,25 +50,31 @@ public class ShaclFunctionsUtils {
     }
 
     static {
-        String functionName = "ofType";
-        customConstraintFunctions.put(functionName, (function, shaclContainer) -> {
+        customConstraintFunctions.put("ofType", associationConstraintOfType());
+    }
+
+    /**
+     * Custom constraint on associations that limits a type a target model can be associated with as well as limits multiplicity.
+     * @return association constraint 'ofType'
+     */
+    private static BiConsumer<Function, Pair<DeepModel, Resource>> associationConstraintOfType() {
+        return (function, pair) -> {
+            String functionName = function.getName();
             String ofClass = "ofClass";
             String minCardinality = "minCardinality";
             String maxCardinality = "maxCardinality";
             String ofClassValue = getParameterValueByParameterName(function, ofClass, functionName);
             String minCardinalityValue = getParameterValueByParameterNameOrDefault(function, minCardinality, "0");
             String maxCardinalityValue = getParameterValueByParameterNameOrDefault(function, maxCardinality, String.valueOf(Integer.MAX_VALUE));
-            shaclContainer.getConstraintResource().addProperty(SH.qualifiedMinCount, minCardinalityValue, XSDDatatype.XSDinteger);
-            shaclContainer.getConstraintResource().addProperty(SH.qualifiedMaxCount, maxCardinalityValue, XSDDatatype.XSDinteger);
-            shaclContainer
-                    .getConstraintResource()
+            pair.getRight()
+                    .addProperty(SH.qualifiedMinCount, minCardinalityValue, XSDDatatype.XSDinteger)
+                    .addProperty(SH.qualifiedMaxCount, maxCardinalityValue, XSDDatatype.XSDinteger)
                     .addProperty(
                             SH.qualifiedValueShape,
-                            shaclContainer
-                                    .getModel()
+                            pair.getLeft()
                                     .createResource()
-                                    .addProperty(SH.class_, shaclContainer.getModel().createConstraintResource(ofClassValue)));
-        });
+                                    .addProperty(SH.class_, pair.getLeft().createConstraintResource(ofClassValue)));
+        };
     }
 
     /**
@@ -130,7 +135,7 @@ public class ShaclFunctionsUtils {
      * @param functionName function name
      * @return {@link BiConsumer} function
      */
-    public static BiConsumer<Function, ShaclDAO> getCustomConstraintFunction(String functionName) {
+    public static BiConsumer<Function, Pair<DeepModel, Resource>> getCustomConstraintFunction(String functionName) {
         return customConstraintFunctions.get(functionName);
     }
 
@@ -174,6 +179,11 @@ public class ShaclFunctionsUtils {
         return coreConstraintFunctions.get(functionName).getLeft();
     }
 
+    /**
+     * Gets function type by its name.
+     * @param functionName function name
+     * @return {@link XSDDatatype}
+     */
     public static XSDDatatype getShaclFunctionTypeByName(String functionName) {
         return coreConstraintFunctions.get(functionName).getRight();
     }
