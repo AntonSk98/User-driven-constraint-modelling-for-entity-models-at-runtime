@@ -223,7 +223,9 @@ public class CodiToShapeModelTransformer implements Transformer<Model, CodiModel
      */
     private Resource addPropertyDynamically(Function function, Resource resource) {
         if (ShaclFunctionsUtils.isResourceFunction(function.getName())) {
-            resource.addProperty(ShaclFunctionsUtils.getPropertyFunctionByName(function.getName()), ShaclFunctionsUtils.getDatatypeResourceByFunctionName(function.getValue()));
+            resource.addProperty(
+                    ShaclFunctionsUtils.getPropertyFunctionByName(function.getName()),
+                    ShaclFunctionsUtils.getDatatypeResourceByFunctionName(function.getValue()));
             return resource;
         }
         resource.addProperty(
