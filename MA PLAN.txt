@@ -1,0 +1,115 @@
+Master thesis plan
+ 
+Introduction (must be short without deep immersion into concepts just a shallow narrative)
+    Motivation -> 
+        * what are models in general;
+        * why and where they are useful;
+        * why a simple domain model is not expressive enough;
+        * how to overcome it with the use of constraints;
+    Objective ->
+        * model variability during software evolution
+        * why constraining a variable model at runtime is required (research gap 1)
+        * how an end-user can easily constraint a runtime model and deal with its high dynamism (research gap 2)
+    Thesis structure ->
+        * purpose of every chapter and its concise summary
+
+Foundation
+    Models and metamodels ->
+        * catecorization of models
+        * why does one need a metamodel, is just havine one model not enough
+        * metamodel hierarchy
+    Model-driven engineering ->
+        * why it was created
+        * what limitations of classical system engineering should it tackle
+        * structure of mde, its levels and functions
+    Multilevel models ->
+        * Problem of a metamodel hierarchy
+        * Current approaches to overcome this problem and why they are cumbersome
+        * Brief introduction of multilevel models and why it fits better than existing approaches
+    Models at runtime ->
+        * how to adapt a system to dynamically chaning requirements
+        * extending the concept of MDE and the place of models@run.time in MDE architecture
+        * application areas of models@run.time
+        * architecture of a system that uses model at runtime
+    Modicio ->
+        * summary with the focus on the approach to tackle multilevel model variability at runtime
+    Constraint languages ->
+        * formal definition of constraint and constraint language
+        * classification of constraint languages
+            * ocl as an example
+        * dynamic constraints at runtime
+    End-user constraint programming of domain ->
+        * intuitive ui for query||constraint languages
+
+Concept and requirements
+    System requirements ->
+        --- Introduce a domain model and reason about potentially useful restrictions ---
+                     --- e.g. domain model of a company, examination office, etc. ---
+        * constraint lifecycle in varian-aware entity model at lifetime (behavioral diagram with descriptions)
+        * constraint specifications -> define how such a constraint can be formulated and specify a set of initial/primary functions
+            * attribute constraints
+            * association constraints
+            * object-nets constraints
+            * complex constraints
+                * conditional constraints
+                * constraints resulting in collections
+                * combines constraints
+        * constraint persistence
+        * functional requirements
+            * extension of constraints at runtime
+            * severity level of constraints violation
+            * constraints with model to user-space inconsistency
+        * non-functional requirements
+    End-user constraint modeling requirements ->    
+        * functional requirements
+            1) api to define new constraint types
+            2) mechanisms to easily define constraints on a model entity
+            3) mechanisms to combine constraints
+            4) mechanisms to notify a user in case of constraint violations
+        * non-functional requirements
+            1) trivial entry-level
+            2) technology independent api
+
+Related work ->
+    --- evaluation of their technical properties and how easily an end-user can apply constraints with that techniques ---
+            --- clearly claim that those techniques require a certain level of expertise.
+            --- therefore, independend but intuitive ui is needed ---
+    --- technical properties:
+            1) expressiveness
+            2) performance
+            3) ease of defining constraints
+            4) ability to extend at runtime
+            5) ability to define constraints stated in constraint specification earlier
+            6) transitive dependencies and cost of maintenance
+    ---
+    Deep OCL dialect
+        * Redefined deep OCL dialect
+    Eclipse OCL
+    World Wide Web Consortium (RDF, SHACL, SPARQL)
+    Alloy
+    Evrete
+    GraphFrames
+    Viatra
+    * Choose two most promising techniques that must be taken as a core for system implementation
+
+Architecture and design decisions
+    --- left for later ---
+Implementation
+    --- left for later ---
+Case study
+    Technical evaluation
+        * comparison points
+        * set of constraints from trivial to complex ones
+        * system expresiveness to apply the constraints mentioned above
+        * dealing with dynamic entity changes at runtime
+        * system performance
+    UI evaluation
+        * ability to apply constraints
+        * ability to define new constraints
+    Summary
+
+Limitations and future work
+
+Conclusion
+
+
