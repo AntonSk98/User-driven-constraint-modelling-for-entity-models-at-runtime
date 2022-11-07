@@ -1,2 +1,2 @@
 ModelsAtRuntimeConstraints/.idea/
-ModelsAtRuntimeConstraints/target/
+**/target/
