@@ -8,49 +8,53 @@ Introduction (must be short without deep immersion into concepts just a shallow 
         * how to overcome it with the use of constraints;
     Objective ->
         * model variability during software evolution
-        * why constraining a variable model at runtime is required (research gap 1)
-        * how an end-user can easily constraint a runtime model and deal with its high dynamism (research gap 2)
+        * why constraining a variable model at runtime is required (research gap 1) (what is here the difference btw just restricting a model statically)
+        * how an end-user can easily constraint a runtime model and deal with its high dynamism (research gap 2) (variable model at runtime, variant-aware model at runtime)
     Thesis structure ->
         * purpose of every chapter and its concise summary
+    add -> clearly point out problems that should be solved (in objectives call them problems and state them clerly) from problems formulate research questions! no well-known concepts
 
-Foundation
-    Models and metamodels ->
+Foundation -> small since related work chapter is gonna be big
+    Models and metamodels -> compact
         * catecorization of models
         * why does one need a metamodel, is just havine one model not enough
         * metamodel hierarchy
-    Model-driven engineering ->
+    Model-driven engineering -> compact
         * why it was created
         * what limitations of classical system engineering should it tackle
         * structure of mde, its levels and functions
-    Multilevel models ->
-        * Problem of a metamodel hierarchy
+    Multilevel models -> compact
+        * Problem of a metamodel hierarchy (language and ontological instantiation)
         * Current approaches to overcome this problem and why they are cumbersome
         * Brief introduction of multilevel models and why it fits better than existing approaches
-    Models at runtime ->
+    Models at runtime ->compact
         * how to adapt a system to dynamically chaning requirements
         * extending the concept of MDE and the place of models@run.time in MDE architecture
         * application areas of models@run.time
         * architecture of a system that uses model at runtime
-    Modicio ->
-        * summary with the focus on the approach to tackle multilevel model variability at runtime
+    Adaptive object model architectures (name of the ideas for adaptive-object architecture \ conceptual independent architecture)->
+        * summary with the focus on the approach to tackle model variability at runtime - give modicio as an example
     Constraint languages ->
         * formal definition of constraint and constraint language
         * classification of constraint languages
             * ocl as an example
         * dynamic constraints at runtime
-    End-user constraint programming of domain ->
-        * intuitive ui for query||constraint languages
+        * intuitive ui
+
+    ***End-user constraint programming of domain -> shift it you your concept
+        * intuitive ui for query||constraint languages***
 
 Concept and requirements
     System requirements ->
         --- Introduce a domain model and reason about potentially useful restrictions ---
-                     --- e.g. domain model of a company, examination office, etc. ---
+                     --- e.g. domain model of a company, examination office, etc. --- call it running example (start it from introduction or foundation chapter)
         * constraint lifecycle in varian-aware entity model at lifetime (behavioral diagram with descriptions)
         * constraint specifications -> define how such a constraint can be formulated and specify a set of initial/primary functions
-            * attribute constraints
+            * attribute constraints 
             * association constraints
             * object-nets constraints
-            * complex constraints
+            * complex constraints A->B->C A.x if for all B that have relation C.y = true () state all complex constraints but not must be implemented. For all that not present in solution should be stated in further\related work
+
                 * conditional constraints
                 * constraints resulting in collections
                 * combines constraints
@@ -59,7 +63,7 @@ Concept and requirements
             * extension of constraints at runtime
             * severity level of constraints violation
             * constraints with model to user-space inconsistency
-        * non-functional requirements
+        * non-functional requirements -> performance point
     End-user constraint modeling requirements ->    
         * functional requirements
             1) api to define new constraint types
@@ -68,7 +72,8 @@ Concept and requirements
             4) mechanisms to notify a user in case of constraint violations
         * non-functional requirements
             1) trivial entry-level
-            2) technology independent api
+            2) technology independent api -> language independent to implement some API
+P.S. intermideate defense
 
 Related work ->
     --- evaluation of their technical properties and how easily an end-user can apply constraints with that techniques ---
@@ -84,7 +89,7 @@ Related work ->
     ---
     Deep OCL dialect
         * Redefined deep OCL dialect
-    Eclipse OCL
+    Eclipse OCL (do we have some Eclipse IDE expert? :D )
     World Wide Web Consortium (RDF, SHACL, SPARQL)
     Alloy
     Evrete
