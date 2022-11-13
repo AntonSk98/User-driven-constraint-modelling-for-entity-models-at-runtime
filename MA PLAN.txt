@@ -8,7 +8,7 @@ Introduction (must be short without deep immersion into concepts just a shallow 
         * how to overcome it with the use of constraints;
     Objective ->
         * model variability during software evolution
-        * why constraining a variable model at runtime is required (research gap 1) (what is here the difference btw just restricting a model statically)
+        * why constraining a variable model at runtime is required (research gap 1)
         * how an end-user can easily constraint a runtime model and deal with its high dynamism (research gap 2) (variable model at runtime, variant-aware model at runtime)
     Thesis structure ->
         * purpose of every chapter and its concise summary
