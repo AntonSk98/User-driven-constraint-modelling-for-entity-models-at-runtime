@@ -38,6 +38,7 @@ Foundation -> small since related work chapter is gonna be big
         * formal definition of constraint and constraint language
         * classification of constraint languages
             * ocl as an example
+        * query data vs constraint data
         * dynamic constraints at runtime
         * intuitive ui
 
@@ -96,6 +97,9 @@ Related work ->
     GraphFrames
     Viatra
     * Choose two most promising techniques that must be taken as a core for system implementation
+    
+    UI-RELATED WORK
+        * 
 
 Architecture and design decisions
     --- left for later ---
