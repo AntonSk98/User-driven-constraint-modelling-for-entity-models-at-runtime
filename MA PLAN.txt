@@ -96,6 +96,7 @@ Related work ->
     Evrete
     GraphFrames
     Viatra
+    Gremlin
     * Choose two most promising techniques that must be taken as a core for system implementation
     
     UI-RELATED WORK

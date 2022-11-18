@@ -1,0 +1,54 @@
+{
+  "focusProperty": "Person",
+  "message": "Every person must either be at the age between 10 and 16 or have a salary more than 25000 rubbles",
+  "severity": "WARN",
+  "functions": [
+    {
+      "@type": "LOGICAL_FUNCTION",
+      "functionName": "OR",
+      "returnType": "BOOLEAN",
+      "nestedFunctions": [
+        {
+          "@type": "BASIC_FUNCTION",
+          "functionName": "MORE",
+          "target": "salary",
+          "returnType": "BOOLEAN",
+          "params": [
+            {
+              "value": 25000
+            }
+          ]
+        },
+        {
+          "@type": "LOGICAL_FUNCTION",
+          "functionName": "AND",
+          "returnType": "BOOLEAN",
+          "nestedFunctions": [
+            {
+              "@type": "BASIC_FUNCTION",
+              "functionName": "LESS",
+              "returnType": "BOOLEAN",
+              "target": "age",
+              "params": [
+                {
+                  "value": 16
+                }
+              ]
+            },
+            {
+              "@type": "BASIC_FUNCTION",
+              "functionName": "MORE",
+              "returnType": "BOOLEAN",
+              "target": "age",
+              "params": [
+                {
+                  "value": 10
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

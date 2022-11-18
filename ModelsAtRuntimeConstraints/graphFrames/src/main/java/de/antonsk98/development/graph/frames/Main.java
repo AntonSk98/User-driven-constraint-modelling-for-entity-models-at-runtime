@@ -1,4 +1,4 @@
-package graph.frames;
+package de.antonsk98.development.graph.frames;
 
 import org.apache.spark.SparkConf;
 import org.apache.spark.api.java.JavaRDD;
@@ -59,10 +59,6 @@ public class Main {
         g.vertices().show();
 
         g.edges().show();
-        g
-
-
-
 
     }
 
