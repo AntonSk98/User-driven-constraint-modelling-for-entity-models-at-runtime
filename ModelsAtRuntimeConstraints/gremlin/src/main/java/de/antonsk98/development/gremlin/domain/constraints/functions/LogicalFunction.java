@@ -2,25 +2,21 @@ package de.antonsk98.development.gremlin.domain.constraints.functions;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import de.antonsk98.development.gremlin.service.FunctionName;
 
 import java.util.List;
 import java.util.Objects;
 
 public class LogicalFunction extends Function {
-    private final List<Function> nestedFunctions;
+
 
     @JsonCreator
     public LogicalFunction(
-            @JsonProperty("functionName") String functionName,
+            @JsonProperty("functionName") FunctionName functionName,
             @JsonProperty("returnType") ReturnType returnType,
             @JsonProperty("nestedFunctions") List<Function> nestedFunctions) {
-        super(functionName, returnType);
-        validateLogicalFunction(nestedFunctions);
-        this.nestedFunctions = nestedFunctions;
-    }
-
-    public List<Function> getNestedFunctions() {
-        return nestedFunctions;
+        super(functionName, returnType, nestedFunctions);
+        validateLogicalFunction(nestedFunctions);;
     }
 
     private void validateLogicalFunction(List<Function> nestedFunctions) {

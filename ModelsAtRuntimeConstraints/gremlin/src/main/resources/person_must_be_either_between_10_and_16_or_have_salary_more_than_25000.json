@@ -10,14 +10,12 @@
       "nestedFunctions": [
         {
           "@type": "BASIC_FUNCTION",
-          "functionName": "MORE",
+          "functionName": "GREATER_THAN",
           "target": "salary",
           "returnType": "BOOLEAN",
-          "params": [
-            {
-              "value": 25000
-            }
-          ]
+          "params": {
+            "greaterThan": "25000"
+          }
         },
         {
           "@type": "LOGICAL_FUNCTION",
@@ -26,25 +24,21 @@
           "nestedFunctions": [
             {
               "@type": "BASIC_FUNCTION",
-              "functionName": "LESS",
+              "functionName": "LESS_THAN",
               "returnType": "BOOLEAN",
               "target": "age",
-              "params": [
-                {
-                  "value": 16
-                }
-              ]
+              "params": {
+                "lessThan": "16"
+              }
             },
             {
               "@type": "BASIC_FUNCTION",
-              "functionName": "MORE",
+              "functionName": "GREATER_THAN",
               "returnType": "BOOLEAN",
               "target": "age",
-              "params": [
-                {
-                  "value": 10
-                }
-              ]
+              "params": {
+                "greaterThan": "10"
+              }
             }
           ]
         }
