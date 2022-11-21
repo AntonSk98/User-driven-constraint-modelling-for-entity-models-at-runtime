@@ -1,12 +1,14 @@
-Master thesis plan.
+	Master thesis plan.
  
 Introduction (must be short without deep immersion into concepts just a shallow narrative)
     Motivation -> 
-        * what are models in general;
-        * why and where they are useful;
+        * what are models in general; +
+        * modern systems are complex +
+        * why and where they are useful; +
         * why a simple domain model is not expressive enough;
         * how to overcome it with the use of constraints;
     Objective ->
+        * from design to runtime
         * model variability during software evolution
         * why constraining a variable model at runtime is required (research gap 1)
         * how an end-user can easily constraint a runtime model and deal with its high dynamism (research gap 2) (variable model at runtime, variant-aware model at runtime)
