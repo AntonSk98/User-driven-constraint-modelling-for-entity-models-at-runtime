@@ -20,6 +20,7 @@
   <modules>
     <module>graphFrames</module>
       <module>gremlin</module>
+      <module>viatra</module>
   </modules>
   <properties>
     <java.version>11</java.version>
