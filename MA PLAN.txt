@@ -5,14 +5,14 @@ Introduction (must be short without deep immersion into concepts just a shallow 
         * what are models in general; +
         * modern systems are complex +
         * why and where they are useful; +
-        * why a simple domain model is not expressive enough;
-        * how to overcome it with the use of constraints;
+        * why a simple domain model is not expressive enough; +
+        * how to overcome it with the use of constraints; +
     Objective ->
-        * from design to runtime
-        * model variability during software evolution
+        * from design to runtime +
+        * model variability during software evolution +
         * why constraining a variable model at runtime is required (research gap 1)
-        * how an end-user can easily constraint a runtime model and deal with its high dynamism (research gap 2) (variable model at runtime, variant-aware model at runtime)
-    Thesis structure ->
+        * how an end-user can easily constraint a runtime model and deal with its high dynamism (research gap 2) (variable model at runtime, variant-aware model at runtime)++
+    Thesis structure -> - -> summary at the beginning of every chapter
         * purpose of every chapter and its concise summary
     add -> clearly point out problems that should be solved (in objectives call them problems and state them clerly) from problems formulate research questions! no well-known concepts
 
