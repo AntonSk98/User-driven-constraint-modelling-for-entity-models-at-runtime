@@ -124,7 +124,7 @@ public class Main {
 
     private static List<Person> createTestEmployees(Company company) {
         List<Person> employees = new ArrayList<>();
-        for (int i = 0; i < 10000; i++) {
+        for (int i = 0; i < 10; i++) {
             employees.add(new Person(
                     String.format("Name %d", i),
                     ThreadLocalRandom.current().nextInt(9, 45),

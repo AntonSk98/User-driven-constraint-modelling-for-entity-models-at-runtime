@@ -61,11 +61,11 @@ Concept and requirements
                 * conditional constraints
                 * constraints resulting in collections
                 * combines constraints
-        * constraint persistence
         * functional requirements
             * extension of constraints at runtime
             * severity level of constraints violation
             * constraints with model to user-space inconsistency
+            * constraint persistence
         * non-functional requirements -> performance point
     End-user constraint modeling requirements ->    
         * functional requirements
