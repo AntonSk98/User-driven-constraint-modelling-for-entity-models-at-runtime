@@ -90,8 +90,6 @@ Related work ->
             5) ability to define constraints stated in constraint specification earlier
             6) transitive dependencies and cost of maintenance
     ---
-    Deep OCL dialect
-        * Redefined deep OCL dialect
     Eclipse OCL (do we have some Eclipse IDE expert? :D )
     World Wide Web Consortium (RDF, SHACL, SPARQL)
     Alloy
@@ -99,6 +97,9 @@ Related work ->
     GraphFrames
     Viatra
     Gremlin
+    Metadepth
+    Melanee -> Deep OCL dialect
+        * Redefined deep OCL dialect
     * Choose two most promising techniques that must be taken as a core for system implementation
     
     UI-RELATED WORK
