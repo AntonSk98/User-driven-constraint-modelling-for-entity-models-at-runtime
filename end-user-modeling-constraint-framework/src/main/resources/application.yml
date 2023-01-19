@@ -1,0 +1,10 @@
+main-view:
+  uri: /show_model_and_view
+
+gateway-config:
+  model-element-uri: localhost:8100/get_model_element_by_id
+  query-param: id
+
+template-config:
+  placeholder: ???
+

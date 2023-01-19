@@ -1,0 +1,44 @@
+{
+  "id": 1,
+  "violationMessage": "Test",
+  "violationLevel": "WARN",
+  "constraintFunction": {
+    "@type": "LOGICAL_FUNCTION",
+    "name": "OR",
+    "nestedFunction": [
+      {
+        "@type": "STRING_BASED_FUNCTION",
+        "name": "GREATER_THAN",
+        "targetId": "1",
+        "targetField": "salary",
+        "params": {
+          "greaterThan": "25000"
+        }
+      },
+      {
+        "@type": "LOGICAL_FUNCTION",
+        "name": "AND",
+        "nestedFunction": [
+          {
+            "@type": "STRING_BASED_FUNCTION",
+            "name": "LESS_THAN",
+            "targetId": "2",
+            "targetField": "age",
+            "params": {
+              "lessThan": "16"
+            }
+          },
+          {
+            "@type": "STRING_BASED_FUNCTION",
+            "name": "GREATER_THAN",
+            "targetId": "2",
+            "targetField": "age",
+            "params": {
+              "greaterThan": "10"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
