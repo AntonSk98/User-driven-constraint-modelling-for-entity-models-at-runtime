@@ -158,7 +158,7 @@ hr {
     text-align: center;
 }
 
-.copy-button {
+.copy-button, .update-button {
     color: white;
     background-color: #0b2a51;
     padding: 0.5em 1em;
@@ -167,7 +167,11 @@ hr {
     border-radius: 20px;
 }
 
-.copy-button:hover {
+.copy-button:hover, .update-button:hover {
     opacity: 0.7;
     cursor: pointer;
+}
+
+.test {
+    background-color: red;
 }

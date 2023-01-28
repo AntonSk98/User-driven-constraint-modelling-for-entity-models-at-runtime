@@ -1,4 +1,4 @@
-package anton.skripin.development.eumcf.modicio_space;
+package anton.skripin.development.eumcf.modicio_space.mapper;
 
 import anton.skripin.development.domain.instance.InstanceElement;
 import anton.skripin.development.domain.instance.Link;

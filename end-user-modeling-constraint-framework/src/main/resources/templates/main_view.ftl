@@ -23,7 +23,7 @@
                     <thead>
                     <tr>
                         <th>Model</th>
-                        <th>Action</th>
+                        <th>Actions</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -31,11 +31,18 @@
                         <tr>
                             <td>${model.name}</td>
                             <td>
-                                <form action="/constrain_model?test=#" method="get">
-                                    <input type="hidden" name="id" value="${model.uuid}">
-                                    <input type="hidden" name="name" value="${model.name}">
-                                    <input type="submit" value="Constrain model" class="form-submit-button">
-                                </form>
+                                <div class="actions">
+                                    <form action="/constrain_model_element?" method="get">
+                                        <input type="hidden" name="id" value="${model.uuid}">
+                                        <input type="hidden" name="name" value="${model.name}">
+                                        <input type="submit" value="constrain" class="form-submit-button">
+                                    </form>
+                                    <form action="/update_model_element?" method="get">
+                                        <input type="hidden" name="id" value="${model.uuid}">
+                                        <input type="hidden" name="name" value="${model.name}">
+                                        <input type="submit" value="edit" class="form-submit-button">
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     </#list>

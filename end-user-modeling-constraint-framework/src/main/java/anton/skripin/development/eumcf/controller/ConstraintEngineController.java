@@ -58,14 +58,26 @@ public class ConstraintEngineController {
     }
 
     @SneakyThrows
-    @GetMapping("/constrain_model")
-    public ModelAndView constrainModel(@RequestParam("id") String id, @RequestParam("name") String name) {
+    @GetMapping("/constrain_model_element")
+    public ModelAndView constrainModelElement(@RequestParam("id") String id, @RequestParam("name") String name) {
+        return new ModelAndView("model_element_view", getConstraintViewParams(id, name, false));
+    }
+
+    @SneakyThrows
+    @GetMapping("/update_model_element")
+    public ModelAndView updateModelElement(@RequestParam("id") String id, @RequestParam("name") String name) {
+        return new ModelAndView("model_element_view", getConstraintViewParams(id, name, true));
+    }
+
+
+    private Map<String, Object> getConstraintViewParams(String id, String name, boolean updateMode) {
         ModelElement modelElement = modelSpaceService.getModelElementByIdAndName(id, name);
         Map<String, Object> params = new HashMap<>();
         params.put("modelElement", modelElement);
         params.put("functions", templateFunctionService.getAllTemplates());
         params.put("constraintTemplate", constraintDefinitionService.getConstraintTemplate(modelElement.getUuid(), modelElement.getName()));
-        return new ModelAndView("constrain_model_view", params);
+        params.put("update", updateMode);
+        return params;
     }
 
     @GetMapping("/add_to_opened_model_element")

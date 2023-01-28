@@ -1,5 +1,9 @@
-package anton.skripin.development.eumcf.modicio_space;
+package anton.skripin.development.eumcf.modicio_space.service;
 
+import anton.skripin.development.eumcf.modicio_space.domain.ModicioAssociation;
+import anton.skripin.development.eumcf.modicio_space.domain.ModicioAttribute;
+import anton.skripin.development.eumcf.modicio_space.domain.ModicioModelElement;
+import anton.skripin.development.eumcf.modicio_space.domain.ModicioParentRelation;
 import jakarta.annotation.PostConstruct;
 import lombok.SneakyThrows;
 import modicio.core.*;
@@ -11,9 +15,7 @@ import modicio.core.rules.api.ParentRelationRuleJ;
 import org.springframework.stereotype.Component;
 import scala.Option;
 import scala.Some;
-import scala.concurrent.Future;
 import scala.jdk.javaapi.CollectionConverters;
-import scala.jdk.javaapi.FutureConverters;
 
 import java.util.Collections;
 import java.util.List;
@@ -62,7 +64,7 @@ public class TestDataGenerator {
     @SneakyThrows
     private void generateModelElements() {
         for (ModicioModelElement modelElementInner : getTestModelElements()) {
-            CompletableFuture<TypeHandle> type = future(typeFactory.newType(modelElementInner.getName(), modelElementInner.getId(), modelElementInner.isTemplate, Option.empty()));
+            CompletableFuture<TypeHandle> type = future(typeFactory.newType(modelElementInner.getName(), modelElementInner.getId(), modelElementInner.isTemplate(), Option.empty()));
             future(registry.setType(type.get(), false)).get();
             TypeHandle typeHandle = future(registry
                     .getType(modelElementInner.getName(), modelElementInner.getId()))

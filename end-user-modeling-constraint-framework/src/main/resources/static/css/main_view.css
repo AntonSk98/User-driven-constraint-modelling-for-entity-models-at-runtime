@@ -83,3 +83,7 @@
     background-color: #f3f3f3;
     border: 2px solid #bd362f;
 }
+
+.actions {
+    display: flex;
+}

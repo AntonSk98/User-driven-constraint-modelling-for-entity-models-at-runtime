@@ -1,4 +1,4 @@
-package anton.skripin.development.eumcf.modicio_space;
+package anton.skripin.development.eumcf.modicio_space.mapper;
 
 import anton.skripin.development.domain.model.Association;
 import anton.skripin.development.domain.model.Attribute;

@@ -175,6 +175,17 @@ function createNewAssociationRow(from, association) {
     lastAssociationRow.parentNode.insertBefore(newAssociationRow, lastAssociationRow.nextSibling);
 }
 
+function updateAttribute(element) {
+    console.log(element.parent)
+}
+
+function updateAssociation(element) {
+    const associationDataElements = element.parentElement.parentElement.getElementsByTagName('td');
+    const byRelationValue = associationDataElements[1].getElementsByTagName('input')[0].value;
+    const targetValue = associationDataElements[2].getElementsByTagName('input')[0].value;
+    console.log(byRelationValue, targetValue)
+}
+
 function getErrorNotification() {
     return window.createNotification({
         theme: 'error',
