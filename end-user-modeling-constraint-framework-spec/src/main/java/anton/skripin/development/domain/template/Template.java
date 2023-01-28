@@ -24,11 +24,11 @@ public class Template {
         this.template = template;
     }
 
-    public static Template of(String functionName, String functionType, String template) {
+    public static Template ofFunction(String functionName, String functionType, String template) {
         return new Template(functionName, functionType, template);
     }
 
-    public static Template of(String template) {
+    public static Template ofConstraint(String template) {
         return new Template(template);
     }
 }

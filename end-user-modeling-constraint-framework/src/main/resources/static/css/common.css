@@ -1,0 +1,88 @@
+html, body { height: fit-content; }
+body {
+    font-size: 20px;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+header {
+    height: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    font-weight: bold;
+    padding-top: 2em;
+    padding-bottom: 2em;
+    background-color: #0b2a51;
+    color: white;
+    font-size: 1em;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+header div {
+    margin-left: 100px;
+    margin-right: 100px;
+}
+
+.back-button {
+    padding: 1em 1.5em;
+    background: #ffffff;
+    border-radius: 20px;
+    border: 2px solid #eee;
+    font-size: 0.6em;
+    color: #0b2a51;
+    font-weight: bold;
+}
+
+.back-button:hover {
+    background: #f3f3f3;
+    cursor: pointer;
+}
+
+.form-submit-button {
+    padding: 1em 2em;
+    background: #0b2a51;
+    color: #fff;
+    border: 2px solid #eee;
+    border-radius: 20px;
+    box-shadow: 5px 5px 5px #eee;
+    text-shadow: none;
+}
+
+.form-submit-button:hover {
+    cursor: pointer;
+    background: #016ABC;
+}
+
+.styled-table {
+    border-collapse: collapse;
+    font-size: 0.9em;
+    min-width: 400px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+}
+
+.styled-table thead tr {
+    background-color: #0b2a51;
+    color: #ffffff;
+    text-align: left;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 12px 15px;
+}
+
+.styled-table tbody tr {
+    border-bottom: 1px solid #dddddd;
+}
+
+.styled-table tbody tr:nth-of-type(even) {
+    background-color: #f3f3f3;
+    font-weight: bold;
+    color: #0b2a51;
+}
+
+.styled-table tbody tr:last-of-type {
+    border-bottom: 2px solid #0b2a51;
+}

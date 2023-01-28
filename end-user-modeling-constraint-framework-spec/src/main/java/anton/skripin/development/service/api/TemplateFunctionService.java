@@ -5,6 +5,7 @@ import anton.skripin.development.domain.template.Template;
 import java.util.List;
 
 public interface TemplateFunctionService {
+
     List<Template> getAllTemplates();
 
     List<Template> getAllTemplatesOfFunctionType(String functionType);

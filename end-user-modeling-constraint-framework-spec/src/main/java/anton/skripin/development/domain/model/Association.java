@@ -10,6 +10,7 @@ import lombok.Setter;
 public class Association {
     private String uuid;
     private String name;
+    private String path;
     private String multiplicity;
     private String targetModelElementUuid;
     private String targetModelElementName;

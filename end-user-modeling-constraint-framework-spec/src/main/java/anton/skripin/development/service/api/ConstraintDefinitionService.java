@@ -3,7 +3,7 @@ package anton.skripin.development.service.api;
 import anton.skripin.development.domain.template.Template;
 
 public interface ConstraintDefinitionService {
-    Template createConstraintTemplate();
+    Template getConstraintTemplate();
 
-    String processConstraint(Template template);
+    Template getConstraintTemplate(String targetUuid, String targetType);
 }

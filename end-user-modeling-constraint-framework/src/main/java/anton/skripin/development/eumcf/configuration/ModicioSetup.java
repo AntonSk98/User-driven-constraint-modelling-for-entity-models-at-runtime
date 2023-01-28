@@ -1,43 +1,43 @@
 package anton.skripin.development.eumcf.configuration;
 
-import modicio.core.api.InstanceFactoryJ;
-import modicio.core.api.RegistryJ;
-import modicio.core.api.TypeFactoryJ;
-import modicio.nativelang.defaults.api.SimpleDefinitionVerifierJ;
-import modicio.nativelang.defaults.api.SimpleMapRegistryJ;
-import modicio.nativelang.defaults.api.SimpleModelVerifierJ;
-import modicio.verification.api.DefinitionVerifierJ;
-import modicio.verification.api.ModelVerifierJ;
+import modicio.core.InstanceFactory;
+import modicio.core.Registry;
+import modicio.core.TypeFactory;
+import modicio.nativelang.defaults.SimpleDefinitionVerifier;
+import modicio.nativelang.defaults.SimpleMapRegistry;
+import modicio.nativelang.defaults.SimpleModelVerifier;
+import modicio.verification.DefinitionVerifier;
+import modicio.verification.ModelVerifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ModicioSetup {
     @Bean
-    public DefinitionVerifierJ definitionVerifierJ() {
-        return new SimpleDefinitionVerifierJ();
+    public DefinitionVerifier definitionVerifier() {
+        return new SimpleDefinitionVerifier();
     }
 
     @Bean
-    public ModelVerifierJ modelVerifierJ() {
-        return new SimpleModelVerifierJ();
+    public ModelVerifier modelVerifier() {
+        return new SimpleModelVerifier();
     }
 
     @Bean
-    public TypeFactoryJ typeFactoryJ(DefinitionVerifierJ definitionVerifierJ, ModelVerifierJ modelVerifierJ) {
-        return new TypeFactoryJ(definitionVerifierJ, modelVerifierJ);
+    public TypeFactory typeFactory(DefinitionVerifier definitionVerifier, ModelVerifier modelVerifier) {
+        return new TypeFactory(definitionVerifier, modelVerifier);
     }
 
     @Bean
-    public InstanceFactoryJ instanceFactoryJ(DefinitionVerifierJ definitionVerifierJ, ModelVerifierJ modelVerifierJ) {
-        return new InstanceFactoryJ(definitionVerifierJ, modelVerifierJ);
+    public InstanceFactory instanceFactory(DefinitionVerifier definitionVerifier, ModelVerifier modelVerifier) {
+        return new InstanceFactory(definitionVerifier, modelVerifier);
     }
 
     @Bean
-    public RegistryJ registryJ(TypeFactoryJ typeFactoryJ, InstanceFactoryJ instanceFactoryJ) {
-        SimpleMapRegistryJ registryJ = new SimpleMapRegistryJ(typeFactoryJ, instanceFactoryJ);
-        typeFactoryJ.setRegistryJ(registryJ);
-        instanceFactoryJ.setRegistryJ(registryJ);
-        return registryJ;
+    public Registry registry(TypeFactory typeFactory, InstanceFactory instanceFactory) {
+        SimpleMapRegistry registry = new SimpleMapRegistry(typeFactory, instanceFactory);
+        typeFactory.setRegistry(registry);
+        instanceFactory.setRegistry(registry);
+        return registry;
     }
 }

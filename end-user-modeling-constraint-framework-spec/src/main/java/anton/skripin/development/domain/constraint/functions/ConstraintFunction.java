@@ -1,5 +1,7 @@
 package anton.skripin.development.domain.constraint.functions;
 
+import anton.skripin.development.domain.constraint.functions.types.LogicalFunction;
+import anton.skripin.development.domain.constraint.functions.types.StringBasedFunction;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -24,5 +26,23 @@ public abstract class ConstraintFunction {
 
     public ConstraintFunction(String name) {
         this.name = name;
+    }
+
+    @JsonIgnore
+    public boolean isHierarchicalFunction() {
+        return this instanceof HierarchicalConstraintFunction;
+    }
+
+    @JsonIgnore
+    public boolean isContextConstraintFunction() {
+        return this instanceof ContextConstraintFunction;
+    }
+
+    public static HierarchicalConstraintFunction toHierarchicalFunction(ConstraintFunction constraintFunction) {
+        return (HierarchicalConstraintFunction) constraintFunction;
+    }
+
+    public static ContextConstraintFunction toContextConstraintFunction(ConstraintFunction constraintFunction) {
+        return (ContextConstraintFunction) constraintFunction;
     }
 }

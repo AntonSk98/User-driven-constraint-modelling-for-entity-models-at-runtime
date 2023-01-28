@@ -10,14 +10,12 @@ import java.util.Objects;
 @Getter
 @Setter
 public abstract class ContextConstraintFunction extends ConstraintFunction {
-    private String targetId;
-    private String targetField;
+    private String path;
     private Map<String, String> params;
 
-    public ContextConstraintFunction(String name, String targetId, String targetField, Map<String, String> params) {
+    public ContextConstraintFunction(String name, String path, Map<String, String> params) {
         super(name);
-        this.targetId = targetId;
-        this.targetField = targetField;
+        this.path = path;
         this.params = Objects.isNull(params) ? Collections.emptyMap() : params;
     }
 }

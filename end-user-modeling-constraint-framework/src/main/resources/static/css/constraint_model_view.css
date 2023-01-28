@@ -1,0 +1,173 @@
+.constraint-space-header {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.subtitle {
+    margin-top: 2em;
+}
+
+.workspace {
+    margin: 40px 100px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.outer-container {
+    background-color: #fbfbfb;
+    border-radius: 20px;
+    min-width: 500px;
+    max-width: 1000px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.container {
+    padding: 2em;
+}
+
+.inner-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-submit-button {
+    padding: 0.6em 3em;
+}
+
+.styled-table {
+    max-width: 600px;
+}
+
+.restricted-width {
+    max-width: 11em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.model-element-name {
+    font-weight: bold;
+    margin-bottom: 1em;
+    color: #0b2a51;
+    text-decoration: underline;
+}
+
+.attributes {
+    margin-bottom: 1em;
+}
+
+.table-name {
+    margin-bottom: 0.2em;
+}
+
+.target-type-button {
+    max-width: 250px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background: none;
+    font-size: 1em;
+    text-decoration: dotted;
+    color: #0b2a51;
+    border: 0 #0b2a51;
+    border-bottom: 2px dashed;
+    font-weight: bold;
+    outline: none;
+
+}
+
+.target-type-button-hover:hover {
+    cursor: pointer;
+    color: #016ABC;
+    border-color: #016ABC;
+}
+
+.target-type-button-no-decoration {
+    border: 0;
+    cursor: default;
+    color: black;
+}
+
+.reset {
+    margin-top: 1em;
+}
+
+hr {
+    margin: 1em 0;
+    border: none;
+    height: 2px;
+    /* Set the hr color */
+    color: #0b2a51; /* old IE */
+    background-color: #0b2a51; /* Modern Browsers */
+}
+
+.functions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1em;
+    justify-content: start;
+}
+
+.functions div {
+    padding: 0.3em 1em;
+    background-color: #0b2a51;
+    color: white;
+    border-radius: 20px;
+    border: 2px solid #0b2a51;
+    font-size: 0.7em;
+}
+
+.functions div:hover {
+    background: #ffffff;
+    color: #0b2a51;
+    cursor: pointer;
+}
+
+.constraint-block-title {
+    color: #0b2a51;
+    font-weight: bold;
+    font-size: 1em;
+    margin-bottom: 1em;
+}
+
+.editor {
+    width: 600px;
+    height: inherit;
+    display: flex;
+    flex-direction: column;
+}
+
+.buttons {
+    margin: 0.5em 1em 1em 1em;
+    display: flex;
+    justify-content: start;
+}
+
+.buttons input:first-of-type {
+    margin-right: 1em;
+}
+
+.constrain_space {
+    height: 100%;
+}
+
+.constraint-title {
+    color: #0b2a51;
+    margin-bottom: 1em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.copy-button {
+    color: white;
+    background-color: #0b2a51;
+    padding: 0.5em 1em;
+    outline: none;
+    border: none;
+    border-radius: 20px;
+}
+
+.copy-button:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}

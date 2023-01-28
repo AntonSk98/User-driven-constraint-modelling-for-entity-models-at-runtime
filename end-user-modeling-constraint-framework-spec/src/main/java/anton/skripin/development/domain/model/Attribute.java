@@ -4,12 +4,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Map;
+
 @Getter
 @Setter
 @NoArgsConstructor
 public class Attribute {
-    private long id;
+    private String uuid;
     private String key;
     private String datatype;
+    private String path;
     private boolean isMultiValued;
 }

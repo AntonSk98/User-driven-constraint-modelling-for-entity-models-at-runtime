@@ -1,19 +1,18 @@
 package anton.skripin.development.eumcf.configuration;
 
-import anton.skripin.development.properties.GatewayConfigurationProperties;
 import anton.skripin.development.properties.TemplateConfigurationProperties;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ConfigurationProperties {
-    @Bean
-    public GatewayConfigurationProperties gatewayConfigurationProperties() {
-        return new GatewayConfigurationProperties("localhost:8100/get_model_element_by_id", "id");
-    }
 
     @Bean
     public TemplateConfigurationProperties templateConfigurationProperties() {
-        return new TemplateConfigurationProperties("???");
+        return new TemplateConfigurationProperties()
+                .setSimplePlaceholder("Replace with concrete value!")
+                .setArrayValuePlaceholder("Add multiple functions here separated by comma!")
+                .setObjectPlaceholder(new ImmutablePair<>("Hint", "Remove this comment object entirely and click on one of the function!"));
     }
 }

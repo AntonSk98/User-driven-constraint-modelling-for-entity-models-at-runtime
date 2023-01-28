@@ -10,15 +10,15 @@ import java.util.Objects;
 @Getter
 @Setter
 public abstract class HierarchicalConstraintFunction extends ConstraintFunction {
-    private List<ConstraintFunction> nestedFunction;
+    private List<ConstraintFunction> nestedFunctions;
 
-    public HierarchicalConstraintFunction(String name, List<ConstraintFunction> nestedFunction) {
+    public HierarchicalConstraintFunction(String name, List<ConstraintFunction> nestedFunctions) {
         super(name);
-        this.nestedFunction = nestedFunction;
-        if (Objects.isNull(this.nestedFunction)) {
-            this.nestedFunction = new ArrayList<>();
+        this.nestedFunctions = nestedFunctions;
+        if (Objects.isNull(this.nestedFunctions)) {
+            this.nestedFunctions = new ArrayList<>();
         } else {
-            this.nestedFunction.forEach(constraintFunction -> constraintFunction.setParentFunction(this));
+            this.nestedFunctions.forEach(constraintFunction -> constraintFunction.setParentFunction(this));
         }
     }
 }
