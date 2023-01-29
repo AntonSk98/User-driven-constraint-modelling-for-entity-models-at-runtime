@@ -157,33 +157,69 @@ function createNewAssociationRow(from, association) {
     targetInput.type = 'button';
     targetInput.value = targetInput.title = association.targetModelElementName;
     targetInput.id = association.path;
-    targetInput.classList.add('target-type-button')
-    targetInput.classList.add('target-type-button-hover')
-    targetInput.setAttribute('onclick', `addToOpenedModelElement('${from}','${association.targetModelElementName}', '${association.path}')`)
+    targetInput.classList.add('target-type-button');
+    targetInput.classList.add('target-type-button-hover');
+    targetInput.setAttribute('onclick', `addToOpenedModelElement('${from}','${association.targetModelElementName}', '${association.path}')`);
 
-    const pathCopyButton = createCopyButton(association.path)
+    const pathCopyButton = createCopyButton(association.path);
 
     sourceDiv.appendChild(document.createTextNode(from));
     byRelationDiv.appendChild(document.createTextNode(association.name));
     targetDiv.appendChild(targetInput);
-    copyPathDiv.appendChild(pathCopyButton)
+    copyPathDiv.appendChild(pathCopyButton);
 
     newAssociationRow.appendChild(document.createElement('td')).appendChild(sourceDiv);
     newAssociationRow.appendChild(document.createElement('td')).appendChild(byRelationDiv);
     newAssociationRow.appendChild(document.createElement('td')).appendChild(targetDiv);
-    newAssociationRow.appendChild(document.createElement('td')).appendChild(pathCopyButton)
+    newAssociationRow.appendChild(document.createElement('td')).appendChild(pathCopyButton);
     lastAssociationRow.parentNode.insertBefore(newAssociationRow, lastAssociationRow.nextSibling);
 }
 
-function updateAttribute(element) {
-    console.log(element.parent)
+async function updateAttribute(element, id, type, attributeId) {
+    const errorNotification = getErrorNotification();
+    const successNotification = getSuccessNotification();
+
+    const attributeDataElement = element.parentElement.parentElement.parentElement.getElementsByTagName('td');
+    const key = attributeDataElement[0].getElementsByTagName('input')[0].value;
+    const datatype = attributeDataElement[1].getElementsByTagName('input')[0].value;
+
+    const response = await fetch("/update_attribute?" + new URLSearchParams({
+        id: id,
+        type: type,
+        attributeId: attributeId,
+        key: key,
+        datatype: datatype
+    }));
+
+    if (!response.ok) {
+        errorNotification({message: 'Unexpected error occurred while updating an attribute!'});
+    } else  {
+        successNotification({message: 'Successfully updated the attribute!'});
+        setTimeout(() => location.reload(), 2000);
+    }
 }
 
-function updateAssociation(element) {
+async function updateAssociation(element, id, type, associationId) {
+    const errorNotification = getErrorNotification();
+    const successNotification = getSuccessNotification();
+
     const associationDataElements = element.parentElement.parentElement.getElementsByTagName('td');
     const byRelationValue = associationDataElements[1].getElementsByTagName('input')[0].value;
     const targetValue = associationDataElements[2].getElementsByTagName('input')[0].value;
-    console.log(byRelationValue, targetValue)
+    const response = await fetch("/update_association?" + new URLSearchParams({
+        id: id,
+        type: type,
+        associationId: associationId,
+        byRelation: byRelationValue,
+        target: targetValue
+    }));
+
+    if (!response.ok) {
+        errorNotification({message: 'Unexpected error occurred while updating an association'});
+    } else {
+        successNotification({message: 'Successfully updated the association!'});
+        setTimeout(() => location.reload(), 2000);
+    }
 }
 
 function getErrorNotification() {

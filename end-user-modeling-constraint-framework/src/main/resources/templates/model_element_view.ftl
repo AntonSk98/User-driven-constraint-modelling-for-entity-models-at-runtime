@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Model element view</title>
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/model_element_view.css">
     <link rel="stylesheet" href="libs/notification/notifications.css">
@@ -70,7 +70,7 @@
                                         <div class="restricted-width">
                                             <#if update == true>
                                                 <input class="update-button" type="button" value="Update"
-                                                       onclick="updateAttribute(this)">
+                                                       onclick="updateAttribute(this, '${modelElement.uuid}', '${modelElement.name}', '${attribute.uuid}')">
                                             <#else >
                                                 <input class="copy-button" type="button" value="Copy"
                                                        onclick="copyPath('${attribute.path}')">
@@ -126,7 +126,7 @@
                                         </td>
                                         <td>
                                             <input class="update-button" type="button" value="Update"
-                                                   onclick="updateAssociation(this)">
+                                                   onclick="updateAssociation(this, '${modelElement.uuid}', '${modelElement.name}', '${association.uuid}')">
                                         </td>
                                     <#else >
                                         <td>
