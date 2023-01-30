@@ -1,25 +1,5 @@
-.constraint-space-header {
-    display: flex;
-    justify-content: space-between;
-    flex-direction: row;
-}
-
 .subtitle {
     margin-top: 2em;
-}
-
-.workspace {
-    margin: 40px 100px;
-    display: flex;
-    justify-content: space-around;
-}
-
-.outer-container {
-    background-color: #fbfbfb;
-    border-radius: 20px;
-    min-width: 500px;
-    max-width: 1000px;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 .container {
@@ -37,28 +17,6 @@
 
 .styled-table {
     max-width: 600px;
-}
-
-.restricted-width {
-    max-width: 11em;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-.model-element-name {
-    font-weight: bold;
-    margin-bottom: 1em;
-    color: #0b2a51;
-    text-decoration: underline;
-}
-
-.attributes {
-    margin-bottom: 1em;
-}
-
-.table-name {
-    margin-bottom: 0.2em;
 }
 
 .target-type-button {

@@ -1,11 +1,14 @@
 package anton.skripin.development.eumcf.controller;
 
 
+import anton.skripin.development.domain.instance.InstanceElement;
+import anton.skripin.development.domain.instance.Link;
+import anton.skripin.development.domain.instance.Slot;
 import anton.skripin.development.eumcf.modicio_space.service.ModicioService;
 import lombok.SneakyThrows;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class ModicioController {
@@ -40,6 +43,12 @@ public class ModicioController {
         modicioService.updateAssociationDefinition(id, type, associationId, byRelation, target);
     }
 
+    @GetMapping("/delete_instance_by_id")
+    @SneakyThrows
+    public void deleteInstanceById(String uuid) {
+        modicioService.deleteInstanceById(uuid);
+    }
+
     @GetMapping("/update_slot")
     @SneakyThrows
     public boolean updateSlot() {
@@ -49,5 +58,15 @@ public class ModicioController {
     @GetMapping("/update_link")
     public boolean updateLink() {
         return true;
+    }
+
+    @PostMapping("/instantiate_element")
+    public void createInstance(@RequestBody InstanceElement instanceElement) {
+        modicioService.createInstance(instanceElement.getInstanceOf(), instanceElement.getSlots(), instanceElement.getLinks());
+    }
+
+    @PostMapping("/update_element")
+    public void updateInstance(@RequestBody InstanceElement instanceElement) {
+        modicioService.updateInstance(instanceElement.getUuid(), instanceElement.getSlots(), instanceElement.getLinks());
     }
 }

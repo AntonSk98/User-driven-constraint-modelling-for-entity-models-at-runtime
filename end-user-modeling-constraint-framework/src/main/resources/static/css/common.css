@@ -86,3 +86,45 @@ header div {
 .styled-table tbody tr:last-of-type {
     border-bottom: 2px solid #0b2a51;
 }
+
+.constraint-space-header {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}
+
+.workspace {
+    margin: 40px 100px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.outer-container {
+    background-color: #fbfbfb;
+    border-radius: 20px;
+    min-width: 500px;
+    max-width: 1000px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.model-element-name {
+    font-weight: bold;
+    margin-bottom: 1em;
+    color: #0b2a51;
+    text-decoration: underline;
+}
+
+.attributes, .slots {
+    margin-bottom: 1em;
+}
+
+.table-name {
+    margin-bottom: 0.2em;
+}
+
+.restricted-width {
+    max-width: 11em;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

@@ -1,0 +1,33 @@
+.workspace {
+    justify-content: start;
+}
+
+.container {
+    padding: 2em;
+}
+
+.inner-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.styled-table {
+    max-width: 800px;
+}
+
+.add-button {
+    padding: 0.1em 0.3em;
+    color: white;
+    background-color: #0b2a51;
+    border-radius: 20px;
+    font-weight: bold;
+}
+
+.add-button:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.action-button {
+    margin-top: 2em;
+}

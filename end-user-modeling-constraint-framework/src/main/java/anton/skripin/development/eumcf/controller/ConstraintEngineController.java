@@ -58,6 +58,29 @@ public class ConstraintEngineController {
     }
 
     @SneakyThrows
+    @GetMapping("/create_instance")
+    public ModelAndView createInstanceView(
+            @RequestParam String id,
+            @RequestParam String name
+    ) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("modelElement", modelSpaceService.getModelElementByIdAndName(id, name));
+        params.put("update", false);
+        return new ModelAndView("instance_view", params);
+    }
+
+    @SneakyThrows
+    @GetMapping("/update_instance")
+    public ModelAndView updateInstanceView(
+            @RequestParam String id
+    ) {
+        Map<String, Object> params = new HashMap<>();
+        params.put("instance", instanceSpaceService.withAssociations(instanceSpaceService.getInstanceById(id)));
+        params.put("update", true);
+        return new ModelAndView("instance_view", params);
+    }
+
+    @SneakyThrows
     @GetMapping("/constrain_model_element")
     public ModelAndView constrainModelElement(@RequestParam("id") String id, @RequestParam("name") String name) {
         return new ModelAndView("model_element_view", getConstraintViewParams(id, name, false));

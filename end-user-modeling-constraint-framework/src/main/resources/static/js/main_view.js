@@ -11,6 +11,16 @@ async function displayInstanceDetails(instanceId) {
     }
 }
 
+async function deleteInstanceById(uuid) {
+    const result = await fetch('/delete_instance_by_id?' + new URLSearchParams({uuid: uuid}));
+
+    if (result.ok) {
+        location.reload();
+    } else {
+        window.alert('Unexpected error occurred!')
+    }
+}
+
 async function displayConstraintById(constraintId) {
     toggleInputs(true);
     const result = await fetch('/get_constraint_by_id?' + new URLSearchParams({uuid: constraintId}))

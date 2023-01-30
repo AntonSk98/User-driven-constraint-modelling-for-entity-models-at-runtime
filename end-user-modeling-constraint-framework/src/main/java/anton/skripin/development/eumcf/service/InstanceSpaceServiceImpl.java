@@ -1,21 +1,20 @@
 package anton.skripin.development.eumcf.service;
 
 import anton.skripin.development.domain.instance.InstanceElement;
+import anton.skripin.development.domain.instance.Link;
 import anton.skripin.development.mapper.InstanceMapper;
 import lombok.SneakyThrows;
 import modicio.core.DeepInstance;
-import modicio.core.Plugin;
 import modicio.core.Registry;
-import modicio.core.datamappings.PluginData;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import static anton.skripin.development.eumcf.util.ScalaToJavaMapping.future;
-import static anton.skripin.development.eumcf.util.ScalaToJavaMapping.set;
+import static anton.skripin.development.eumcf.util.ScalaToJavaMapping.*;
 
 
 @Service
@@ -58,5 +57,26 @@ public class InstanceSpaceServiceImpl implements InstanceSpaceService {
         DeepInstance deepInstance = future(registry.get(uuid)).get().get();
         future(deepInstance.unfold()).get();
         return modicioInstanceMapper.mapToInstanceElement(deepInstance);
+    }
+
+    @Override
+    @SneakyThrows
+    public InstanceElement withAssociations(InstanceElement instanceElement) {
+        DeepInstance deepInstance = future(registry.get(instanceElement.getUuid())).get().get();
+        future(deepInstance.unfold()).get();
+        List<Link> listOfLinks = new ArrayList(instanceElement.getLinks());
+        listOfLinks.addAll(map(deepInstance.associationRuleMap())
+                .keySet()
+                .stream()
+                .filter(association -> instanceElement.getLinks().stream().noneMatch(link -> link.getName().equals(association)))
+                .map(association -> {
+                    Link link = new Link();
+                    link.setName(association);
+                    return link;
+                })
+                .toList());
+        instanceElement.setLinks(listOfLinks);
+        System.out.println();
+        return instanceElement;
     }
 }

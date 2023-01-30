@@ -42,6 +42,11 @@
                                         <input type="hidden" name="name" value="${model.name}">
                                         <input type="submit" value="edit" class="form-submit-button">
                                     </form>
+                                    <form action="/create_instance?" method="get">
+                                        <input type="hidden" name="id" value="${model.uuid}">
+                                        <input type="hidden" name="name" value="${model.name}">
+                                        <input type="submit" value="instantiate" class="form-submit-button">
+                                    </form>
                                 </div>
                             </td>
                         </tr>
@@ -56,7 +61,7 @@
                     <tr>
                         <th>Id</th>
                         <th>Of type</th>
-                        <th>Details</th>
+                        <th>Actions</th>
                         <th>Constraints</th>
                     </tr>
                     </thead>
@@ -67,9 +72,18 @@
                                 <td>${instance.uuid}</td>
                                 <td>${type}</td>
                                 <td>
-                                    <input class="button-details" type="button"
-                                           value="Details"
-                                           onclick="displayInstanceDetails('${instance.uuid}')">
+                                    <div class="actions">
+                                        <input class="button-details" type="button"
+                                               value="details"
+                                               onclick="displayInstanceDetails('${instance.uuid}')">
+                                        <input class="button-details" type="button"
+                                               value="delete"
+                                               onclick="deleteInstanceById('${instance.uuid}')">
+                                        <form action="/update_instance?" method="get">
+                                            <input type="hidden" name="id" value="${instance.uuid}">
+                                            <input type="submit" value="update" class="button-details">
+                                        </form>
+                                    </div>
                                 </td>
                                 <#if constraintsByType?size gt 0>
                                     <#if constraintsByType[type]??>

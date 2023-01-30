@@ -1,15 +1,16 @@
 package anton.skripin.development.eumcf.modicio_space.service;
 
+import anton.skripin.development.domain.instance.Link;
+import anton.skripin.development.domain.instance.Slot;
 import lombok.SneakyThrows;
-import modicio.core.ModelElement;
-import modicio.core.Registry;
-import modicio.core.Rule;
-import modicio.core.TypeHandle;
+import modicio.core.*;
 import modicio.core.rules.AssociationRule;
 import modicio.core.rules.AttributeRule;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import scala.Option;
 
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
@@ -42,6 +43,7 @@ public class ModicioService {
 
         attributeDefinitionType.applyRule(newAttribute);
         attributeDefinitionType.removeRule(ruleToBeRemoved);
+        removeAffectedInstances(type);
     }
 
     @SneakyThrows
@@ -55,6 +57,16 @@ public class ModicioService {
 
         associationDefinitionType.applyRule(AssociationRule.create(byRelation, target, ruleToBeRemoved.multiplicity(), ruleToBeRemoved.getInterface(), Option.empty()));
         associationDefinitionType.removeRule(ruleToBeRemoved);
+        removeAffectedInstances(type);
+    }
+
+    @SneakyThrows
+    private void removeAffectedInstances(String type) {
+        set(future(registry.getAll(type))
+                .get())
+                .stream()
+                .map(DeepInstance::instanceId)
+                .forEach(registry::autoRemove);
     }
 
     private ModelElement findTypeInHierarchyByAttributeDefinition(ModelElement modelElement, String attributeId) throws ExecutionException, InterruptedException {
@@ -80,6 +92,41 @@ public class ModicioService {
                 }
             }
             return type;
+        }
+    }
+
+    @SneakyThrows
+    public void deleteInstanceById(String uuid) {
+        future(registry.autoRemove(uuid)).get();
+    }
+
+    @SneakyThrows
+    public void createInstance(String instanceOf, List<Slot> slots, List<Link> links) {
+        DeepInstance deepInstance = future(registry.instanceFactory().newInstance(instanceOf)).get();
+        commonOperation(deepInstance, slots, links);
+    }
+
+    @SneakyThrows
+    public void updateInstance(String uuid, List<Slot> slots, List<Link> links) {
+        DeepInstance toBeUpdated = future(registry.get(uuid)).get().get();
+        set(toBeUpdated.getDeepAssociations()).forEach(associationData -> toBeUpdated.removeAssociation(associationData.id()));
+        commonOperation(toBeUpdated, slots, links);
+    }
+
+    private void commonOperation(DeepInstance deepInstance, List<Slot> slots, List<Link> links) throws ExecutionException, InterruptedException {
+        future(deepInstance.unfold()).get();
+
+        for (Slot slot: slots) {
+            deepInstance.assignDeepValue(slot.getKey(), slot.getValue());
+        }
+
+        for (Link link: links) {
+            if (StringUtils.isBlank(link.getTargetInstanceUuid())) {
+                continue;
+            }
+            DeepInstance to = future(registry.get(link.getTargetInstanceUuid().trim())).get().get();
+            future(to.unfold()).get();
+            deepInstance.associate(to, to.typeHandle().getTypeName(), link.getName());
         }
     }
 }
