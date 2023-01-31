@@ -186,7 +186,7 @@
                           class="constrain_space">${constraintTemplate.template}</textarea>
                 <div class="buttons">
                     <input type="button" onclick="prettyPrint()" value="Pretty Print" class="form-submit-button">
-                    <input type="button" onclick="saveConstraint()" value="Save" class="form-submit-button">
+                    <input type="button" onclick="saveConstraint('${modelElement.name}')" value="Save" class="form-submit-button">
                 </div>
             </div>
         </#if>

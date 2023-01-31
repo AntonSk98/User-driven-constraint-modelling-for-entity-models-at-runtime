@@ -42,11 +42,13 @@ function addConstraint(functionName) {
     }
 }
 
-async function saveConstraint() {
+async function saveConstraint(typeName) {
     const errorNotification = getErrorNotification();
     const successNotification = getSuccessNotification();
 
-    let response = await fetch('/persist_constraint', {
+    let response = await fetch('/persist_constraint?' + new URLSearchParams({
+        typeName: typeName
+    }), {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

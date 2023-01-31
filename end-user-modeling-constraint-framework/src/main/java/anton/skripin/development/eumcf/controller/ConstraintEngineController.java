@@ -135,16 +135,16 @@ public class ConstraintEngineController {
     @SneakyThrows
     public ResponseEntity<Boolean> validateConstraintById(@RequestParam String uuid) {
         Constraint constraint = constraintPersistenceService.getConstraintByUuid(uuid);
-        System.out.println("validate constraint!");
+        System.out.println("It should be changed later!");
         return ResponseEntity.ok().body(true);
     }
 
 
     @PostMapping("/persist_constraint")
-    public ResponseEntity<String> saveConstraint(@RequestBody String constraint) {
+    public ResponseEntity<String> saveConstraint(@RequestParam String typeName, @RequestBody String constraint) {
         try {
             Constraint deserealizedConstraint = new ObjectMapper().readValue(constraint, Constraint.class);
-            boolean isSaved = constraintPersistenceService.saveConstraint(deserealizedConstraint);
+            boolean isSaved = constraintPersistenceService.saveConstraint(typeName, deserealizedConstraint);
             if (!isSaved) {
                 return ResponseEntity.internalServerError().body("Failed to save the constraint");
             }

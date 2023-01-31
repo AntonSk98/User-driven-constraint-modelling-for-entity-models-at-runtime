@@ -6,18 +6,13 @@ import java.util.List;
 import java.util.Map;
 
 public interface ConstraintPersistenceService {
+    boolean saveConstraint(String id, Constraint constraint);
 
-    boolean saveConstraint(Constraint constraint);
+    List<Constraint> getAllConstraints(String type);
 
-    List<Constraint> getAllConstraints();
-
-    List<Constraint> getAllConstraintsByName(String name);
-
-    List<Constraint> getAllConstraintsByType(String type);
+    List<Constraint> getAllConstraintsByName(String type, String name);
 
     Constraint getConstraintByUuid(String uuid);
-
-    Map<String, List<Constraint>> getGroupedConstraintsByName();
 
     Map<String, List<Constraint>> getGroupConstraintsByTypeAnsSupertypes(Map<String, List<String>> typeToSupertypeMap);
 
