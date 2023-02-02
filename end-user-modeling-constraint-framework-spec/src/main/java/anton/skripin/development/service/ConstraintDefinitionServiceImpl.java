@@ -23,18 +23,32 @@ public class ConstraintDefinitionServiceImpl implements ConstraintDefinitionServ
 
     @Override
     public Template getConstraintTemplate() {
-        return getConstraintTemplate(properties.getSimplePlaceholder(), properties.getSimplePlaceholder());
+        return getConstraintTemplate(null, null);
     }
 
     @Override
-    public Template getConstraintTemplate(String targetUuid, String targetType) {
+    public Template getConstraintTemplateWithUuid(String modelElementUuid) {
+        return getConstraintTemplate(modelElementUuid, null);
+    }
+
+    @Override
+    public Template getConstraintTemplateWithType(String modelElementType) {
+        return getConstraintTemplate(null, modelElementType);
+    }
+
+    @Override
+    public Template getConstraintTemplate(String modelElementUuid, String modelElementType) {
         Constraint constraint = new Constraint();
         constraint.setUuid(UUID.randomUUID().toString());
         constraint.setName(properties.getSimplePlaceholder());
         constraint.setViolationLevel(ViolationLevel.ERROR);
         constraint.setViolationMessage(properties.getSimplePlaceholder());
-        constraint.setTargetModelElementId(targetUuid);
-        constraint.setTargetModelElementName(targetType);
+        if (modelElementUuid != null) {
+            constraint.setModelElementUuid(modelElementUuid);
+        }
+        if (modelElementType != null) {
+            constraint.setModelElementType(modelElementType);
+        }
         constraint.setConstraintFunction(null);
         try {
             String constraintTemplate = objectMapper

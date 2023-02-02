@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Element that represents a relationship between two classes.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

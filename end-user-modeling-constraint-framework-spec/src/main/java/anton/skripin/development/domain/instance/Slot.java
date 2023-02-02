@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Domain element of an instantiated attribute.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

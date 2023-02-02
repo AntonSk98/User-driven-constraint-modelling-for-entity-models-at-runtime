@@ -41,9 +41,7 @@ async function updateInstance(instanceId) {
         links: links
     };
 
-    console.log(instanceElement);
-
-    const response = await fetch("/update_element", {
+    const response = await fetch("/update_instance_element", {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'

@@ -6,8 +6,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Map;
 
+/**
+ * Specifies restrictions applied to attributes with a string representation.
+ */
 public class StringBasedFunction extends ContextConstraintFunction {
 
+    /**
+     * Constructor.
+     * @param name of a constraint
+     * @param path of an attribute
+     * @param params params of a function
+     */
     @JsonCreator
     public StringBasedFunction(
             @JsonProperty("name") String name,

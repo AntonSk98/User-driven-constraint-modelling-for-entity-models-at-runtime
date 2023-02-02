@@ -1,6 +1,9 @@
 package anton.skripin.development.exception;
 
-public class ConstraintTemplateCreationException extends RuntimeException {
+/**
+ * Concrete {@link ConstraintException} thrown in case of template creation failures.
+ */
+public class ConstraintTemplateCreationException extends ConstraintException {
 
     public ConstraintTemplateCreationException() {
         super("Failed to construct a template for a constraint");

@@ -11,6 +11,9 @@ import lombok.Setter;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.As.PROPERTY;
 import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 
+/**
+ * Abstract class representing a function
+ */
 @Getter
 @Setter
 @JsonTypeInfo(use = NAME, include = PROPERTY)
@@ -24,25 +27,46 @@ public abstract class ConstraintFunction {
     @JsonIgnore
     private ConstraintFunction parentFunction;
 
+    /**
+     * Name of a function
+     *
+     * @param name name
+     */
     public ConstraintFunction(String name) {
         this.name = name;
     }
 
-    @JsonIgnore
-    public boolean isHierarchicalFunction() {
-        return this instanceof HierarchicalConstraintFunction;
-    }
-
-    @JsonIgnore
-    public boolean isContextConstraintFunction() {
-        return this instanceof ContextConstraintFunction;
-    }
-
+    /**
+     * Parses a function to {@link HierarchicalConstraintFunction}.
+     *
+     * @param constraintFunction {@link ConstraintFunction}
+     * @return {@link HierarchicalConstraintFunction}
+     */
     public static HierarchicalConstraintFunction toHierarchicalFunction(ConstraintFunction constraintFunction) {
         return (HierarchicalConstraintFunction) constraintFunction;
     }
 
     public static ContextConstraintFunction toContextConstraintFunction(ConstraintFunction constraintFunction) {
         return (ContextConstraintFunction) constraintFunction;
+    }
+
+    /**
+     * Returns true if a function is {@link HierarchicalConstraintFunction}.
+     *
+     * @return true or false
+     */
+    @JsonIgnore
+    public boolean isHierarchicalFunction() {
+        return this instanceof HierarchicalConstraintFunction;
+    }
+
+    /**
+     * Returns true if a function is {@link ContextConstraintFunction}.
+     *
+     * @return true or false
+     */
+    @JsonIgnore
+    public boolean isContextConstraintFunction() {
+        return this instanceof ContextConstraintFunction;
     }
 }

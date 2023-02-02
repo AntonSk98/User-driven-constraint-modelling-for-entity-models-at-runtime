@@ -1,10 +1,8 @@
-package anton.skripin.development.eumcf.modicio_space.service;
+package anton.skripin.development.eumcf.service;
 
-import anton.skripin.development.eumcf.modicio_space.domain.ModicioAssociation;
-import anton.skripin.development.eumcf.modicio_space.domain.ModicioAttribute;
-import anton.skripin.development.eumcf.modicio_space.domain.ModicioModelElement;
-import anton.skripin.development.eumcf.modicio_space.domain.ModicioParentRelation;
 import jakarta.annotation.PostConstruct;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.SneakyThrows;
 import modicio.core.*;
 import modicio.core.rules.ConnectionInterface;
@@ -12,6 +10,7 @@ import modicio.core.rules.Slot;
 import modicio.core.rules.api.AssociationRuleJ;
 import modicio.core.rules.api.AttributeRuleJ;
 import modicio.core.rules.api.ParentRelationRuleJ;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 import scala.Option;
 import scala.Some;
@@ -20,11 +19,15 @@ import scala.jdk.javaapi.CollectionConverters;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
-import static anton.skripin.development.eumcf.util.ScalaToJavaMapping.future;
+import static anton.skripin.development.eumcf.util.ScalaToJavaMapper.future;
 
-//@Profile("generate-modicio-data")
+/**
+ * Generates test model elements and instances for them.
+ */
 @Component
+@Profile("testdata")
 public class TestDataGenerator {
 
     private final String[] NON_TEMPLATE_MODEL_ELEMENT_NAMES = new String[]{
@@ -37,19 +40,32 @@ public class TestDataGenerator {
     private final TypeFactory typeFactory;
     private final InstanceFactory instanceFactory;
 
+    /**
+     * Constructor.
+     *
+     * @param registry        {@link Registry}
+     * @param typeFactory     {@link TypeFactory}
+     * @param instanceFactory {@link InstanceFactory}
+     */
     public TestDataGenerator(Registry registry, TypeFactory typeFactory, InstanceFactory instanceFactory) {
         this.registry = registry;
         this.typeFactory = typeFactory;
         this.instanceFactory = instanceFactory;
     }
 
+    /**
+     * Initialization class for bootstrapping test data.
+     */
     @PostConstruct
-    public void generateTestDate() {
+    public void generateTestDate() throws ExecutionException, InterruptedException {
         generateRoot();
         generateModelElements();
         generateInstanceElements();
     }
 
+    /**
+     * Generates a root element required by Modicio setup.
+     */
     @SneakyThrows
     private void generateRoot() {
         CompletableFuture<TypeHandle> root = future(typeFactory.newType(
@@ -61,6 +77,9 @@ public class TestDataGenerator {
         typeFuture.get();
     }
 
+    /**
+     * Generates test model elements.
+     */
     @SneakyThrows
     private void generateModelElements() {
         for (ModicioModelElement modelElementInner : getTestModelElements()) {
@@ -88,6 +107,9 @@ public class TestDataGenerator {
         }
     }
 
+    /**
+     * Generates instance elements
+     */
     private void generateInstanceElements() {
         var worksOnAssociation = "works_on";
         var participatesAssociation = "participates";
@@ -111,7 +133,7 @@ public class TestDataGenerator {
         associateTwoInstances(thesis, participatesAssociation, anton, swEngineer);
         associateTwoInstances(thesis, participatesAssociation, egor, swEngineer);
 
-        associateTwoInstances(anton,takesPartInAssociation, designProcess, sprint);
+        associateTwoInstances(anton, takesPartInAssociation, designProcess, sprint);
         associateTwoInstances(anton, takesPartInAssociation, architectureProcess, sprint);
         associateTwoInstances(anton, takesPartInAssociation, implementationProcess, sprint);
         associateTwoInstances(egor, takesPartInAssociation, implementationProcess, sprint);
@@ -161,18 +183,19 @@ public class TestDataGenerator {
     }
 
     @SneakyThrows
-    private boolean associateTwoInstances(String sourceInstanceId, String byRelation, String targetInstanceId, String asType) {
+    private void associateTwoInstances(String sourceInstanceId, String byRelation, String targetInstanceId, String asType) {
         DeepInstance sourceInstance = future(registry.get(sourceInstanceId)).get().get();
         DeepInstance targetInstance = future(registry.get(targetInstanceId)).get().get();
 
         future(sourceInstance.unfold()).get();
         future(targetInstance.unfold()).get();
 
-        return sourceInstance.associate(targetInstance, asType, byRelation);
+        sourceInstance.associate(targetInstance, asType, byRelation);
     }
 
     /**
      * Only for local checks...
+     *
      * @param instanceId instance id
      */
     @SneakyThrows
@@ -256,5 +279,40 @@ public class TestDataGenerator {
 
         return List.of(namedElement, person, softwareEngineer, project, sprint);
     }
+
+    @Getter
+    @AllArgsConstructor
+    private static class ModicioAssociation {
+        String name;
+        String target;
+        String multiplicity;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    private static class ModicioAttribute {
+        String name;
+        String datatype;
+        boolean nonEmpty;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    private static class ModicioModelElement {
+        String id;
+        String name;
+        boolean isTemplate;
+        List<ModicioParentRelation> parentRelations;
+        List<ModicioAttribute> attributes;
+        List<ModicioAssociation> associations;
+    }
+
+    @Getter
+    @AllArgsConstructor
+    private static class ModicioParentRelation {
+        String id;
+        String name;
+    }
+
 
 }

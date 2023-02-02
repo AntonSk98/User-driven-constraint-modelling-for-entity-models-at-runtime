@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.util.Map;
 
+/**
+ * Represents a data definition for an instance of a classifier
+ */
 @Getter
 @Setter
 @NoArgsConstructor

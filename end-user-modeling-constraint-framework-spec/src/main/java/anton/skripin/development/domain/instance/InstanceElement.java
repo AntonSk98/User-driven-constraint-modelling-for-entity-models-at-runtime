@@ -6,6 +6,9 @@ import lombok.Setter;
 
 import java.util.List;
 
+/**
+ * Class that defines an instance element.
+ */
 @Getter
 @Setter
 @NoArgsConstructor

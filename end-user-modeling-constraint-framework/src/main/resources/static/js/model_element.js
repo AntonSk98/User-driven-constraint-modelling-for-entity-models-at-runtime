@@ -56,13 +56,11 @@ async function saveConstraint(typeName) {
         body: JSON.stringify(JSON.parse(document.getElementById('constrain_space').value))
     });
 
-    let text = await response.text();
-
     if (response.ok) {
-        successNotification({message: text})
+        successNotification({message: 'Successfully saved a constraint!'})
         setTimeout(() => location.reload(), 3000)
     } else {
-        errorNotification({message: text})
+        errorNotification({message: 'Error occurred while saving a constraint!'})
     }
 }
 

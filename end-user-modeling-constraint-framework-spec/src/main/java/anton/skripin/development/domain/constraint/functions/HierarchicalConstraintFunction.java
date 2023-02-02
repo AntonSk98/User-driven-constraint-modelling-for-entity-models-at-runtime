@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Function that has no logic by its own but combines several functions.
+ */
 @Getter
 @Setter
 public abstract class HierarchicalConstraintFunction extends ConstraintFunction {

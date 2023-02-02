@@ -5,6 +5,17 @@ import lombok.Setter;
 
 import java.util.UUID;
 
+/**
+ * Represents a template bag that can be either
+ * {@link anton.skripin.development.domain.constraint.functions.ConstraintFunction}
+ * or
+ * {@link anton.skripin.development.domain.constraint.Constraint}.
+ * <p>
+ * Every template is a predefined instance with default values.
+ * <p>
+ * To facilitate the process of constraint definition by end-users,
+ * most of the static values are filled out automatically.
+ */
 @Getter
 @Setter
 public class Template {
