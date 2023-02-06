@@ -72,8 +72,16 @@
                                                 <input class="update-button" type="button" value="Update"
                                                        onclick="updateAttribute(this, '${modelElement.uuid}', '${modelElement.name}', '${attribute.uuid}')">
                                             <#else >
-                                                <input class="copy-button" type="button" value="Copy"
-                                                       onclick="copyPath('${attribute.path}')">
+                                                <div class="attribute-path">
+                                                    <#if attribute.navigation??>
+                                                        <input class="copy-button" type="button" value="Navigation"
+                                                               onclick="copyNavigation('${attribute.navigation}')">
+                                                    <#else >
+                                                        <input class="disabled-button" type="button" value="Navigation" disabled>
+                                                    </#if>
+                                                    <input class="copy-button" type="button" value="Attribute"
+                                                           onclick="copyAttribute('${attribute.attribute}')">
+                                                </div>
                                             </#if>
                                         </div>
                                     </td>
@@ -135,14 +143,14 @@
                                                        type="button"
                                                        title="${association.targetModelElementName}"
                                                        value="${association.targetModelElementName}"
-                                                       id="${association.path}"
-                                                       onclick="addToOpenedModelElement('${modelElement.name}', '${association.targetModelElementName}', '${association.path}')">
+                                                       id="${association.navigation}"
+                                                       onclick="addToOpenedModelElement('${modelElement.name}', '${association.targetModelElementName}', '${association.navigation}')">
                                             </div>
                                         </td>
                                         <td>
                                             <div class="restricted-width">
                                                 <input class="copy-button" type="button" value="Copy"
-                                                       onclick="copyPath('${association.path}')">
+                                                       onclick="copyNavigation('${association.navigation}')">
                                             </div>
                                         </td>
                                     </#if>
@@ -168,7 +176,7 @@
                             <div class="functions">
                                 <#list functions as function>
                                     <input type="hidden" id=${function.functionName} value='${function.template}'>
-                                    <div onclick="addConstraint('${function.functionName}')">${function.functionName}()
+                                    <div class="info" title="${function.getDescription()}" onclick="addConstraint('${function.functionName}')">${function.functionName}()
                                     </div>
                                 </#list>
                             </div>
@@ -186,7 +194,8 @@
                           class="constrain_space">${constraintTemplate.template}</textarea>
                 <div class="buttons">
                     <input type="button" onclick="prettyPrint()" value="Pretty Print" class="form-submit-button">
-                    <input type="button" onclick="saveConstraint('${modelElement.name}')" value="Save" class="form-submit-button">
+                    <input type="button" onclick="saveConstraint('${modelElement.name}')" value="Save"
+                           class="form-submit-button">
                 </div>
             </div>
         </#if>

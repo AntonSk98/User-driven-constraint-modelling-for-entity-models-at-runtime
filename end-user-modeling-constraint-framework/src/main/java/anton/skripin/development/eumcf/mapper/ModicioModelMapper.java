@@ -3,7 +3,7 @@ package anton.skripin.development.eumcf.mapper;
 import anton.skripin.development.domain.model.Association;
 import anton.skripin.development.domain.model.Attribute;
 import anton.skripin.development.domain.model.ModelElement;
-import anton.skripin.development.exception.ModelMapperException;
+import anton.skripin.development.exception.model.ModelMapperException;
 import anton.skripin.development.mapper.ModelMapper;
 
 import java.util.ArrayList;
@@ -39,7 +39,7 @@ public class ModicioModelMapper implements ModelMapper<modicio.core.ModelElement
                 attribute.setUuid(attributeRule.id());
                 attribute.setDatatype(attributeRule.datatype());
                 attribute.setKey(attributeRule.name());
-                attribute.setPath(String.format("<%s>%s", modelElement.getName(), attribute.getKey()));
+                attribute.setAttribute(String.format("<%s>%s", modelElement.getName(), attribute.getKey()));
                 attributes.add(attribute);
             });
             List<Association> associations = new ArrayList<>();
@@ -50,7 +50,7 @@ public class ModicioModelMapper implements ModelMapper<modicio.core.ModelElement
                 association.setMultiplicity(associationRule.multiplicity());
                 association.setTargetModelElementName(associationRule.targetName());
                 association.setTargetModelElementUuid(modicio.core.ModelElement.REFERENCE_IDENTITY());
-                association.setPath(String.format("%s(%s)", association.getName(), association.getTargetModelElementName()));
+                association.setNavigation(String.format("%s(%s)", association.getName(), association.getTargetModelElementName()));
                 associations.add(association);
             });
             modelElement.setAttributes(attributes);

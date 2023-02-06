@@ -1,4 +1,4 @@
-package anton.skripin.development.exception;
+package anton.skripin.development.exception.instance;
 
 /**
  * Concrete {@link InstanceException} thrown in case of instance mapping failures.

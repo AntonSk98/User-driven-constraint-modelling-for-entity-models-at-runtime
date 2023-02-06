@@ -39,21 +39,22 @@ public interface TemplateFunctionService {
      * Add new function template at runtime.
      *
      * @param functionName function name
+     * @param description description
      * @param functionType function type
      * @param template     -> concrete syntax of a constraint engine
      */
-    void addNewTemplate(String functionName, String functionType, String template);
 
+    void addNewTemplate(String functionName, String description, String functionType, String template);
 
     /**
      * Updates with a new template.
      *
      * @param functionName function name used for update
+     * @param description description
      * @param functionType function type used for update
      * @param template     template
      */
-    void updateTemplate(String functionName, String functionType, String template);
-
+    void updateTemplate(String functionName, String description, String functionType, String templateFunction);
 
     /**
      * Removes a template function by its name.

@@ -4,7 +4,7 @@ import anton.skripin.development.domain.instance.InstanceElement;
 import anton.skripin.development.domain.instance.Link;
 import anton.skripin.development.domain.instance.Slot;
 import anton.skripin.development.eumcf.service.api.InstanceService;
-import anton.skripin.development.exception.InstanceOperationException;
+import anton.skripin.development.exception.instance.InstanceOperationException;
 import anton.skripin.development.mapper.InstanceMapper;
 import modicio.core.DeepInstance;
 import modicio.core.Registry;

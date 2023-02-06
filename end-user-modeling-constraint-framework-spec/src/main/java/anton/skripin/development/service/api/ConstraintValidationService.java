@@ -17,7 +17,7 @@ public interface ConstraintValidationService {
      * @return required subgraph elements
      */
 
-    Set<List<String>> getRequiredSubgraphElements(Constraint constraint);
+    Set<Set<String>> getRequiredSubgraphElements(Constraint constraint);
 
     /**
      * Validates a constraint.

@@ -1,4 +1,4 @@
-package anton.skripin.development.exception;
+package anton.skripin.development.exception.model;
 
 /**
  * Concrete {@link ModelException} thrown whenever a model element does not exist.

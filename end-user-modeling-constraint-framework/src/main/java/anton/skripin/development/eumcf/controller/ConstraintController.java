@@ -1,8 +1,9 @@
 package anton.skripin.development.eumcf.controller;
 
 import anton.skripin.development.domain.constraint.Constraint;
-import anton.skripin.development.exception.PersistConstraintException;
+import anton.skripin.development.exception.constraint.PersistConstraintException;
 import anton.skripin.development.service.api.ConstraintPersistenceService;
+import anton.skripin.development.service.api.ConstraintValidationService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +16,18 @@ public class ConstraintController {
 
     private final ConstraintPersistenceService constraintPersistenceService;
 
+    private final ConstraintValidationService constraintValidationService;
+
 
     /**
      * Constructor.
      *
      * @param constraintPersistenceService See {@link ConstraintPersistenceService}
+     * @param constraintValidationService  See {@link ConstraintValidationService}
      */
-    public ConstraintController(ConstraintPersistenceService constraintPersistenceService) {
+    public ConstraintController(ConstraintPersistenceService constraintPersistenceService, ConstraintValidationService constraintValidationService) {
         this.constraintPersistenceService = constraintPersistenceService;
+        this.constraintValidationService = constraintValidationService;
     }
 
     /**
@@ -56,6 +61,7 @@ public class ConstraintController {
     @GetMapping("/validate_constraint_by_id")
     public boolean validateConstraintById(@RequestParam String uuid) {
         Constraint constraint = constraintPersistenceService.getConstraintByUuid(uuid);
+        constraintValidationService.getRequiredSubgraphElements(constraint);
         System.out.println("It should be changed later!");
         return true;
     }

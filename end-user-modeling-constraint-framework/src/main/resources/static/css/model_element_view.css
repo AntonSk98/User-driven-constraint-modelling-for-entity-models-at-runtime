@@ -133,3 +133,20 @@ hr {
 .test {
     background-color: red;
 }
+
+.attribute-path {
+    display: flex;
+    column-gap: 0.2em;
+}
+
+.disabled-button {
+    color: white;
+    background-color: #0b2a51;
+    padding: 0.5em 1em;
+    outline: none;
+    border: none;
+    border-radius: 20px;
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+

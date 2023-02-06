@@ -1,4 +1,6 @@
-package anton.skripin.development.exception;
+package anton.skripin.development.exception.constraint;
+
+import anton.skripin.development.exception.constraint.ConstraintException;
 
 /**
  * Concrete {@link ConstraintException} thrown whenever a required template cannot be found.

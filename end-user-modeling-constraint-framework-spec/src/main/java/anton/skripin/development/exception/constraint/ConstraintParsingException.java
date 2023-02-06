@@ -1,4 +1,4 @@
-package anton.skripin.development.exception;
+package anton.skripin.development.exception.constraint;
 
 /**
  * Concrete {@link ConstraintException} thrown in case of parsing failures.

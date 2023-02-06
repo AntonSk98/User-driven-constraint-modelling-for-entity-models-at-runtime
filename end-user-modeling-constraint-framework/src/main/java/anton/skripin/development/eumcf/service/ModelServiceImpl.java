@@ -5,7 +5,7 @@ import anton.skripin.development.domain.model.Attribute;
 import anton.skripin.development.domain.model.ModelElement;
 import anton.skripin.development.eumcf.service.api.InstanceService;
 import anton.skripin.development.eumcf.service.api.ModelService;
-import anton.skripin.development.exception.InstanceOperationException;
+import anton.skripin.development.exception.model.ModelOperationException;
 import anton.skripin.development.mapper.ModelMapper;
 import modicio.core.Registry;
 import modicio.core.Rule;
@@ -66,7 +66,7 @@ public class ModelServiceImpl implements ModelService {
             instanceService.removeInstancesByType(type);
             return true;
         } catch (ExecutionException | InterruptedException e) {
-            throw new InstanceOperationException(e);
+            throw new ModelOperationException(e);
         }
     }
 
@@ -93,7 +93,7 @@ public class ModelServiceImpl implements ModelService {
             instanceService.removeInstancesByType(type);
             return true;
         } catch (ExecutionException | InterruptedException e) {
-            throw new InstanceOperationException(e);
+            throw new ModelOperationException(e);
         }
 
     }
@@ -107,7 +107,7 @@ public class ModelServiceImpl implements ModelService {
             });
             return modelElements;
         } catch (ExecutionException | InterruptedException e) {
-            throw new InstanceOperationException(e);
+            throw new ModelOperationException(e);
         }
     }
 
@@ -120,16 +120,16 @@ public class ModelServiceImpl implements ModelService {
                             .get()
                             .getModelElement());
         } catch (ExecutionException | InterruptedException e) {
-            throw new InstanceOperationException(e);
+            throw new ModelOperationException(e);
         }
     }
 
     @Override
-    public ModelElement addToOpenedModelElement(String from, String to, String currentPath) {
+    public ModelElement addToOpenedModelElement(String from, String to, String currentNavigation) {
         try {
-            String fromKey = from.contains(".") ? StringUtils.substringAfter(from, ".") : "";
+            String fromKey = from.contains("->") ? StringUtils.substringAfter(from, "->") : "";
 
-            ModelElement modelElement = modelMapper
+            ModelElement toModelElement = modelMapper
                     .mapToModelElement(
                             future(registry.getType(to, modicio.core.ModelElement.REFERENCE_IDENTITY()))
                                     .get()
@@ -137,29 +137,29 @@ public class ModelServiceImpl implements ModelService {
                                     .getModelElement()
                     );
 
-            for (Attribute attribute : modelElement.getAttributes()) {
+            for (Attribute attribute : toModelElement.getAttributes()) {
                 String currentAttributeKey = attribute.getKey();
                 if (StringUtils.isBlank(fromKey)) {
-                    attribute.setKey(String.format("%s.%s", to, currentAttributeKey));
+                    attribute.setKey(String.format("#->%s.%s", to, currentAttributeKey));
                 } else {
-                    attribute.setKey(String.format("%s.%s.%s", fromKey, to, currentAttributeKey));
+                    attribute.setKey(String.format("#->%s->%s.%s", fromKey, to, currentAttributeKey));
                 }
-                attribute.setPath(String.format("%s.%s", currentPath, attribute.getPath()));
+                attribute.setNavigation(currentNavigation);
             }
 
-            for (Association association : modelElement.getAssociations()) {
-                association.setPath(String.format("%s.%s", currentPath, association.getPath()));
+            for (Association association : toModelElement.getAssociations()) {
+                association.setNavigation(String.format("%s.%s", currentNavigation, association.getNavigation()));
             }
 
-            if (StringUtils.isNotBlank(fromKey)) {
-                modelElement.setName(String.format("%s.%s", from, modelElement.getName()));
+            if (StringUtils.isBlank(fromKey)) {
+                toModelElement.setName(String.format("#->%s", toModelElement.getName()));
             } else {
-                modelElement.setName(String.format("#.%s", modelElement.getName()));
+                toModelElement.setName(String.format("#->%s->%s", fromKey, toModelElement.getName()));
             }
 
-            return modelElement;
+            return toModelElement;
         } catch (ExecutionException | InterruptedException e) {
-            throw new InstanceOperationException(e);
+            throw new ModelOperationException(e);
         }
     }
 
@@ -178,7 +178,7 @@ public class ModelServiceImpl implements ModelService {
             }
             return allTypesAndSupertypesMap;
         } catch (ExecutionException | InterruptedException e) {
-            throw new InstanceOperationException(e);
+            throw new ModelOperationException(e);
         }
     }
 

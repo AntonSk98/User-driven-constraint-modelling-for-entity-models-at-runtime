@@ -1,28 +1,63 @@
 package anton.skripin.development.domain.constraint.functions.types;
 
 import anton.skripin.development.domain.constraint.functions.ConstraintFunction;
-import anton.skripin.development.domain.constraint.functions.HierarchicalConstraintFunction;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 /**
  * Encapsulates multiple nested constraints grouped by a logical operator.
  * The overall constraint conformance is evaluated among all nested constraints.
  * Its result depends on a logical operation (and, or).
  */
-public class LogicalFunction extends HierarchicalConstraintFunction {
+@Getter
+public class LogicalFunction extends ConstraintFunction {
+
+    private final List<ConstraintFunction> booleanFunctions;
 
     /**
      * Constructor.
-     * @param name name of a constraint
+     *
+     * @param name            name of a constraint
      * @param nestedFunctions list of nested functions
      */
     @JsonCreator
     public LogicalFunction(
             @JsonProperty("name") String name,
-            @JsonProperty("nestedFunctions") List<ConstraintFunction> nestedFunctions) {
-        super(name, nestedFunctions);
+            @JsonProperty("booleanFunctions") List<ConstraintFunction> nestedFunctions) {
+        super(name);
+        assert nestedFunctions != null && nestedFunctions.size() >= 2;
+        this.booleanFunctions = nestedFunctions;
     }
+
+    @Override
+    public Optional<String> attribute() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<String> navigation() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<Map<String, String>> params() {
+        return Optional.empty();
+    }
+
+    @Override
+    public Optional<List<ConstraintFunction>> booleanFunctions() {
+        return Optional.of(booleanFunctions);
+    }
+
+    @Override
+    public Optional<ConstraintFunction> lambdaFunction() {
+        return Optional.empty();
+    }
+
+
 }

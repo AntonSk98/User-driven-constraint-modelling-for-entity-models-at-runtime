@@ -1,12 +1,20 @@
-async function copyPath(path) {
+async function copyPath(path, type) {
     const successNotification = getSuccessNotification();
-    const errorNotification =getErrorNotification();
+    const errorNotification = getErrorNotification();
     try {
         await navigator.clipboard.writeText(path);
-        successNotification({message: 'Successfully copied a path into clipboard!'})
+        successNotification({message: `Successfully copied ${type} into clipboard!`})
     } catch (e) {
-        errorNotification({message: 'Error occurred while copying a path'});
+        errorNotification({message: `Error occurred while copying ${type}}`});
     }
+}
+
+async function copyAttribute(path) {
+    await copyPath(path, 'attribute');
+}
+
+async function copyNavigation(path) {
+    await copyPath(path, 'association');
 }
 
 function prettyPrint() {
@@ -82,7 +90,7 @@ async function addToOpenedModelElement(from, to, path) {
     const associations = modelElement.associations;
     const attributes = modelElement.attributes;
 
-    for (let i = 0; i < attributes.length; i ++ ) {
+    for (let i = 0; i < attributes.length; i++) {
         createNewAttributeRow(attributes[i]);
     }
 
@@ -102,10 +110,10 @@ function removeOnClickFunction(associationReference) {
     associationReference.readOnly = true;
 }
 
-function createCopyButton(valueToCopy) {
+function createCopyButton(buttonName, valueToCopy) {
     const copyButton = document.createElement('input');
     copyButton.type = 'button';
-    copyButton.value = 'Copy';
+    copyButton.value = buttonName;
     copyButton.classList.add('copy-button')
     copyButton.setAttribute('onclick', `copyPath('${valueToCopy}')`)
     return copyButton
@@ -115,23 +123,28 @@ function createNewAttributeRow(attribute) {
     let lastAttributeRow = document.getElementById('attribute-body').querySelector("tr:last-child");
     const newAttributeRow = document.createElement('tr');
 
-    const keyData  = document.createElement('td');
+    const keyData = document.createElement('td');
     const datatypeData = document.createElement('td');
     const pathData = document.createElement('td');
     const keyDiv = document.createElement('div');
     const datatypeDiv = document.createElement('div');
     const pathCopyDiv = document.createElement('div');
+    const attributePathDiv = document.createElement('div');
 
 
     keyDiv.className = datatypeDiv.className = pathCopyDiv.className = 'restricted-width';
+    attributePathDiv.className = 'attribute-path'
     keyDiv.title = attribute.key;
 
-    const pathCopyButton = createCopyButton(attribute.path);
+    const pathToCopyNavigation = createCopyButton('Navigation', attribute.navigation);
+    const pathToCopyAttribute = createCopyButton('Attribute', attribute.attribute)
 
 
     keyDiv.appendChild(document.createTextNode(attribute.key));
     datatypeDiv.appendChild(document.createTextNode(attribute.datatype));
-    pathCopyDiv.appendChild(pathCopyButton);
+    attributePathDiv.appendChild(pathToCopyNavigation);
+    attributePathDiv.appendChild(pathToCopyAttribute);
+    pathCopyDiv.appendChild(attributePathDiv);
 
     keyData.appendChild(keyDiv);
     datatypeData.appendChild(datatypeDiv);
@@ -146,7 +159,7 @@ function createNewAssociationRow(from, association) {
     const lastAssociationRow = document.getElementById('association-body').querySelector("tr:last-child");
     const newAssociationRow = document.createElement('tr');
     const sourceDiv = document.createElement('div');
-    const byRelationDiv =  document.createElement('div');
+    const byRelationDiv = document.createElement('div');
     const targetDiv = document.createElement('div');
     const copyPathDiv = document.createElement('div');
     sourceDiv.className = byRelationDiv.className = targetDiv.className = copyPathDiv.className = 'restricted-width';
@@ -156,12 +169,12 @@ function createNewAssociationRow(from, association) {
     const targetInput = document.createElement('input');
     targetInput.type = 'button';
     targetInput.value = targetInput.title = association.targetModelElementName;
-    targetInput.id = association.path;
+    targetInput.id = association.navigation;
     targetInput.classList.add('target-type-button');
     targetInput.classList.add('target-type-button-hover');
-    targetInput.setAttribute('onclick', `addToOpenedModelElement('${from}','${association.targetModelElementName}', '${association.path}')`);
+    targetInput.setAttribute('onclick', `addToOpenedModelElement('${from}','${association.targetModelElementName}', '${association.navigation}')`);
 
-    const pathCopyButton = createCopyButton(association.path);
+    const pathCopyButton = createCopyButton('Copy', association.navigation);
 
     sourceDiv.appendChild(document.createTextNode(from));
     byRelationDiv.appendChild(document.createTextNode(association.name));
@@ -193,7 +206,7 @@ async function updateAttribute(element, id, type, attributeId) {
 
     if (!response.ok) {
         errorNotification({message: 'Unexpected error occurred while updating an attribute!'});
-    } else  {
+    } else {
         successNotification({message: 'Successfully updated the attribute!'});
         setTimeout(() => location.reload(), 2000);
     }

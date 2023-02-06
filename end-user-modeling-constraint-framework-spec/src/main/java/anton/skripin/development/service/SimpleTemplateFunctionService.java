@@ -1,7 +1,7 @@
 package anton.skripin.development.service;
 
 import anton.skripin.development.domain.template.Template;
-import anton.skripin.development.exception.NoTemplateFoundException;
+import anton.skripin.development.exception.constraint.NoTemplateFoundException;
 import anton.skripin.development.properties.TemplateConfigurationProperties;
 import anton.skripin.development.service.api.TemplateFunctionService;
 
@@ -42,13 +42,13 @@ public class SimpleTemplateFunctionService implements TemplateFunctionService {
     }
 
     @Override
-    public void addNewTemplate(String functionName, String functionType, String template) {
-        this.templateFunctions.add(Template.ofFunction(functionName, functionType, template));
+    public void addNewTemplate(String functionName, String description, String functionType, String template) {
+        this.templateFunctions.add(Template.ofFunction(functionName, description, functionType, template));
     }
 
     @Override
-    public void updateTemplate(String functionName, String functionType, String templateFunction) {
-        Template template = Template.ofFunction(functionName, functionType, templateFunction);
+    public void updateTemplate(String functionName, String description, String functionType, String templateFunction) {
+        Template template = Template.ofFunction(functionName, description, functionType, templateFunction);
         Optional<Template> toBeUpdatedOptional = templateFunctions
                 .stream()
                 .filter(persistedTemplate ->
@@ -56,7 +56,7 @@ public class SimpleTemplateFunctionService implements TemplateFunctionService {
                                 persistedTemplate.getFunctionType().equals(template.getFunctionType()))
                 .findFirst();
         if (toBeUpdatedOptional.isEmpty()) {
-            this.addNewTemplate(functionName, functionType, templateFunction);
+            this.addNewTemplate(functionName, description, functionType, templateFunction);
             return;
         }
         Template toBeUpdated = toBeUpdatedOptional.get();

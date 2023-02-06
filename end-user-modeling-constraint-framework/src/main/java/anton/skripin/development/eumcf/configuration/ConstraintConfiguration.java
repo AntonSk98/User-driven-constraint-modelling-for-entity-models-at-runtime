@@ -6,11 +6,13 @@ import anton.skripin.development.eumcf.mapper.ModicioModelMapper;
 import anton.skripin.development.mapper.InstanceMapper;
 import anton.skripin.development.mapper.ModelMapper;
 import anton.skripin.development.properties.TemplateConfigurationProperties;
+import anton.skripin.development.service.AbstractConstraintValidationService;
 import anton.skripin.development.service.ConstraintDefinitionServiceImpl;
 import anton.skripin.development.service.SimpleConstraintPersistenceService;
 import anton.skripin.development.service.SimpleTemplateFunctionService;
 import anton.skripin.development.service.api.ConstraintDefinitionService;
 import anton.skripin.development.service.api.ConstraintPersistenceService;
+import anton.skripin.development.service.api.ConstraintValidationService;
 import anton.skripin.development.service.api.TemplateFunctionService;
 import modicio.core.DeepInstance;
 import modicio.core.ModelElement;
@@ -50,7 +52,7 @@ public class ConstraintConfiguration {
      * @return {@link SimpleConstraintPersistenceService}
      */
     @Bean
-    public ConstraintPersistenceService constraintValidationService() {
+    public ConstraintPersistenceService constraintPersistenceService() {
         return new SimpleConstraintPersistenceService();
     }
 
@@ -66,7 +68,7 @@ public class ConstraintConfiguration {
     }
 
     /**
-     * Provides a service to validate and check constraints.
+     * Provides a service to define constraints.
      *
      * @param properties dynamic properties configured in {@link  TemplateConfigurationProperties}
      * @return {@link ConstraintDefinitionServiceImpl}
@@ -74,6 +76,16 @@ public class ConstraintConfiguration {
     @Bean
     public ConstraintDefinitionService constraintDefinitionService(TemplateConfigurationProperties properties) {
         return new ConstraintDefinitionServiceImpl(properties);
+    }
+
+    /**
+     * Provides a services to validate constraints.
+     *
+     * @return {@link AbstractConstraintValidationService}
+     */
+    @Bean
+    public ConstraintValidationService constraintValidationService() {
+        return new AbstractConstraintValidationService();
     }
 
 

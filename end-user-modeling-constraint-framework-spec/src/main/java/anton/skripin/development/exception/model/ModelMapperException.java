@@ -1,4 +1,4 @@
-package anton.skripin.development.exception;
+package anton.skripin.development.exception.model;
 
 /**
  * Concrete {@link ModelException} thrown in case of model mapping failures.

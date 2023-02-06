@@ -1,4 +1,4 @@
-package anton.skripin.development.exception;
+package anton.skripin.development.exception.instance;
 
 /**
  * General {@link InstanceException} for instance-related errors.

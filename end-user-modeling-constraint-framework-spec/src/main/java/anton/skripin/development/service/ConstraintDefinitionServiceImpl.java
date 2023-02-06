@@ -1,22 +1,18 @@
 package anton.skripin.development.service;
 
-import anton.skripin.development.domain.constraint.Constraint;
-import anton.skripin.development.domain.constraint.ViolationLevel;
 import anton.skripin.development.domain.template.Template;
-import anton.skripin.development.exception.ConstraintTemplateCreationException;
 import anton.skripin.development.properties.TemplateConfigurationProperties;
 import anton.skripin.development.service.api.ConstraintDefinitionService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import java.util.UUID;
 
 public class ConstraintDefinitionServiceImpl implements ConstraintDefinitionService {
 
     private final TemplateConfigurationProperties properties;
     private final ObjectMapper objectMapper;
+    TemplateFunctionInitializer templateFunctionInitializer;
 
     public ConstraintDefinitionServiceImpl(TemplateConfigurationProperties properties) {
+        this.templateFunctionInitializer = new TemplateFunctionInitializer(properties);
         this.objectMapper = new ObjectMapper();
         this.properties = properties;
     }
@@ -38,28 +34,6 @@ public class ConstraintDefinitionServiceImpl implements ConstraintDefinitionServ
 
     @Override
     public Template getConstraintTemplate(String modelElementUuid, String modelElementType) {
-        Constraint constraint = new Constraint();
-        constraint.setUuid(UUID.randomUUID().toString());
-        constraint.setName(properties.getSimplePlaceholder());
-        constraint.setViolationLevel(ViolationLevel.ERROR);
-        constraint.setViolationMessage(properties.getSimplePlaceholder());
-        if (modelElementUuid != null) {
-            constraint.setModelElementUuid(modelElementUuid);
-        }
-        if (modelElementType != null) {
-            constraint.setModelElementType(modelElementType);
-        }
-        constraint.setConstraintFunction(null);
-        try {
-            String constraintTemplate = objectMapper
-                    .writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(constraint)
-                    .replace("null", String.format("{\"%s\": \"%s\"}",
-                            properties.getObjectPlaceholder().getLeft(),
-                            properties.getObjectPlaceholder().getRight()));
-            return Template.ofConstraint(constraintTemplate);
-        } catch (JsonProcessingException e) {
-            throw new ConstraintTemplateCreationException();
-        }
+        return templateFunctionInitializer.getConstraintTemplate(modelElementUuid, modelElementType);
     }
 }

@@ -1,4 +1,4 @@
-package anton.skripin.development.exception;
+package anton.skripin.development.exception.constraint;
 
 /**
  * Concrete {@link ConstraintException} thrown whenever a constraint is failed to be persisted.

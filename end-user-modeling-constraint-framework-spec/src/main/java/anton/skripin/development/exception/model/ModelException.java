@@ -1,4 +1,4 @@
-package anton.skripin.development.exception;
+package anton.skripin.development.exception.model;
 
 /**
  * Abstract exception for model element failures.

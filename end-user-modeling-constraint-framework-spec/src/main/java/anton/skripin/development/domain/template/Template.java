@@ -22,21 +22,24 @@ public class Template {
     private String uuid;
     private String functionName;
     private String functionType;
+
+    private String description;
     private String template;
 
     private Template(String template) {
         this.template = template;
     }
 
-    private Template(String functionName, String functionType, String template) {
+    private Template(String functionName, String description, String functionType, String template) {
         this.uuid = UUID.randomUUID().toString();
         this.functionName = functionName;
+        this.description = description;
         this.functionType = functionType;
         this.template = template;
     }
 
-    public static Template ofFunction(String functionName, String functionType, String template) {
-        return new Template(functionName, functionType, template);
+    public static Template ofFunction(String functionName, String description, String functionType, String template) {
+        return new Template(functionName, description, functionType, template);
     }
 
     public static Template ofConstraint(String template) {

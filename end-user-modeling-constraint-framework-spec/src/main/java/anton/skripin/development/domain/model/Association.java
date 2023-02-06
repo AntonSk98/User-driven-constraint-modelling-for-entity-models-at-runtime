@@ -1,5 +1,6 @@
 package anton.skripin.development.domain.model;
 
+import anton.skripin.development.domain.ValidationUtils;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,8 +14,13 @@ import lombok.Setter;
 public class Association {
     private String uuid;
     private String name;
-    private String path;
+    private String navigation;
     private String multiplicity;
     private String targetModelElementUuid;
     private String targetModelElementName;
+
+    public void setNavigation(String navigation) {
+        ValidationUtils.validateNavigation(navigation);
+        this.navigation = navigation;
+    }
 }
