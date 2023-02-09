@@ -1,2 +1,4 @@
 ModelsAtRuntimeConstraints/.idea/
 **/target/
+**/idea/
+end-user-modeling-constraint-framework-gremlin/.idea/

@@ -1,0 +1,35 @@
+{
+  "uuid": "b034e9ef-88fe-49d8-8d3e-be42ca32ef41",
+  "name": "Spring name > 1 and < 10 for all project SW is working on",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Ooops!",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "COLLECTION_BASED_FUNCTION",
+    "name": "FOR_ALL",
+    "navigation": "works_on(Project).consists_of(Sprint)",
+    "lambdaFunction": {
+      "@type": "LOGICAL_FUNCTION",
+      "name": "AND",
+      "booleanFunctions": [
+        {
+          "@type": "STRING_BASED_FUNCTION",
+          "name": "MIN_LENGTH",
+          "attribute": "<Sprint>name",
+          "params": {
+            "min_length": "1"
+          }
+        },
+        {
+          "@type": "STRING_BASED_FUNCTION",
+          "name": "MAX_LENGTH",
+          "attribute": "<Sprint>name",
+          "params": {
+            "max_length": "10"
+          }
+        }
+      ]
+    }
+  }
+}

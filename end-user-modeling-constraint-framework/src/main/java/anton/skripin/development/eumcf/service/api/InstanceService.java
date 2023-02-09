@@ -1,11 +1,14 @@
 package anton.skripin.development.eumcf.service.api;
 
+import anton.skripin.development.domain.constraint.Constraint;
 import anton.skripin.development.domain.instance.InstanceElement;
 import anton.skripin.development.domain.instance.Link;
 import anton.skripin.development.domain.instance.Slot;
+import anton.skripin.development.service.api.ConstraintValidationService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface InstanceService {
 
@@ -68,4 +71,21 @@ public interface InstanceService {
      * @return {@link InstanceElement}
      */
     InstanceElement withAssociations(InstanceElement instanceElement);
+
+    /**
+     * Returns a required instance graph based on required subgraph elements.
+     * It requires a set of all necessary model element types for every constraint function defined under one constraint.
+     * Example: Constraint: {constraintFunctionA: this, SoftwareEngineer, Project; constraintFunctionB: this, Sprint}.
+     * The resulting structure of an input is the following:
+     * [[SoftwareEngineer, Project],[Sprint]]
+     * Hence, before checking the constraint upon the instantiation of 'this', the function does the following:
+     * 1) get all associated instances of this with SoftwareEngineer -> get all associated instances of SoftwareEngineer, that is associated with this, with Spring
+     * 2) get all associated instances of this with Spring
+     * As a result the necessary instance graph will be returned.
+     *
+     * @param instanceUuid uuid of an instance for constraint validation
+     * @param requiredSubgraphElements See {@link ConstraintValidationService#getRequiredSubgraphElements(Constraint)}
+     * @return subgraph needed for constraint evaluation
+     */
+    List<InstanceElement> getRequiredSubgraph(String instanceUuid, Set<Set<String>> requiredSubgraphElements);
 }

@@ -1,12 +1,18 @@
 package anton.skripin.development.eumcf.controller;
 
+import ansk.development.mapper.GremlinConstraintMapper;
 import anton.skripin.development.domain.constraint.Constraint;
+import anton.skripin.development.domain.instance.InstanceElement;
+import anton.skripin.development.eumcf.service.api.InstanceService;
 import anton.skripin.development.exception.constraint.PersistConstraintException;
 import anton.skripin.development.service.api.ConstraintPersistenceService;
 import anton.skripin.development.service.api.ConstraintValidationService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.Set;
 
 /**
  * Rest controller to manage constraints.
@@ -18,16 +24,20 @@ public class ConstraintController {
 
     private final ConstraintValidationService constraintValidationService;
 
+    private final InstanceService instanceService;
+
 
     /**
      * Constructor.
      *
      * @param constraintPersistenceService See {@link ConstraintPersistenceService}
      * @param constraintValidationService  See {@link ConstraintValidationService}
+     * @param instanceService              See {@link InstanceService}
      */
-    public ConstraintController(ConstraintPersistenceService constraintPersistenceService, ConstraintValidationService constraintValidationService) {
+    public ConstraintController(ConstraintPersistenceService constraintPersistenceService, ConstraintValidationService constraintValidationService, InstanceService instanceService) {
         this.constraintPersistenceService = constraintPersistenceService;
         this.constraintValidationService = constraintValidationService;
+        this.instanceService = instanceService;
     }
 
     /**
@@ -59,9 +69,11 @@ public class ConstraintController {
      * @return todo return a domain object
      */
     @GetMapping("/validate_constraint_by_id")
-    public boolean validateConstraintById(@RequestParam String uuid) {
-        Constraint constraint = constraintPersistenceService.getConstraintByUuid(uuid);
-        constraintValidationService.getRequiredSubgraphElements(constraint);
+    public boolean validateConstraintById(@RequestParam String instanceUuid, @RequestParam String constraintUuid) {
+        Constraint constraint = constraintPersistenceService.getConstraintByUuid(constraintUuid);
+        Set<Set<String>> requiredSubgraphElements = constraintValidationService.getRequiredSubgraphElements(constraint);
+        GremlinConstraintMapper gremlinConstraintMapper = new GremlinConstraintMapper();
+        List<InstanceElement> instanceGraph = instanceService.getRequiredSubgraph(instanceUuid, requiredSubgraphElements);
         System.out.println("It should be changed later!");
         return true;
     }

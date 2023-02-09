@@ -89,7 +89,7 @@
                                     <#if constraintsByType[type]??>
                                         <td>
                                             <#list constraintsByType[type] as constraint>
-                                                <div class="display-constraint-window" onclick="displayConstraintById('${constraint.uuid}')">${constraint?counter}) ${constraint.name}</div>
+                                                <div class="display-constraint-window" onclick="displayConstraintById('${instance.uuid}', '${constraint.uuid}')">${constraint?counter}) ${constraint.name}</div>
                                             </#list>
                                         </td>
                                     <#else>
@@ -120,6 +120,7 @@
 </div>
 
 <div class="constraint-details" id="constraint-details">
+    <input type="hidden" id="instance-id">
     <div class="title-constraint-detils">
         <div style="margin: 1em 2em; color: white; font-weight: bold;">Constraint details</div>
         <div class="close" onclick="closeDetailsPopup()">&times;</div>

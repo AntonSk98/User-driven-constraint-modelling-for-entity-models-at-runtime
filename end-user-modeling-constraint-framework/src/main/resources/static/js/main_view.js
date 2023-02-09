@@ -21,9 +21,10 @@ async function deleteInstanceById(uuid) {
     }
 }
 
-async function displayConstraintById(constraintId) {
+async function displayConstraintById(instanceId, constraintId) {
     toggleInputs(true);
     const result = await fetch('/get_constraint_by_id?' + new URLSearchParams({uuid: constraintId}))
+    document.getElementById('instance-id').value = instanceId;
     if (result.ok) {
         const constraint = await result.json();
         const textarea = document.getElementById('constraint-details-textarea');
@@ -37,7 +38,11 @@ async function validateConstraint() {
     const textarea = document.getElementById('constraint-details-textarea');
     const constraint = JSON.parse(textarea.value);
     const constraintUuid = constraint.uuid;
-    const result = await fetch('validate_constraint_by_id?' + new URLSearchParams({uuid: constraintUuid}));
+    const result = await fetch('validate_constraint_by_id?' + new URLSearchParams({
+        instanceUuid: document.getElementById('instance-id').value,
+        constraintUuid: constraintUuid,
+
+    }));
     if (result.ok) {
         closeDetailsPopup();
     }

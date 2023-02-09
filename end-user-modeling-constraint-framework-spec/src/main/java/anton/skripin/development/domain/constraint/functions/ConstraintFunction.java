@@ -41,7 +41,6 @@ public abstract class ConstraintFunction {
      * Name of a function
      *
      * @param name        name
-     * @param description function description
      */
     public ConstraintFunction(String name) {
         assert StringUtils.isNotBlank(name);

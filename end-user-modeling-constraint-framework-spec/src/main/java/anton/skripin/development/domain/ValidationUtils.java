@@ -1,6 +1,7 @@
 package anton.skripin.development.domain;
 
 import anton.skripin.development.domain.constraint.functions.ConstraintFunction;
+import anton.skripin.development.domain.constraint.functions.types.CollectionBasedFunction;
 import anton.skripin.development.domain.constraint.functions.types.LogicalFunction;
 import anton.skripin.development.exception.constraint.function.FunctionException;
 import anton.skripin.development.exception.constraint.function.FunctionValidationException;
@@ -66,8 +67,16 @@ public class ValidationUtils {
      * @param constraintFunction {@link ConstraintFunction}
      */
     public static void validateIsNotLogicalFunction(String function, ConstraintFunction constraintFunction) {
-        if (constraintFunction instanceof LogicalFunction) {
+        if (constraintFunction.booleanFunctions().isPresent()) {
             throw new FunctionException("Logical function is not allowed inside " + function);
         }
+    }
+
+    public static void validateLambdaFunctionHasNoNavigation(String function, ConstraintFunction constraintFunction) {
+        if (constraintFunction.navigation().isPresent()) {
+            throw new FunctionException("Functions with navigations are not supported inside " + function);
+        }
+        constraintFunction.booleanFunctions()
+                .ifPresent(nestedFunctions -> nestedFunctions.forEach(nestedFunction -> validateLambdaFunctionHasNoNavigation(function, nestedFunction)));
     }
 }

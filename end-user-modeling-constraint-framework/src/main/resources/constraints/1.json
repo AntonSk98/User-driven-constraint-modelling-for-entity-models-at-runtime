@@ -1,40 +1,50 @@
 {
-  "id": 1,
-  "violationMessage": "Test",
-  "violationLevel": "WARN",
+  "uuid": "5795852a-1d4e-4994-ba18-863bf22ba5f7",
+  "name": "Provide a meaningful name for a constraint.",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
   "constraintFunction": {
     "@type": "LOGICAL_FUNCTION",
     "name": "OR",
-    "nestedFunction": [
+    "booleanFunctions": [
       {
-        "@type": "STRING_BASED_FUNCTION",
-        "name": "GREATER_THAN",
-        "targetId": "1",
-        "targetField": "salary",
-        "params": {
-          "greaterThan": "25000"
+        "@type": "COLLECTION_BASED_FUNCTION",
+        "name": "FOR_ALL",
+        "navigation": "works_on(Project).consists_of(Sprint)",
+        "lambdaFunction": {
+          "@type": "STRING_BASED_FUNCTION",
+          "name": "MIN_LENGTH",
+          "attribute": "<Sprint>name",
+          "params": {
+            "min_length": "1"
+          }
         }
       },
       {
         "@type": "LOGICAL_FUNCTION",
         "name": "AND",
-        "nestedFunction": [
+        "booleanFunctions": [
           {
-            "@type": "STRING_BASED_FUNCTION",
-            "name": "LESS_THAN",
-            "targetId": "2",
-            "targetField": "age",
-            "params": {
-              "lessThan": "16"
+            "@type": "COLLECTION_BASED_FUNCTION",
+            "name": "FOR_ALL",
+            "navigation": "takes_part_in(Sprint)",
+            "lambdaFunction": {
+              "@type": "STRING_BASED_FUNCTION",
+              "name": "MAX_LENGTH",
+              "attribute": "<Sprint>name",
+              "params": {
+                "max_length": "10"
+              }
             }
           },
           {
             "@type": "STRING_BASED_FUNCTION",
-            "name": "GREATER_THAN",
-            "targetId": "2",
-            "targetField": "age",
+            "name": "MAX_LENGTH",
+            "attribute": "<SoftwareEngineer>name",
             "params": {
-              "greaterThan": "10"
+              "max_length": "5"
             }
           }
         ]

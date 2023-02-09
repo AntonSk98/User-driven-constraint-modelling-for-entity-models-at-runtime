@@ -6,6 +6,7 @@ import anton.skripin.development.domain.instance.Slot;
 import anton.skripin.development.eumcf.service.api.InstanceService;
 import anton.skripin.development.exception.instance.InstanceOperationException;
 import anton.skripin.development.mapper.InstanceMapper;
+import lombok.SneakyThrows;
 import modicio.core.DeepInstance;
 import modicio.core.Registry;
 import org.apache.commons.lang3.StringUtils;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Collectors;
 
 import static anton.skripin.development.eumcf.util.ScalaToJavaMapper.*;
 
@@ -154,6 +156,46 @@ public class InstanceServiceImpl implements InstanceService {
         } catch (ExecutionException | InterruptedException e) {
             throw new InstanceOperationException(e);
         }
+    }
+
+    @Override
+    @SneakyThrows
+    public List<InstanceElement> getRequiredSubgraph(String instanceUuid, Set<Set<String>> requiredSubgraphElements) {
+        Set<InstanceElement> instanceElements = new HashSet<>();
+        requiredSubgraphElements.forEach(modelElementsForConstraintFunction -> {
+            List<DeepInstance> nodesToVisit = new ArrayList<>();
+            try {
+                DeepInstance contextInstance = future(registry.get(instanceUuid)).get().get();
+                nodesToVisit.add(contextInstance);
+                instanceElements.add(instanceMapper.mapToInstanceElement(contextInstance));
+                for (String modelElement : modelElementsForConstraintFunction) {
+                    if (modelElement.equals(contextInstance.getTypeHandle().getTypeName())) {
+                        continue;
+                    }
+                    List<DeepInstance> temp = new ArrayList<>();
+                    for (DeepInstance node : nodesToVisit) {
+                        future(node.unfold()).get();
+                        temp.addAll(set(node.getDeepAssociations())
+                                .stream()
+                                .map(associationData -> {
+                                    try {
+                                        return future(registry.get(associationData.targetInstanceId())).get().get();
+                                    } catch (InterruptedException | ExecutionException e) {
+                                        throw new RuntimeException(e);
+                                    }
+                                })
+                                .filter(deepInstance -> deepInstance.getTypeHandle().getTypeName().equals(modelElement))
+                                .collect(Collectors.toSet()));
+                    }
+                    instanceElements.addAll(temp.stream().map(instanceMapper::mapToInstanceElement).toList());
+                    nodesToVisit.clear();
+                    nodesToVisit.addAll(temp);
+                }
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(String.format("Error occurred while trying to get a subgraph for instance %s", instanceUuid), e);
+            }
+        });
+        return instanceElements.stream().toList();
     }
 
     private void commonOperation(DeepInstance deepInstance, List<Slot> slots, List<Link> links) throws ExecutionException, InterruptedException {

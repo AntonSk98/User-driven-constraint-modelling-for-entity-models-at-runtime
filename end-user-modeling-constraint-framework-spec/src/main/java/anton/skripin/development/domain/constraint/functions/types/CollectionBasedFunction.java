@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static anton.skripin.development.domain.ValidationUtils.validateIsNotLogicalFunction;
-import static anton.skripin.development.domain.ValidationUtils.validateNavigation;
+import static anton.skripin.development.domain.ValidationUtils.*;
 
 /**
  * Defines an operation that must be performed on a collection with every traversal step satisfying a true condition.
@@ -26,20 +25,20 @@ public class CollectionBasedFunction extends ConstraintFunction {
     /**
      * Name of a function
      *
-     * @param name               name
-     * @param navigation         path to a collection attribute relatively to the context path
-     * @param constraintFunction {@link ConstraintFunction}
+     * @param name           name
+     * @param navigation     path to a collection attribute relatively to the context path
+     * @param lambdaFunction {@link ConstraintFunction}
      */
     @JsonCreator
     public CollectionBasedFunction(
             @JsonProperty("name") String name,
             @JsonProperty("navigation") String navigation,
-            @JsonProperty("constraintFunction") ConstraintFunction constraintFunction) {
+            @JsonProperty("lambdaFunction") ConstraintFunction lambdaFunction) {
         super(name);
         validateNavigation(navigation);
-        validateIsNotLogicalFunction(name, constraintFunction);
+        validateLambdaFunctionHasNoNavigation(name, lambdaFunction);
         this.navigation = navigation;
-        this.lambdaFunction = constraintFunction;
+        this.lambdaFunction = lambdaFunction;
     }
 
     public CollectionBasedFunction(
@@ -50,7 +49,7 @@ public class CollectionBasedFunction extends ConstraintFunction {
         super(name);
         if (!asTemplate) {
             validateNavigation(navigation);
-            validateIsNotLogicalFunction(name, constraintFunction);
+            validateLambdaFunctionHasNoNavigation(name, constraintFunction);
         }
         this.navigation = navigation;
         this.lambdaFunction = constraintFunction;

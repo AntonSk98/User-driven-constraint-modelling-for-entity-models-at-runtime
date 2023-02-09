@@ -47,7 +47,7 @@
 
 		<dependency>
 			<groupId>anton.skripin.development</groupId>
-			<artifactId>end-user-modeling-constraint-framework-spec</artifactId>
+			<artifactId>end-user-modeling-constraint-framework-gremlin</artifactId>
 			<version>1.0-SNAPSHOT</version>
 		</dependency>
 
