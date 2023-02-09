@@ -1,6 +1,7 @@
 package anton.skripin.development.eumcf.configuration;
 
 
+import ansk.development.service.GremlinConstraintValidationService;
 import anton.skripin.development.eumcf.mapper.ModicioInstanceMapper;
 import anton.skripin.development.eumcf.mapper.ModicioModelMapper;
 import anton.skripin.development.mapper.InstanceMapper;
@@ -85,7 +86,7 @@ public class ConstraintConfiguration {
      */
     @Bean
     public ConstraintValidationService constraintValidationService() {
-        return new AbstractConstraintValidationService();
+        return new GremlinConstraintValidationService();
     }
 
 

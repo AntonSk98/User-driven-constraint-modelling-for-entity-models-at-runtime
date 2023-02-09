@@ -7,6 +7,7 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversalSo
 import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
 
 import java.util.List;
+import java.util.Objects;
 
 public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<TinkerGraph> {
 
@@ -17,13 +18,14 @@ public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<Tin
 
     @Override
     public TinkerGraph mapToPlatformSpecificGraph(List<InstanceElement> instanceElementGraph) {
+        final String uuid = "uuid";
         TinkerGraph tinkerGraph = TinkerGraph.open();
         GraphTraversalSource graphSource = tinkerGraph.traversal();
 
         instanceElementGraph.forEach(instanceElement -> {
             var instanceVertex = graphSource
                     .addV(instanceElement.getInstanceOf())
-                    .as(instanceElement.getUuid());
+                    .property("uuid", instanceElement.getUuid());
 
             instanceElement.getSlots().forEach(slot -> {
                 instanceVertex.property(slot.getKey(), slot.getValue());
@@ -33,12 +35,15 @@ public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<Tin
 
         instanceElementGraph
                 .stream()
+                .filter(instanceElement -> Objects.nonNull(instanceElement.getLinks()))
                 .flatMap(instanceElement -> instanceElement.getLinks().stream())
                 .forEach(link -> {
-                    graphSource.addE(link.getName())
-                            .from(link.getInstanceUuid())
-                            .to(link.getTargetInstanceUuid())
-                            .iterate();
+                    if (graphSource.V().has(uuid, link.getTargetInstanceUuid()).hasNext()) {
+                        graphSource.addE(link.getName())
+                                .from(graphSource.V().has(uuid, link.getInstanceUuid()).next())
+                                .to(graphSource.V().has(uuid, link.getTargetInstanceUuid()).next())
+                                .iterate();
+                    }
                 });
         var vm = graphSource.V().elementMap().toList();
         System.out.println(vm);
