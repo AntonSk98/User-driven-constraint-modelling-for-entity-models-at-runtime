@@ -1,16 +1,13 @@
 package ansk.development.mapper;
 
 import ansk.development.GremlinRegistry;
-import ansk.development.dsl.ConstraintGraphTraversal;
+import ansk.development.domain.GremlinConstraint;
 import ansk.development.dsl.ConstraintGraphTraversalSource;
-import ansk.development.dsl.__;
 import ansk.development.exception.GraphTransformationException;
 import anton.skripin.development.domain.constraint.Constraint;
+import anton.skripin.development.domain.constraint.functions.ConstraintFunction;
 import anton.skripin.development.domain.instance.InstanceElement;
 import anton.skripin.development.mapper.AbstractToPSConstraintMapper;
-import lombok.SneakyThrows;
-import org.apache.tinkerpop.gremlin.structure.Vertex;
-import org.apache.tinkerpop.gremlin.tinkergraph.structure.TinkerGraph;
 
 import java.util.List;
 import java.util.Objects;
@@ -18,7 +15,11 @@ import java.util.Objects;
 public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<ConstraintGraphTraversalSource> {
 
     @Override
-    public ConstraintGraphTraversalSource mapToPlatformSpecificConstraint(Constraint constraint) {
+    public ConstraintGraphTraversalSource mapToPlatformSpecificConstraint(String uuid, Constraint constraint) {
+        GremlinConstraint gremlinConstraint = new GremlinConstraint();
+        gremlinConstraint.setContext(GremlinRegistry.getConstraintTraversal().instance(uuid));
+        ConstraintFunction constraintFunction = constraint.getConstraintFunction();
+        constraintFunction.attribute().ifPresent();
         return null;
     }
 

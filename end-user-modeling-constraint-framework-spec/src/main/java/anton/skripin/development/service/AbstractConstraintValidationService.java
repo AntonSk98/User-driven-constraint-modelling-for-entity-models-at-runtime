@@ -54,7 +54,7 @@ public class AbstractConstraintValidationService implements ConstraintValidation
     }
 
     @Override
-    public Object validateConstraint(List<InstanceElement> subgraphForValidation, Constraint constraint) {
+    public Object validateConstraint(String uuid, List<InstanceElement> subgraphForValidation, Constraint constraint) {
         throw new UnsupportedOperationException("It is an abstract validation service!" +
                 "Validation is not supported!" +
                 "Please use the constraint validation of one of the constraint engine provider or implement it yourself!");

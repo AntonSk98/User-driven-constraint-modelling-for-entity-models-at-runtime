@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static anton.skripin.development.domain.ValidationUtils.validateAttribute;
 import static anton.skripin.development.domain.ValidationUtils.validateNavigation;
@@ -52,7 +53,7 @@ public class ValidationServiceTest {
         assertEquals(1, subgraphTypesSet
                 .stream()
                 .filter(list -> !list.contains("Project"))
-                .toList()
+                .collect(Collectors.toList())
                 .stream()
                 .findFirst()
                 .orElseThrow()
@@ -60,7 +61,7 @@ public class ValidationServiceTest {
         assertEquals(3, subgraphTypesSet
                 .stream()
                 .filter(list -> list.contains("Project"))
-                .toList()
+                .collect(Collectors.toList())
                 .stream()
                 .findFirst()
                 .orElseThrow()
@@ -68,7 +69,7 @@ public class ValidationServiceTest {
         var underTest = subgraphTypesSet
                 .stream()
                 .filter(list -> list.contains("Project"))
-                .toList()
+                .collect(Collectors.toList())
                 .stream()
                 .findFirst()
                 .orElseThrow();

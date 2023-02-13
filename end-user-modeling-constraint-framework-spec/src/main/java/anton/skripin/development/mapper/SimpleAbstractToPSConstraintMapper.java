@@ -20,7 +20,7 @@ public class SimpleAbstractToPSConstraintMapper implements AbstractToPSConstrain
      * @return {@link Constraint} in a JSON representation
      */
     @Override
-    public String mapToPlatformSpecificConstraint(Constraint constraint) {
+    public String mapToPlatformSpecificConstraint(String uuid, Constraint constraint) {
         try {
             return new ObjectMapper().writeValueAsString(constraint);
         } catch (JsonProcessingException e) {

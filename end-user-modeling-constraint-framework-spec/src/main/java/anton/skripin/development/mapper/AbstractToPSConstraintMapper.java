@@ -10,7 +10,7 @@ import java.util.List;
  * It maps the abstract syntax definition of a {@link Constraint} to a platform specific one.
  */
 public interface AbstractToPSConstraintMapper <PlatformSpecificGraph>{
-    PlatformSpecificGraph mapToPlatformSpecificConstraint(Constraint constraint);
+    PlatformSpecificGraph mapToPlatformSpecificConstraint(String uuid, Constraint constraint);
 
     PlatformSpecificGraph mapToPlatformSpecificGraph(List<InstanceElement> subgraphForValidation);
 }

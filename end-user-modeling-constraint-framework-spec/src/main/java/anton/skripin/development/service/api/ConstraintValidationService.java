@@ -21,9 +21,10 @@ public interface ConstraintValidationService {
 
     /**
      * Validates a constraint.
+     * @param uuid of an element that should be evaluated against constraint conformance
      * @param subgraphForValidation subgraph of instance data and relations
      * @param constraint {@link Constraint}
      * @return evaluation report
      */
-    Object validateConstraint(List<InstanceElement> subgraphForValidation, Constraint constraint);
+    Object validateConstraint(String uuid, List<InstanceElement> subgraphForValidation, Constraint constraint);
 }
