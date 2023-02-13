@@ -7,6 +7,13 @@ import java.util.List;
  */
 public class NavigationUtils {
 
+    /**
+     * Converts specification-based navigation into the list of associations.
+     * From works_on(Project).consists_of(Sprint) to List.of("works_on", "consists_of")
+     *
+     * @param navigation navigation
+     * @return list of associations
+     */
     public static List<String> getNavigationRoot(String navigation) {
         ValidationUtils.validateNavigation(navigation);
         String navigationWithoutTypes = navigation.replaceAll("\\(\\w+\\)", "");
