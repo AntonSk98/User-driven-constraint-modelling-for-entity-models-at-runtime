@@ -39,6 +39,7 @@ public class CollectionBasedFunction extends ConstraintFunction {
         validateLambdaFunctionHasNoNavigation(name, lambdaFunction);
         this.navigation = navigation;
         this.lambdaFunction = lambdaFunction;
+        lambdaFunction.setParentFunction(this);
     }
 
     public CollectionBasedFunction(

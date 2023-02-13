@@ -88,4 +88,8 @@ public abstract class ConstraintFunction {
      * @return constraint function
      */
     public abstract Optional<ConstraintFunction> lambdaFunction();
+
+    public void setParentFunction(ConstraintFunction parentFunction) {
+        this.parentFunction = parentFunction;
+    }
 }

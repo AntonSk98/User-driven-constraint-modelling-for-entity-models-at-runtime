@@ -45,7 +45,7 @@ public class Main {
         TinkerGraph tg = TinkerGraph.open();
         GraphTraversalSource g = tg.traversal();
 
-        createTestGraphFromData(g, testEmployees, testCompanies);
+        //createTestGraphFromData(g, testEmployees, testCompanies);
 
         System.out.println(g);
 
@@ -136,7 +136,7 @@ public class Main {
         Person egor = new Person("Egor", 12, "12000", company);
         Person petr = new Person("Petr", 26, "30000", company);
 
-        company.setEmployees(employees);
+        company.setEmployees(List.of(anton, egor, petr));
         return employees;
     }
 

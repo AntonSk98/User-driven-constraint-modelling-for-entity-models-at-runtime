@@ -32,6 +32,7 @@ public class LogicalFunction extends ConstraintFunction {
         super(name);
         assert nestedFunctions != null && nestedFunctions.size() >= 2;
         this.booleanFunctions = nestedFunctions;
+        this.booleanFunctions.forEach(constraintFunction -> constraintFunction.setParentFunction(this));
     }
 
     @Override

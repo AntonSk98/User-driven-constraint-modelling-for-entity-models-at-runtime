@@ -1,5 +1,6 @@
 package ansk.development;
 
+import ansk.development.exception.GraphTransformationException;
 import anton.skripin.development.domain.instance.InstanceElement;
 import anton.skripin.development.domain.instance.Link;
 import anton.skripin.development.domain.instance.Slot;
@@ -51,7 +52,7 @@ public class Registry {
         var swslot3 = new Slot();
         swslot3.setInstanceUuid("4422909f-3ed0-44b4-b506-917d5c92ac67");
         swslot3.setKey("name");
-        swslot3.setValue("Anton");
+        swslot3.setValue("John");
 
         var swlink1 = new Link();
         swlink1.setInstanceUuid("ea9f52ee-a86f-48f1-b9c3-b259764a6b04");
@@ -83,7 +84,7 @@ public class Registry {
         var prslot2 = new Slot();
         prslot2.setInstanceUuid("24620947-6e86-4f39-8365-40247265c9ce");
         prslot2.setKey("responsible");
-        prslot2.setValue("Anton");
+        prslot2.setValue("John");
         var prslot3 = new Slot();
         prslot3.setInstanceUuid("24620947-6e86-4f39-8365-40247265c9ce");
         prslot3.setKey("started");

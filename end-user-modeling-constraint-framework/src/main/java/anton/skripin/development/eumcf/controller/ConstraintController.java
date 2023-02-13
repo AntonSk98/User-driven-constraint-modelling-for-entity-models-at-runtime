@@ -65,7 +65,8 @@ public class ConstraintController {
     /**
      * Validates a constraint by a given uuid.
      *
-     * @param uuid uuid of a persisted constraint
+     * @param instanceUuid instanceUuid
+     * @param constraintUuid uuid of a persisted constraint
      * @return todo return a domain object
      */
     @GetMapping("/validate_constraint_by_id")

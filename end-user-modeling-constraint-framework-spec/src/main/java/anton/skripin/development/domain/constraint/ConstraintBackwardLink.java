@@ -1,5 +1,8 @@
 package anton.skripin.development.domain.constraint;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.util.List;
 
 /**
@@ -29,5 +32,10 @@ import java.util.List;
  * the following backward constraint link must be attached to any instance of b*:
  * b1: {slots: [a->value, ...], links: [], links[{ targetInstanceUuid-> b1, constraintUuid: Constraint-X, contextInstanceUuid -> a1}]}
  */
-public record ConstraintBackwardLink(String targetInstanceUuid, String contextInstanceUuid, String constraintUuid) {
+@Getter
+@AllArgsConstructor
+public class ConstraintBackwardLink {
+    String targetInstanceUuid;
+    String contextInstanceUuid;
+    String constraintUuid;
 }

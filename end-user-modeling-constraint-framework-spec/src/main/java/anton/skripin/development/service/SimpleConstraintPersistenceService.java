@@ -123,7 +123,7 @@ public class SimpleConstraintPersistenceService implements ConstraintPersistence
             return false;
         } else {
             return linkedConstraints
-                    .removeIf(constraintBackwardLink -> constraintUuid.equals(constraintBackwardLink.constraintUuid()));
+                    .removeIf(constraintBackwardLink -> constraintUuid.equals(constraintBackwardLink.getConstraintUuid()));
         }
     }
 
@@ -134,6 +134,6 @@ public class SimpleConstraintPersistenceService implements ConstraintPersistence
         return this.backwardLinksSpace.get(targetInstanceUuid) != null && this.backwardLinksSpace
                 .get(targetInstanceUuid)
                 .stream()
-                .anyMatch(constraintBackwardLink -> constraintUuid.equals(constraintBackwardLink.constraintUuid()));
+                .anyMatch(constraintBackwardLink -> constraintUuid.equals(constraintBackwardLink.getConstraintUuid()));
     }
 }
