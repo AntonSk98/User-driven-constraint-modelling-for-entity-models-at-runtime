@@ -1,7 +1,6 @@
 package anton.skripin.development.domain;
 
 import anton.skripin.development.domain.constraint.functions.ConstraintFunction;
-import anton.skripin.development.domain.constraint.functions.types.CollectionBasedFunction;
 import anton.skripin.development.domain.constraint.functions.types.LogicalFunction;
 import anton.skripin.development.exception.constraint.function.FunctionException;
 import anton.skripin.development.exception.constraint.function.FunctionValidationException;
