@@ -44,7 +44,7 @@ public interface ConstraintGraphTraversalDsl<S, E> extends GraphTraversal.Admin<
      * @param lambdaFunction constraint that must be resolved to true
      * @return true if at least one constraint is valid
      */
-    default GraphTraversal<S, Boolean> forSome(List<String> navigation, GraphTraversal<S, Boolean> lambdaFunction) {
+    default GraphTraversal<S, Boolean> forSome(List<String> navigation, GraphTraversal<?, Boolean> lambdaFunction) {
         for (String type : navigation) {
             out(type);
         }
@@ -59,7 +59,7 @@ public interface ConstraintGraphTraversalDsl<S, E> extends GraphTraversal.Admin<
      * @param lambdaFunction constraint that must be resolved to false
      * @return true if all instances do not satisfy a constraint
      */
-    default GraphTraversal<S, Boolean> forNone(List<String> navigation, GraphTraversal<S, Boolean> lambdaFunction) {
+    default GraphTraversal<S, Boolean> forNone(List<String> navigation, GraphTraversal<?, Boolean> lambdaFunction) {
         for (String type : navigation) {
             out(type);
         }
@@ -75,7 +75,7 @@ public interface ConstraintGraphTraversalDsl<S, E> extends GraphTraversal.Admin<
      * @param matches        number of time a constraint must match
      * @return true if number of constraint matches equals to a given parameter
      */
-    default GraphTraversal<S, Boolean> forExactly(List<String> navigation, GraphTraversal<S, Boolean> lambdaFunction, int matches) {
+    default GraphTraversal<S, Boolean> forExactly(List<String> navigation, GraphTraversal<?, Boolean> lambdaFunction, int matches) {
         for (String type : navigation) {
             out(type);
         }
@@ -196,9 +196,9 @@ public interface ConstraintGraphTraversalDsl<S, E> extends GraphTraversal.Admin<
      * @param nestedFunctions list of nested constraints
      * @return true if all nested constraints are evaluated to true
      */
-    default GraphTraversal<S, Boolean> and(List<GraphTraversal<S, Boolean>> nestedFunctions) {
+    default GraphTraversal<S, Boolean> and(List<GraphTraversal<?, Boolean>> nestedFunctions) {
         List<Boolean> results = new ArrayList<>();
-        for (GraphTraversal<S, Boolean> nestedFunction : nestedFunctions) {
+        for (GraphTraversal<?, Boolean> nestedFunction : nestedFunctions) {
             GraphTraversal.Admin<S, E> nestedResult = this.asAdmin().clone();
             if (nestedResult.getGraph().isEmpty() || nestedResult.getGraph().equals(EmptyGraph.instance())) {
                 throw new GraphConstraintException("AND() function must be applied within a context!");
@@ -215,9 +215,9 @@ public interface ConstraintGraphTraversalDsl<S, E> extends GraphTraversal.Admin<
      * @param nestedFunctions list of nested constraints
      * @return true if at least one among nested constraints is evaluated to true
      */
-    default GraphTraversal<S, Boolean> or(List<GraphTraversal<S, Boolean>> nestedFunctions) {
+    default GraphTraversal<S, Boolean> or(List<GraphTraversal<?, Boolean>> nestedFunctions) {
         List<Boolean> results = new ArrayList<>();
-        for (GraphTraversal<S, Boolean> nestedFunction : nestedFunctions) {
+        for (GraphTraversal<?, Boolean> nestedFunction : nestedFunctions) {
             GraphTraversal.Admin<S, E> nestedResult = this.asAdmin().clone();
             if (nestedResult.getGraph().isEmpty() || nestedResult.getGraph().equals(EmptyGraph.instance())) {
                 throw new GraphConstraintException("OR() function must be applied within a context!");
