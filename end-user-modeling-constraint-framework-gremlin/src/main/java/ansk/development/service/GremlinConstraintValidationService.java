@@ -9,7 +9,7 @@ import java.util.List;
 public class GremlinConstraintValidationService extends AbstractConstraintValidationService {
 
     @Override
-    public Object validateConstraint(List<InstanceElement> subgraphForValidation, Constraint constraint) {
-        return super.validateConstraint(subgraphForValidation, constraint);
+    public Object validateConstraint(String uuid, List<InstanceElement> subgraphForValidation, Constraint constraint) {
+        return super.validateConstraint(uuid, subgraphForValidation, constraint);
     }
 }

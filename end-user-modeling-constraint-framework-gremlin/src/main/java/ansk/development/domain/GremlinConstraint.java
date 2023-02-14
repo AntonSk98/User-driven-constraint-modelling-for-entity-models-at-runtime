@@ -1,27 +1,31 @@
 package ansk.development.domain;
 
+import ansk.development.dsl.ConstraintGraphTraversal;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 public class GremlinConstraint {
 
-    private GraphTraversal<?, ?> context;
+    private ConstraintGraphTraversal<?, ?> context;
 
     private List<String> navigation;
 
-    private GraphTraversal<?, ?> lambdaFunction;
+    private GraphTraversal<?, Boolean> traversal;
+
+    private GraphTraversal<?, Boolean> lambdaFunction;
 
     private Map<String, String> params;
 
     private String attribute;
 
-    private List<GraphTraversal<?, ?>> nestedFunctions;
+    private List<GraphTraversal<?, Boolean>> nestedFunctions;
 
 
-    public Optional<GraphTraversal<?, ?>> context() {
+    public Optional<ConstraintGraphTraversal<?, ?>> context() {
         return Optional.ofNullable(context);
     }
 
@@ -29,7 +33,7 @@ public class GremlinConstraint {
         return Optional.ofNullable(navigation);
     }
 
-    public Optional<GraphTraversal<?, ?>> lambdaFunction() {
+    public Optional<GraphTraversal<?, Boolean>> lambdaFunction() {
         return Optional.ofNullable(lambdaFunction);
     }
 
@@ -41,37 +45,42 @@ public class GremlinConstraint {
         return Optional.ofNullable(attribute);
     }
 
-    public Optional<List<GraphTraversal<?, ?>>> nestedFunctions() {
+    public Optional<List<GraphTraversal<?, Boolean>>> nestedFunctions() {
         return Optional.ofNullable(nestedFunctions);
     }
 
-    public GremlinConstraint setContext(GraphTraversal<?, ?> context) {
+    public void setContext(ConstraintGraphTraversal<?, ?> context) {
         this.context = context;
-        return this;
     }
 
-    public GremlinConstraint setNavigation(List<String> navigation) {
+    public void setNavigation(List<String> navigation) {
         this.navigation = navigation;
-        return this;
     }
 
-    public GremlinConstraint setLambdaFunction(GraphTraversal<?, ?> lambdaFunction) {
+    public void setLambdaFunction(GraphTraversal<?, Boolean> lambdaFunction) {
         this.lambdaFunction = lambdaFunction;
-        return this;
     }
 
-    public GremlinConstraint setParams(Map<String, String> params) {
+    public void setParams(Map<String, String> params) {
         this.params = params;
-        return this;
     }
 
-    public GremlinConstraint setAttribute(String attribute) {
+    public void setAttribute(String attribute) {
         this.attribute = attribute;
-        return this;
     }
 
-    public GremlinConstraint setNestedFunctions(List<GraphTraversal<?, ?>> nestedFunctions) {
-        this.nestedFunctions = nestedFunctions;
-        return this;
+    public void addNestedFunction(GraphTraversal<?, Boolean> nestedFunction) {
+        if (this.nestedFunctions == null) {
+            this.nestedFunctions = new ArrayList<>();
+        }
+        this.nestedFunctions.add(nestedFunction);
+    }
+
+    public void setTraversal(GraphTraversal<?, Boolean> traversal) {
+        this.traversal = traversal;
+    }
+
+    public GraphTraversal<?, Boolean> getTraversal() {
+        return traversal;
     }
 }

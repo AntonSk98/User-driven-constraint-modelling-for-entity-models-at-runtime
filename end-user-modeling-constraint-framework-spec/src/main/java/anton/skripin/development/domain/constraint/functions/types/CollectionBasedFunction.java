@@ -21,6 +21,8 @@ public class CollectionBasedFunction extends ConstraintFunction {
 
     private final ConstraintFunction lambdaFunction;
 
+    private final Map<String, String> params;
+
 
     /**
      * Name of a function
@@ -33,19 +35,22 @@ public class CollectionBasedFunction extends ConstraintFunction {
     public CollectionBasedFunction(
             @JsonProperty("name") String name,
             @JsonProperty("navigation") String navigation,
-            @JsonProperty("lambdaFunction") ConstraintFunction lambdaFunction) {
+            @JsonProperty("lambdaFunction") ConstraintFunction lambdaFunction,
+            @JsonProperty("params") Map<String, String> params) {
         super(name);
         validateNavigation(navigation);
         validateLambdaFunctionHasNoNavigation(name, lambdaFunction);
         this.navigation = navigation;
         this.lambdaFunction = lambdaFunction;
-        lambdaFunction.setParentFunction(this);
+        this.params = params;
+        this.lambdaFunction.setParentFunction(this);
     }
 
     public CollectionBasedFunction(
             String name,
             String navigation,
             ConstraintFunction constraintFunction,
+            Map<String, String> params,
             boolean asTemplate) {
         super(name);
         if (!asTemplate) {
@@ -54,6 +59,8 @@ public class CollectionBasedFunction extends ConstraintFunction {
         }
         this.navigation = navigation;
         this.lambdaFunction = constraintFunction;
+        this.params = params;
+        this.lambdaFunction.setParentFunction(this);
     }
 
     @Override
@@ -68,7 +75,7 @@ public class CollectionBasedFunction extends ConstraintFunction {
 
     @Override
     public Optional<Map<String, String>> params() {
-        return Optional.empty();
+        return Optional.of(params);
     }
 
     @Override

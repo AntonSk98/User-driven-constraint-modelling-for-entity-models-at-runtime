@@ -1,5 +1,6 @@
 package anton.skripin.development.domain.template;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -18,6 +19,7 @@ import java.util.UUID;
  */
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Template {
     private String uuid;
     private String functionName;

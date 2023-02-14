@@ -29,7 +29,7 @@ public interface ConstraintGraphTraversalDsl<S, E> extends GraphTraversal.Admin<
      * @param lambdaFunction constraint that must be resolved to true
      * @return true if all constraints are valid
      */
-    default GraphTraversal<S, Boolean> forAll(List<String> navigation, GraphTraversal<S, Boolean> lambdaFunction) {
+    default GraphTraversal<S, Boolean> forAll(List<String> navigation, GraphTraversal<?, Boolean> lambdaFunction) {
         for (String type : navigation) {
             out(type);
         }

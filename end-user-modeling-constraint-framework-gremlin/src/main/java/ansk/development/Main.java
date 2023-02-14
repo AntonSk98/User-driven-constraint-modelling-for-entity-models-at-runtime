@@ -10,15 +10,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import java.lang.management.ManagementFactory;
 import java.util.List;
 
-import static ansk.development.ConstraintTest.FIRST_CONSTRAINT;
-import static ansk.development.ConstraintTest.SIMPLE_CONSTRAINT;
+import static ansk.development.ConstraintTest.*;
 
 public class Main {
     public static void main(String[] args) throws JsonProcessingException {
         List<InstanceElement> instances = Registry.getSubgraph();
         GremlinConstraintMapper constraintMapper = new GremlinConstraintMapper();
         constraintMapper.mapToPlatformSpecificGraph(instances);
-        constraintMapper.mapToPlatformSpecificConstraint("ea9f52ee-a86f-48f1-b9c3-b259764a6b04", new ObjectMapper().readValue(SIMPLE_CONSTRAINT, Constraint.class));
+        constraintMapper.mapToPlatformSpecificConstraint("ea9f52ee-a86f-48f1-b9c3-b259764a6b04", new ObjectMapper().readValue(FOR_ALL_CONSTRAINT, Constraint.class));
 
     }
 }

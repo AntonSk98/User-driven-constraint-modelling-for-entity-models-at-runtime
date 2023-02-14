@@ -33,7 +33,7 @@ public class ValidationServiceTest {
                 "works_on(Project).consists_of(Sprint)",
                 new StringBasedFunction("minLength",
                         "<Sprint>name",
-                        Collections.emptyMap()));
+                        Collections.emptyMap()), Collections.emptyMap());
 
         ConstraintFunction and = new LogicalFunction("and",
                 List.of(minLength, forAll));

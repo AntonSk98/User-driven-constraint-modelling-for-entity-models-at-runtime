@@ -73,4 +73,26 @@ public class ConstraintTest {
             "    ]\n" +
             "  }\n" +
             "}";
+
+    public static String FOR_ALL_CONSTRAINT = "{\n" +
+            "  \"uuid\": \"e99e5f3e-af5e-4c65-985a-34c74eae4655\",\n" +
+            "  \"name\": \"Test three.\",\n" +
+            "  \"modelElementUuid\": \"#\",\n" +
+            "  \"modelElementType\": \"SoftwareEngineer\",\n" +
+            "  \"violationMessage\": \"Oops! Broken constraint!\",\n" +
+            "  \"violationLevel\": \"ERROR\",\n" +
+            "  \"constraintFunction\": {\n" +
+            "    \"@type\": \"COLLECTION_BASED_FUNCTION\",\n" +
+            "    \"name\": \"FOR_ALL\",\n" +
+            "    \"navigation\": \"works_on(Project).consists_of(Sprint)\",\n" +
+            "    \"lambdaFunction\": {\n" +
+            "      \"@type\": \"STRING_BASED_FUNCTION\",\n" +
+            "      \"name\": \"MIN_LENGTH\",\n" +
+            "      \"attribute\": \"<Sprint>name\",\n" +
+            "      \"params\": {\n" +
+            "        \"min_length\": \"14\"\n" +
+            "      }\n" +
+            "    }\n" +
+            "  }\n" +
+            "}";
 }

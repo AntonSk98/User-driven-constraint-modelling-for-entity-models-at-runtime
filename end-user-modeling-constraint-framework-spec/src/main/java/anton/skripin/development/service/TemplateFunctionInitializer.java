@@ -4,9 +4,7 @@ import anton.skripin.development.domain.constraint.Constraint;
 import anton.skripin.development.domain.constraint.ViolationLevel;
 import anton.skripin.development.domain.constraint.functions.ConstraintFunction;
 import anton.skripin.development.domain.constraint.functions.FunctionType;
-import anton.skripin.development.domain.constraint.functions.types.CollectionBasedFunction;
-import anton.skripin.development.domain.constraint.functions.types.LogicalFunction;
-import anton.skripin.development.domain.constraint.functions.types.StringBasedFunction;
+import anton.skripin.development.domain.constraint.functions.types.*;
 import anton.skripin.development.domain.template.ObjectTemplatePlaceholder;
 import anton.skripin.development.domain.template.Template;
 import anton.skripin.development.exception.constraint.ConstraintTemplateCreationException;
@@ -16,7 +14,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.util.*;
 
-import static anton.skripin.development.domain.constraint.functions.FunctionDescription.*;
+import static anton.skripin.development.domain.constraint.functions.FunctionDescription.descriptionByName;
+import static anton.skripin.development.domain.constraint.functions.FunctionMetadata.FUNCTION_TO_PARAMETER_NAMES;
+import static anton.skripin.development.domain.constraint.functions.FunctionMetadata.FunctionNames.*;
 
 public class TemplateFunctionInitializer {
 
@@ -30,17 +30,35 @@ public class TemplateFunctionInitializer {
         return List.of(
                 createLogicalFunctionTemplate(AND),
                 createLogicalFunctionTemplate(OR),
-                createStringBasedFunctionTemplate(MIN_LENGTH, "min_length"),
-                createStringBasedFunctionTemplate(MAX_LENGTH, "max_length"),
-                createCollectionBasedFunction(FOR_ALL)
+
+                createStringBasedFunctionTemplate(MIN_LENGTH, FUNCTION_TO_PARAMETER_NAMES.get(MIN_LENGTH)),
+                createStringBasedFunctionTemplate(MAX_LENGTH, FUNCTION_TO_PARAMETER_NAMES.get(MAX_LENGTH)),
+                createStringBasedFunctionTemplate(UNIQUE, Collections.emptyList()),
+                createStringBasedFunctionTemplate(NOT_NULL_OR_EMPTY, Collections.emptyList()),
+
+                createCollectionBasedFunction(FOR_ALL, Collections.emptyList()),
+                createCollectionBasedFunction(FOR_SOME, Collections.emptyList()),
+                createCollectionBasedFunction(FOR_NONE, Collections.emptyList()),
+                createCollectionBasedFunction(FOR_EXACTLY, FUNCTION_TO_PARAMETER_NAMES.get(FOR_EXACTLY)),
+
+                createRangeBasedFunctionTemplate(GREATER_THAN, FUNCTION_TO_PARAMETER_NAMES.get(GREATER_THAN)),
+                createRangeBasedFunctionTemplate(GREATER_THAN_OR_EQUALS, FUNCTION_TO_PARAMETER_NAMES.get(GREATER_THAN_OR_EQUALS)),
+                createRangeBasedFunctionTemplate(LESS_THAN, FUNCTION_TO_PARAMETER_NAMES.get(LESS_THAN)),
+                createRangeBasedFunctionTemplate(LESS_THAN_OR_EQUALS, FUNCTION_TO_PARAMETER_NAMES.get(LESS_THAN_OR_EQUALS)),
+                createRangeBasedFunctionTemplate(EQUALS, FUNCTION_TO_PARAMETER_NAMES.get(EQUALS)),
+
+                createAssociationBasedTemplate(MIN_CARDINALITY, FUNCTION_TO_PARAMETER_NAMES.get(MIN_CARDINALITY)),
+                createAssociationBasedTemplate(MAX_CARDINALITY, FUNCTION_TO_PARAMETER_NAMES.get(MAX_CARDINALITY))
         );
     }
 
-    private Template createCollectionBasedFunction(String name) {
+    private Template createCollectionBasedFunction(String name, List<String> params) {
+        Map<String, String> templateParams = new HashMap<>();
+        params.forEach(param -> templateParams.put(param, templateProps.paramValuePlaceholder()));
         var objectTemplate = templateProps.objectKeyValuePlaceholder();
         ConstraintFunction collectionBasedFunction = new CollectionBasedFunction(name,
                 templateProps.navigationPlaceholder(),
-                new ObjectTemplatePlaceholder(objectTemplate.getLeft(), objectTemplate.getRight()), true);
+                new ObjectTemplatePlaceholder(objectTemplate.getLeft(), objectTemplate.getRight()), params.size() == 0 ? null : templateParams, true);
         try {
             String template = new ObjectMapper()
                     .writeValueAsString(collectionBasedFunction);
@@ -65,16 +83,43 @@ public class TemplateFunctionInitializer {
         }
     }
 
-    private Template createStringBasedFunctionTemplate(String name, String... params) {
+    private Template createStringBasedFunctionTemplate(String name, List<String> params) {
         Map<String, String> templateParams = new HashMap<>();
-        Arrays.stream(params).forEach(param -> templateParams.put(param, templateProps.paramValuePlaceholder()));
+        params.forEach(param -> templateParams.put(param, templateProps.paramValuePlaceholder()));
         ConstraintFunction constraintFunction = new StringBasedFunction(name,
+                templateProps.attributePlaceholder(),
+                params.size() == 0 ? null : templateParams,
+                true);
+        try {
+            String template = new ObjectMapper().writeValueAsString(constraintFunction);
+            return Template.ofFunction(name, descriptionByName(name), FunctionType.STRING_BASED_FUNCTION, template);
+        } catch (JsonProcessingException e) {
+            throw new ConstraintTemplateCreationException(name);
+        }
+    }
+
+    private Template createRangeBasedFunctionTemplate(String name, List<String> params) {
+        Map<String, String> templateParams = new HashMap<>();
+        params.forEach(param -> templateParams.put(param, templateProps.paramValuePlaceholder()));
+        ConstraintFunction constraintFunction = new RangeBasedFunction(name,
                 templateProps.attributePlaceholder(),
                 templateParams,
                 true);
         try {
             String template = new ObjectMapper().writeValueAsString(constraintFunction);
-            return Template.ofFunction(name, descriptionByName(name), FunctionType.STRING_BASED_FUNCTION, template);
+            return Template.ofFunction(name, descriptionByName(name), FunctionType.RANGE_BASED_FUNCTION, template);
+        } catch (JsonProcessingException e) {
+            throw new ConstraintTemplateCreationException(name);
+        }
+    }
+
+    private Template createAssociationBasedTemplate(String name, List<String> params) {
+        Map<String, String> templateParams = new HashMap<>();
+        params.forEach(param -> templateParams.put(param, templateProps.paramValuePlaceholder()));
+        ConstraintFunction constraintFunction = new AssociationBasedFunction(name, templateParams);
+        try {
+            String template = new ObjectMapper().writeValueAsString(constraintFunction);
+            return Template.ofFunction(name, descriptionByName(name), FunctionType.ASSOCIATION_BASED_FUNCTION, template);
         } catch (JsonProcessingException e) {
             throw new ConstraintTemplateCreationException(name);
         }

@@ -76,7 +76,7 @@ public class ConstraintController {
         GremlinConstraintMapper gremlinConstraintMapper = new GremlinConstraintMapper();
         List<InstanceElement> instanceGraph = instanceService.getRequiredSubgraph(instanceUuid, requiredSubgraphElements);
         gremlinConstraintMapper.mapToPlatformSpecificGraph(instanceGraph);
-        constraintValidationService.validateConstraint(instanceGraph, constraint);
+        constraintValidationService.validateConstraint(instanceUuid, instanceGraph, constraint);
         System.out.println("It should be changed later!");
         return true;
     }

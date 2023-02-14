@@ -1,0 +1,21 @@
+{
+  "uuid": "e99e5f3e-af5e-4c65-985a-34c74eae4655",
+  "name": "Test three.",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Oops! Broken constraint!",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "COLLECTION_BASED_FUNCTION",
+    "name": "FOR_ALL",
+    "navigation": "works_on(Project).consists_of(Sprint)",
+    "lambdaFunction": {
+      "@type": "STRING_BASED_FUNCTION",
+      "name": "MIN_LENGTH",
+      "attribute": "<Sprint>name",
+      "params": {
+        "min_length": "14"
+      }
+    }
+  }
+}

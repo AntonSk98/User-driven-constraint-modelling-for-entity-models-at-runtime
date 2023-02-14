@@ -1,11 +1,9 @@
 package anton.skripin.development.domain.constraint.functions;
 
-import anton.skripin.development.domain.constraint.functions.types.CollectionBasedFunction;
-import anton.skripin.development.domain.constraint.functions.types.LogicalFunction;
-import anton.skripin.development.domain.constraint.functions.types.StringBasedFunction;
+import anton.skripin.development.domain.constraint.functions.types.*;
 import anton.skripin.development.domain.template.ObjectTemplatePlaceholder;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.apache.commons.lang3.StringUtils;
@@ -20,14 +18,17 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 /**
  * Abstract class representing a function
  */
-@JsonTypeInfo(use = NAME, include = PROPERTY)
 @JsonSubTypes({
         @JsonSubTypes.Type(value = LogicalFunction.class, name = FunctionType.LOGICAL_FUNCTION),
         @JsonSubTypes.Type(value = StringBasedFunction.class, name = FunctionType.STRING_BASED_FUNCTION),
         @JsonSubTypes.Type(value = CollectionBasedFunction.class, name = FunctionType.COLLECTION_BASED_FUNCTION),
+        @JsonSubTypes.Type(value = RangeBasedFunction.class, name = FunctionType.RANGE_BASED_FUNCTION),
+        @JsonSubTypes.Type(value = AssociationBasedFunction.class, name = FunctionType.ASSOCIATION_BASED_FUNCTION),
         @JsonSubTypes.Type(value = ObjectTemplatePlaceholder.class, name = FunctionType.OBJECT_TEMPLATE_PLACEHOLDER)
 }
 )
+@JsonTypeInfo(use = NAME, include = PROPERTY)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class ConstraintFunction {
     private String name;
 

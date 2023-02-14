@@ -9,47 +9,32 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static anton.skripin.development.domain.ValidationUtils.validateAttribute;
-
 /**
- * Limits the set of all possible values to be within the specified range depending on the operation.
+ * Association-based function.
  */
 @Getter
-public class RangeBasedFunction extends ConstraintFunction {
+public class AssociationBasedFunction extends ConstraintFunction {
 
-    private final String attribute;
     private final Map<String, String> params;
 
+    /**
+     * Constructor.
+     *
+     * @param name   of a constraint
+     * @param params params of a function
+     */
     @JsonCreator
-    public RangeBasedFunction(
+    public AssociationBasedFunction(
             @JsonProperty("name") String name,
-            @JsonProperty("attribute") String attribute,
             @JsonProperty("params") Map<String, String> params) {
         super(name);
-        validateAttribute(attribute);
-        this.attribute = attribute;
-        this.params = params;
-    }
-
-    public RangeBasedFunction(
-            String name,
-            String attribute,
-            Map<String, String> params,
-            boolean asTemplate
-    ) {
-        super(name);
-        if (!asTemplate) {
-            validateAttribute(attribute);
-        }
-        this.attribute = attribute;
         this.params = params;
     }
 
     @Override
     public Optional<String> attribute() {
-        return Optional.of(attribute);
+        return Optional.empty();
     }
-
 
     @Override
     public Optional<String> navigation() {
@@ -60,7 +45,6 @@ public class RangeBasedFunction extends ConstraintFunction {
     public Optional<Map<String, String>> params() {
         return Optional.of(params);
     }
-
 
     @Override
     public Optional<List<ConstraintFunction>> booleanFunctions() {
