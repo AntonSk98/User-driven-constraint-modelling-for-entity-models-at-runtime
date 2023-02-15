@@ -5,11 +5,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-
-import static anton.skripin.development.domain.ValidationUtils.validateAttribute;
 
 /**
  * Function that is to be created at runtime by end-user.
@@ -17,7 +13,7 @@ import static anton.skripin.development.domain.ValidationUtils.validateAttribute
 @Getter
 public class RuntimeFunction extends ConstraintFunction {
 
-    private String runtimeFunction;
+    private final String runtimeFunction;
 
     @JsonCreator
     public RuntimeFunction(

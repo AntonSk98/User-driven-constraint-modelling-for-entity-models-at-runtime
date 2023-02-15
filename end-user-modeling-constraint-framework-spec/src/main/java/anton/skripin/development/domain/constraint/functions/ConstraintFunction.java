@@ -24,6 +24,7 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
         @JsonSubTypes.Type(value = CollectionBasedFunction.class, name = FunctionType.COLLECTION_BASED_FUNCTION),
         @JsonSubTypes.Type(value = RangeBasedFunction.class, name = FunctionType.RANGE_BASED_FUNCTION),
         @JsonSubTypes.Type(value = AssociationBasedFunction.class, name = FunctionType.ASSOCIATION_BASED_FUNCTION),
+        @JsonSubTypes.Type(value = RuntimeFunction.class, name = FunctionType.RUNTIME_FUNCTION),
         @JsonSubTypes.Type(value = ObjectTemplatePlaceholder.class, name = FunctionType.OBJECT_TEMPLATE_PLACEHOLDER)
 }
 )

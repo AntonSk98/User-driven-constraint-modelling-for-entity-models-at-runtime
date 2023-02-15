@@ -1,6 +1,5 @@
 package anton.skripin.development.properties;
 
-import lombok.NonNull;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
 /**
@@ -45,10 +44,11 @@ public abstract class TemplateConfigurationProperties {
      */
     public abstract String violationMessagePlaceholder();
 
-
     /**
      * Default constructor.
      */
     public TemplateConfigurationProperties() {
     }
+
+    public abstract String runtimeFunctionPlaceholder();
 }

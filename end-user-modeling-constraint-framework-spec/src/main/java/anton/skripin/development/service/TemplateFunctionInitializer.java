@@ -148,4 +148,16 @@ public class TemplateFunctionInitializer {
             throw new ConstraintTemplateCreationException();
         }
     }
+
+    public Template getRuntimeFunctionTemplate() {
+        RuntimeFunction runtimeFunction = new RuntimeFunction(templateProps.constraintNamePlaceholder(), templateProps.runtimeFunctionPlaceholder());
+        try {
+            var functionTemplate = new ObjectMapper()
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(runtimeFunction);
+            return Template.ofFunction(runtimeFunction.getName(), "", FunctionType.RUNTIME_FUNCTION, functionTemplate);
+        } catch (JsonProcessingException e) {
+            throw new ConstraintTemplateCreationException();
+        }
+    }
 }

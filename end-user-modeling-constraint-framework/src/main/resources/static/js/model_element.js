@@ -32,21 +32,44 @@ function prettyPrint() {
     }
 }
 
-function addConstraint(functionName) {
+async function addConstraint(functionName) {
     const errorNotification = getErrorNotification();
     try {
         let constrainSpace = document.getElementById('constrain_space');
-        const constraintTemplate = document.getElementById(functionName).value;
         let currentPosition = constrainSpace.selectionStart;
         let currentTemplate = constrainSpace.value;
-        let newTemplateValue = currentTemplate.slice(0, currentPosition) + constraintTemplate + currentTemplate.slice(currentPosition);
-        constrainSpace.value = JSON.stringify(JSON.parse(newTemplateValue), undefined, 2);
+        let response = await fetch('/get_template?' + new URLSearchParams({
+            name: functionName
+        }));
+        if (response.ok) {
+            const template = await response.json();
+            const constraintTemplate = template.template;
+            const updatedConstraint = currentTemplate.slice(0, currentPosition) + constraintTemplate + currentTemplate.slice(currentPosition);
+            constrainSpace.value = JSON.stringify(JSON.parse(updatedConstraint), undefined, 2);
+        } else {
+            const text = "Something went wrong while fetching a constraint's template";
+            errorNotification({
+                message: text
+            });
+        }
     } catch (err) {
         const text = 'Please replace placeholders with concrete values by following the predefined hints!';
         errorNotification({
             message: text
         });
         throw err;
+    }
+}
+
+async function resetFunctionTemplates() {
+    const errorNotification = getErrorNotification();
+    const successNotification = getSuccessNotification();
+    let response = await fetch('/reset_function_templates');
+    if (response.ok) {
+        successNotification({message: 'Successfully reset all template functions!'})
+        setTimeout(() => location.reload(), 1500)
+    } else {
+        errorNotification({message: 'Error occurred while resetting template functions!'})
     }
 }
 
@@ -249,4 +272,61 @@ function getSuccessNotification() {
         showDuration: 3000,
         closeOnClick: true
     })
+}
+
+async function addRuntimeFunction() {
+    const result = await fetch('/get_runtime_function_template');
+    if (result.ok) {
+        const runtimeFunctionTemplate = await result.json();
+        const textarea = document.getElementById('runtime-function-textarea');
+        toggleInputs(true);
+        blurMainElement(true);
+        toggleFunctionDefinitionPopup(true);
+        console.log(runtimeFunctionTemplate)
+        textarea.value = JSON.stringify(JSON.parse(runtimeFunctionTemplate.template), undefined, 2);
+    }
+}
+
+async function saveRuntimeFunction() {
+    const errorNotification = getErrorNotification();
+    const successNotification = getSuccessNotification();
+
+    let response = await fetch('/save_runtime_function',
+        {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(JSON.parse(document.getElementById('runtime-function-textarea').value))
+        });
+
+    if (response.ok) {
+        successNotification({message: 'Successfully added a new function type!'})
+        setTimeout(() => location.reload(), 1500)
+    } else {
+        errorNotification({message: 'Error occurred while adding a new function type!'})
+    }
+}
+
+function closeDetailsPopup() {
+    toggleInputs(false);
+    blurMainElement(false);
+    toggleFunctionDefinitionPopup(false)
+}
+
+function toggleInputs(disabled) {
+    const inputs = document.getElementsByTagName('input');
+    for (let index = 0; index < inputs.length; index++) {
+        inputs[index].disabled = disabled;
+    }
+}
+
+function toggleFunctionDefinitionPopup(showWindow) {
+    const instanceDetails = document.getElementById('runtime-function');
+    showWindow ? instanceDetails.style.display = 'block' : instanceDetails.style.display = 'none';
+}
+
+function blurMainElement(shouldBlur) {
+    const main = document.getElementsByTagName('main').item(0);
+    shouldBlur ? main.style.filter = 'blur(3px)' : main.style.filter = 'none';
 }

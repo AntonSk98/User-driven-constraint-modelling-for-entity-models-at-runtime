@@ -22,6 +22,8 @@ public class GremlinConstraint {
 
     private String attribute;
 
+    private String runtimeFunction;
+
     private List<GraphTraversal<?, Boolean>> nestedFunctions;
 
 
@@ -43,6 +45,10 @@ public class GremlinConstraint {
 
     public Optional<String> attribute() {
         return Optional.ofNullable(attribute);
+    }
+
+    public Optional<String> runtimeFunction() {
+        return Optional.ofNullable(runtimeFunction);
     }
 
     public Optional<List<GraphTraversal<?, Boolean>>> nestedFunctions() {
@@ -82,5 +88,9 @@ public class GremlinConstraint {
 
     public GraphTraversal<?, Boolean> getTraversal() {
         return traversal;
+    }
+
+    public void setRuntimeFunction(String runtimeFunction) {
+        this.runtimeFunction = runtimeFunction;
     }
 }

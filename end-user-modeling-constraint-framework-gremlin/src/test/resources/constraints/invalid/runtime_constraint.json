@@ -1,0 +1,13 @@
+{
+  "uuid": "67b513b7-99bb-4705-9fe0-34c069017993",
+  "name": "Provide a meaningful name for a constraint.",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "RUNTIME_FUNCTION",
+    "name": "Maximum age of employee",
+    "runtimeFunction": "values('age').is(P.gt('65'))"
+  }
+}

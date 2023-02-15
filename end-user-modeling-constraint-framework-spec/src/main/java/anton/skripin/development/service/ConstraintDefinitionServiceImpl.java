@@ -36,4 +36,9 @@ public class ConstraintDefinitionServiceImpl implements ConstraintDefinitionServ
     public Template getConstraintTemplate(String modelElementUuid, String modelElementType) {
         return templateFunctionInitializer.getConstraintTemplate(modelElementUuid, modelElementType);
     }
+
+    @Override
+    public Template getRuntimeFunctionTemplate() {
+        return templateFunctionInitializer.getRuntimeFunctionTemplate();
+    }
 }

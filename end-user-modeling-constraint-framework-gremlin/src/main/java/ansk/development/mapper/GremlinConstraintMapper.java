@@ -15,6 +15,8 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import java.util.List;
 import java.util.Objects;
 
+import static anton.skripin.development.domain.constraint.functions.FunctionType.RUNTIME_FUNCTION;
+
 public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<ConstraintGraphTraversalSource, GraphTraversal<?, Boolean>> {
 
     @Override
@@ -25,9 +27,10 @@ public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<Con
 
     private GraphTraversal<?, Boolean> mapFunction(String uuid, ConstraintFunction constraintFunction, boolean traversalStart) {
         GremlinConstraint gremlinConstraint = new GremlinConstraint();
-        if (traversalStart || constraintFunction.booleanFunctions().isPresent()) {
+        if (traversalStart || constraintFunction.booleanFunctions().isPresent() || constraintFunction.runtimeFunction().isPresent()) {
             gremlinConstraint.setContext(GremlinRegistry.getConstraintTraversal().instance(uuid));
         }
+        constraintFunction.runtimeFunction().ifPresent(gremlinConstraint::setRuntimeFunction);
         constraintFunction.attribute().map(AttributeUtils::getAttributeRoot).ifPresent(gremlinConstraint::setAttribute);
         constraintFunction.navigation().map(NavigationUtils::getNavigationRoot).ifPresent(gremlinConstraint::setNavigation);
         constraintFunction.lambdaFunction().ifPresent(lambdaFunction -> gremlinConstraint.setLambdaFunction(mapFunction(uuid, lambdaFunction, false)));
@@ -35,7 +38,11 @@ public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<Con
             booleanFunctions.forEach(booleanFunction -> gremlinConstraint.addNestedFunction(mapFunction(uuid, booleanFunction, false)));
         });
         constraintFunction.params().ifPresent(gremlinConstraint::setParams);
-        gremlinConstraint.setTraversal(GremlinFunctionMapper.CONSTRAINTS_MAP.get(constraintFunction.getName()).apply(gremlinConstraint));
+        if (constraintFunction.runtimeFunction().isPresent()) {
+            gremlinConstraint.setTraversal(GremlinFunctionMapper.CONSTRAINTS_MAP.get(RUNTIME_FUNCTION).apply(gremlinConstraint));
+        } else {
+            gremlinConstraint.setTraversal(GremlinFunctionMapper.CONSTRAINTS_MAP.get(constraintFunction.getName()).apply(gremlinConstraint));
+        }
         return gremlinConstraint.getTraversal();
     }
 

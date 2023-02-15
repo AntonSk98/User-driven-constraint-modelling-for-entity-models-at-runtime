@@ -10,4 +10,5 @@ public final class FunctionType {
     public static final String RANGE_BASED_FUNCTION = "RANGE_BASED_FUNCTION";
     public static final String ASSOCIATION_BASED_FUNCTION = "ASSOCIATION_BASED_FUNCTION";
     public static final String OBJECT_TEMPLATE_PLACEHOLDER = "OBJECT_TEMPLATE_PLACEHOLDER";
+    public static final String RUNTIME_FUNCTION = "RUNTIME_FUNCTION";
 }

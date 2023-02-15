@@ -53,4 +53,9 @@ public class DefaultTemplateConfigurationProperties extends TemplateConfiguratio
     public String violationMessagePlaceholder() {
         return properties.getProperty("VIOLATION_MESSAGE");
     }
+
+    @Override
+    public String runtimeFunctionPlaceholder() {
+        return properties.getProperty("RUNTIME_FUNCTION_PLACEHOLDER");
+    }
 }

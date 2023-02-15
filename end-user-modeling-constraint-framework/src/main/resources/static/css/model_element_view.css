@@ -31,7 +31,6 @@
     border-bottom: 2px dashed;
     font-weight: bold;
     outline: none;
-
 }
 
 .target-type-button-hover:hover {
@@ -66,7 +65,7 @@ hr {
     justify-content: start;
 }
 
-.functions div {
+.constraint-function {
     padding: 0.3em 1em;
     background-color: #0b2a51;
     color: white;
@@ -75,7 +74,7 @@ hr {
     font-size: 0.7em;
 }
 
-.functions div:hover {
+.constraint-function:hover {
     background: #ffffff;
     color: #0b2a51;
     cursor: pointer;
@@ -85,7 +84,6 @@ hr {
     color: #0b2a51;
     font-weight: bold;
     font-size: 1em;
-    margin-bottom: 1em;
 }
 
 .editor {
@@ -148,5 +146,65 @@ hr {
     border-radius: 20px;
     cursor: not-allowed;
     opacity: 0.6;
+}
+
+.functions-header {
+    display: flex;
+    justify-content: start;
+    gap: 0.5em;
+    margin-bottom: 1em;
+}
+
+.runtime-function {
+    position: absolute;
+    top: 50%;  /* position the top  edge of the element at the middle of the parent */
+    left: 50%; /* position the left edge of the element at the middle of the parent */
+    transform: translate(-50%, -50%);
+    width: 25em;
+    display: none;
+    border: 2px solid #0b2a51;
+    background-color: white;
+}
+
+.runtime-function-header {
+    background-color: #0b2a51;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+
+#runtime-function-textarea {
+    width: -webkit-fill-available;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    outline: none;
+}
+
+.button-runtime-function {
+    border: 2px solid #0b2a51;
+    background-color: #0b2a51;
+    color: white;
+    padding: 0.5em 1em;
+    outline: none;
+    border-radius: 20px;
+    margin: 0.2em 0.2em;
+}
+
+.button-runtime-function:hover {
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.close {
+    padding: 0.2em;
+    color: white;
+    font-size: 1em;
+    margin-right: 1em;
+}
+
+.close:hover {
+    cursor: pointer;
+    opacity: 0.7;
 }
 

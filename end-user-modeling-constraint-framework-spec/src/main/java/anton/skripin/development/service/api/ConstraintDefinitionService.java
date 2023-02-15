@@ -34,7 +34,14 @@ public interface ConstraintDefinitionService {
      *
      * @param modelElementUuid uuid of model element
      * @param modelElementType type of model element
-     * @return
+     * @return {@link Template}
      */
     Template getConstraintTemplate(String modelElementUuid, String modelElementType);
+
+    /**
+     * Provides {@link Template} for runtime function.
+     *
+     * @return {@link Template}
+     */
+    Template getRuntimeFunctionTemplate();
 }

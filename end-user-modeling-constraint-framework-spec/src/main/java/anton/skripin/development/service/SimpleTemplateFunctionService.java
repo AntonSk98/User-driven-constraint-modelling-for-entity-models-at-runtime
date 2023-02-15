@@ -13,9 +13,10 @@ import java.util.stream.Collectors;
 public class SimpleTemplateFunctionService implements TemplateFunctionService {
 
     private final List<Template> templateFunctions = new ArrayList<>();
+    private final TemplateFunctionInitializer templateFunctionInitializer;
 
     public SimpleTemplateFunctionService(TemplateConfigurationProperties templateConfigurationProperties) {
-        TemplateFunctionInitializer templateFunctionInitializer = new TemplateFunctionInitializer(templateConfigurationProperties);
+        templateFunctionInitializer = new TemplateFunctionInitializer(templateConfigurationProperties);
         templateFunctions.addAll(templateFunctionInitializer.initTemplateFunction());
     }
 
@@ -76,5 +77,11 @@ public class SimpleTemplateFunctionService implements TemplateFunctionService {
         return templateFunctions.removeIf(persistedTemplate ->
                 persistedTemplate.getFunctionName().equals(functionName)
                         && persistedTemplate.getFunctionType().equals(functionType));
+    }
+
+    @Override
+    public void resetFunctionTemplates() {
+        templateFunctions.clear();
+        templateFunctions.addAll(templateFunctionInitializer.initTemplateFunction());
     }
 }

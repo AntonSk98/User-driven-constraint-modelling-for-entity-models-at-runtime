@@ -2,6 +2,8 @@ package anton.skripin.development.eumcf.controller;
 
 import anton.skripin.development.domain.model.ModelElement;
 import anton.skripin.development.eumcf.service.api.ModelService;
+import anton.skripin.development.service.api.ConstraintDefinitionService;
+import anton.skripin.development.service.api.TemplateFunctionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,7 +14,10 @@ public class ModelController {
 
     private final ModelService modelService;
 
-    public ModelController(ModelService modelService) {
+
+    public ModelController(ModelService modelService,
+                           TemplateFunctionService templateFunctionService,
+                           ConstraintDefinitionService constraintDefinitionService) {
         this.modelService = modelService;
     }
 

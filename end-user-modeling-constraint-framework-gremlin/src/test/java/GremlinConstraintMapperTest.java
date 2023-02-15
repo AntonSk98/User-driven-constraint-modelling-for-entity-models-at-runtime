@@ -182,6 +182,13 @@ public class GremlinConstraintMapperTest {
         Assertions.assertFalse(getConstraintEvaluationResult(fetchConstraint(constraintNameTwo, false)));
     }
 
+    @Test
+    public void runtimeConstraint() {
+        final String constraintName = "runtime_constraint";
+        Assertions.assertTrue(getConstraintEvaluationResult(fetchConstraint(constraintName, true)));
+        Assertions.assertFalse(getConstraintEvaluationResult(fetchConstraint(constraintName, false)));
+    }
+
     private Constraint fetchConstraint(String constraintName, boolean valid) {
         try {
             String path = String.format("src/test/resources/constraints/%s/%s.json", valid ? "valid" : "invalid", constraintName);

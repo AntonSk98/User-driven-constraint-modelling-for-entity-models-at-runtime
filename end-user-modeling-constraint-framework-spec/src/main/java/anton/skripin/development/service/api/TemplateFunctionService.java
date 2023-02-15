@@ -52,7 +52,6 @@ public interface TemplateFunctionService {
      * @param functionName function name used for update
      * @param description description
      * @param functionType function type used for update
-     * @param template     template
      */
     void updateTemplate(String functionName, String description, String functionType, String templateFunction);
 
@@ -72,4 +71,9 @@ public interface TemplateFunctionService {
      * @return true if a function is removed successfully
      */
     boolean deleteTemplateByFunctionNameAndType(String functionName, String functionType);
+
+    /**
+     * Deletes all template functions and recreate predefined functions
+     */
+    void resetFunctionTemplates();
 }

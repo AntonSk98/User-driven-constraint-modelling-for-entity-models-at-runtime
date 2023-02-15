@@ -172,11 +172,14 @@
                 <#if update == false>
                     <div class="constraints">
                         <div>
-                            <div class="constraint-block-title">Constraint functions</div>
+                            <div class="functions-header">
+                                <div class="constraint-block-title">Constraint functions</div>
+                                <input type="button" value="+" class="constraint-function" onclick="addRuntimeFunction()">
+                                <input type="button" value="&#x21bb;" class="constraint-function" onclick="resetFunctionTemplates()">
+                            </div>
                             <div class="functions">
                                 <#list functions as function>
-                                    <input type="hidden" id=${function.functionName} value='${function.template}'>
-                                    <div class="info" title="${function.getDescription()}" onclick="addConstraint('${function.functionName}')">${function.functionName}()
+                                    <div class="info constraint-function" title="${function.getDescription()}" onclick="addConstraint(`${function.functionName}`)">${function.functionName}()
                                     </div>
                                 </#list>
                             </div>
@@ -202,4 +205,20 @@
     </div>
 </main>
 </body>
+
+<div class="runtime-function" id="runtime-function">
+    <div class="runtime-function-header">
+        <div style="margin: 1em 2em; color: white; font-weight: bold;">Function definition</div>
+        <div class="close" onclick="closeDetailsPopup()">&times;</div>
+    </div>
+    <textarea id="runtime-function-textarea" name="runtime-function" cols="70" rows="40" style="resize: none">
+    </textarea>
+    <div>
+        <button type="button"
+                onclick="saveRuntimeFunction()"
+                id="runtime-function-button"
+                class="button-runtime-function"
+                style="margin: 1em;">Save function</button>
+    </div>
+</div>
 </html>

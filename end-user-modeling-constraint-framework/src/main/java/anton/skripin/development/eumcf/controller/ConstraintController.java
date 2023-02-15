@@ -2,11 +2,16 @@ package anton.skripin.development.eumcf.controller;
 
 import ansk.development.mapper.GremlinConstraintMapper;
 import anton.skripin.development.domain.constraint.Constraint;
+import anton.skripin.development.domain.constraint.functions.FunctionType;
+import anton.skripin.development.domain.constraint.functions.types.RuntimeFunction;
 import anton.skripin.development.domain.instance.InstanceElement;
+import anton.skripin.development.domain.template.Template;
 import anton.skripin.development.eumcf.service.api.InstanceService;
 import anton.skripin.development.exception.constraint.PersistConstraintException;
+import anton.skripin.development.service.api.ConstraintDefinitionService;
 import anton.skripin.development.service.api.ConstraintPersistenceService;
 import anton.skripin.development.service.api.ConstraintValidationService;
+import anton.skripin.development.service.api.TemplateFunctionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +30,8 @@ public class ConstraintController {
     private final ConstraintValidationService constraintValidationService;
 
     private final InstanceService instanceService;
+    private final TemplateFunctionService templateFunctionService;
+    private final ConstraintDefinitionService constraintDefinitionService;
 
 
     /**
@@ -33,11 +40,15 @@ public class ConstraintController {
      * @param constraintPersistenceService See {@link ConstraintPersistenceService}
      * @param constraintValidationService  See {@link ConstraintValidationService}
      * @param instanceService              See {@link InstanceService}
+     * @param templateFunctionService      See {@link TemplateFunctionService}
+     * @param constraintDefinitionService  See {@link ConstraintDefinitionService}
      */
-    public ConstraintController(ConstraintPersistenceService constraintPersistenceService, ConstraintValidationService constraintValidationService, InstanceService instanceService) {
+    public ConstraintController(ConstraintPersistenceService constraintPersistenceService, ConstraintValidationService constraintValidationService, InstanceService instanceService, TemplateFunctionService templateFunctionService, ConstraintDefinitionService constraintDefinitionService) {
         this.constraintPersistenceService = constraintPersistenceService;
         this.constraintValidationService = constraintValidationService;
         this.instanceService = instanceService;
+        this.templateFunctionService = templateFunctionService;
+        this.constraintDefinitionService = constraintDefinitionService;
     }
 
     /**
@@ -65,7 +76,7 @@ public class ConstraintController {
     /**
      * Validates a constraint by a given uuid.
      *
-     * @param instanceUuid instanceUuid
+     * @param instanceUuid   instanceUuid
      * @param constraintUuid uuid of a persisted constraint
      * @return todo return a domain object
      */
@@ -103,5 +114,30 @@ public class ConstraintController {
             throw new PersistConstraintException("Error occurred while persisting a constraint", e);
         }
         return true;
+    }
+
+
+    @GetMapping("/get_runtime_function_template")
+    public Template getRuntimeFunctionTemplate() {
+        return constraintDefinitionService.getRuntimeFunctionTemplate();
+    }
+
+    @PostMapping("/save_runtime_function")
+    public void addRuntimeFunctionTemplate(@RequestBody RuntimeFunction runtimeFunction) {
+        try {
+            templateFunctionService.addNewTemplate(runtimeFunction.getName(), "", FunctionType.RUNTIME_FUNCTION, new ObjectMapper().writeValueAsString(runtimeFunction));
+        } catch (JsonProcessingException e) {
+            throw new PersistConstraintException("Error occurred while adding a constraint function template", e);
+        }
+    }
+
+    @GetMapping("/reset_function_templates")
+    public void resetFunctionTemplates() {
+        templateFunctionService.resetFunctionTemplates();
+    }
+
+    @GetMapping("/get_template")
+    public Template getTemplateByName(@RequestParam String name) {
+        return templateFunctionService.getTemplateByFunctionName(name);
     }
 }
