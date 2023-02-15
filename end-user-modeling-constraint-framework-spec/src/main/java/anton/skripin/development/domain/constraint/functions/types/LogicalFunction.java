@@ -36,28 +36,8 @@ public class LogicalFunction extends ConstraintFunction {
     }
 
     @Override
-    public Optional<String> attribute() {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<String> navigation() {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<Map<String, String>> params() {
-        return Optional.empty();
-    }
-
-    @Override
     public Optional<List<ConstraintFunction>> booleanFunctions() {
         return Optional.of(booleanFunctions);
-    }
-
-    @Override
-    public Optional<ConstraintFunction> lambdaFunction() {
-        return Optional.empty();
     }
 
 

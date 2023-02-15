@@ -50,25 +50,8 @@ public class RangeBasedFunction extends ConstraintFunction {
         return Optional.of(attribute);
     }
 
-
-    @Override
-    public Optional<String> navigation() {
-        return Optional.empty();
-    }
-
     @Override
     public Optional<Map<String, String>> params() {
         return Optional.of(params);
-    }
-
-
-    @Override
-    public Optional<List<ConstraintFunction>> booleanFunctions() {
-        return Optional.empty();
-    }
-
-    @Override
-    public Optional<ConstraintFunction> lambdaFunction() {
-        return Optional.empty();
     }
 }

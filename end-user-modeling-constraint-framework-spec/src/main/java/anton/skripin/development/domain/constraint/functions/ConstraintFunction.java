@@ -57,7 +57,9 @@ public abstract class ConstraintFunction {
      * Example: <SoftwareEngineer>name
      * @return target attribute
      */
-    public abstract Optional<String> attribute();
+    public Optional<String> attribute() {
+        return Optional.empty();
+    }
 
     /**
      * Navigation path to another model element via association paths.
@@ -66,7 +68,9 @@ public abstract class ConstraintFunction {
      * that can be accessed from SoftwareEngineer to Sprint via Project.
      * @return navigation path to other models elements
      */
-    public abstract Optional<String> navigation();
+    public Optional<String> navigation() {
+        return Optional.empty();
+    }
 
     /**
      * Most of the constraint functions must be provided with arguments.
@@ -74,21 +78,37 @@ public abstract class ConstraintFunction {
      * must be provided the maximum length param
      * @return parameters for a function as a key-value map
      */
-    public abstract Optional<Map<String, String>> params();
+    public Optional<Map<String, String>> params() {
+        return Optional.empty();
+    }
 
     /**
      * Logical functions {@link LogicalFunction}
      * must be provided with a list of nested functions that can be resolved to a boolean value, be it true or false.
      * @return list of constraint functions
      */
-    public abstract Optional<List<ConstraintFunction>> booleanFunctions();
+    public Optional<List<ConstraintFunction>> booleanFunctions() {
+        return Optional.empty();
+    }
 
     /**
      * Collection-based functions must be provided with a lambda function.
      * This function will be resolved against every element of a collection.
      * @return constraint function
      */
-    public abstract Optional<ConstraintFunction> lambdaFunction();
+    public Optional<ConstraintFunction> lambdaFunction() {
+        return Optional.empty();
+    }
+
+    /**
+     * Function that is defined by end-user at runtime.
+     * This function does not need to have a target context because it is resolved automatically during instantiation.
+     * The function must only provide a valid platform-specific query definition.
+     * @return constraint function as a string
+     */
+    public Optional<String> runtimeFunction() {
+        return Optional.empty();
+    }
 
     public void setParentFunction(ConstraintFunction parentFunction) {
         this.parentFunction = parentFunction;
