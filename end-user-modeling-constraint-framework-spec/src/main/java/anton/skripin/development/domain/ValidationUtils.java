@@ -78,4 +78,10 @@ public class ValidationUtils {
         constraintFunction.booleanFunctions()
                 .ifPresent(nestedFunctions -> nestedFunctions.forEach(nestedFunction -> validateLambdaFunctionHasNoNavigation(function, nestedFunction)));
     }
+
+    public static void validateLambdaFunctionIsNotLogicalFunction(String function, ConstraintFunction constraintFunction) {
+        if (constraintFunction.booleanFunctions().isPresent()) {
+            throw new FunctionException("Logical functions are not supported inside " + function);
+        }
+    }
 }

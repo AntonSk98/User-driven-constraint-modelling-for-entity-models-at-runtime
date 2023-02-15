@@ -6,7 +6,6 @@ import anton.skripin.development.domain.constraint.functions.types.StringBasedFu
 import anton.skripin.development.exception.constraint.function.FunctionValidationException;
 import anton.skripin.development.service.AbstractConstraintValidationService;
 import jdk.jfr.Description;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;

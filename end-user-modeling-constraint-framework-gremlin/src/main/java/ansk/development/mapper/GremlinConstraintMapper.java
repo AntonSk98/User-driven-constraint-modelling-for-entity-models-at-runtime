@@ -30,21 +30,12 @@ public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<Con
         }
         constraintFunction.attribute().map(AttributeUtils::getAttributeRoot).ifPresent(gremlinConstraint::setAttribute);
         constraintFunction.navigation().map(NavigationUtils::getNavigationRoot).ifPresent(gremlinConstraint::setNavigation);
-        constraintFunction.lambdaFunction().ifPresent(lambdaFunction -> gremlinConstraint.setLambdaFunction(mapLambdaFunction(lambdaFunction)));
+        constraintFunction.lambdaFunction().ifPresent(lambdaFunction -> gremlinConstraint.setLambdaFunction(mapFunction(uuid, lambdaFunction, false)));
         constraintFunction.booleanFunctions().ifPresent(booleanFunctions -> {
             booleanFunctions.forEach(booleanFunction -> gremlinConstraint.addNestedFunction(mapFunction(uuid, booleanFunction, false)));
         });
         constraintFunction.params().ifPresent(gremlinConstraint::setParams);
         gremlinConstraint.setTraversal(GremlinFunctionMapper.CONSTRAINTS_MAP.get(constraintFunction.getName()).apply(gremlinConstraint));
-        return gremlinConstraint.getTraversal();
-    }
-
-    private GraphTraversal<?, Boolean> mapLambdaFunction(ConstraintFunction lambdaFunction) {
-        GremlinConstraint gremlinConstraint = new GremlinConstraint();
-        lambdaFunction.attribute().map(AttributeUtils::getAttributeRoot).ifPresent(gremlinConstraint::setAttribute);
-        lambdaFunction.navigation().map(NavigationUtils::getNavigationRoot).ifPresent(gremlinConstraint::setNavigation);
-        lambdaFunction.params().ifPresent(gremlinConstraint::setParams);
-        gremlinConstraint.setTraversal(GremlinFunctionMapper.CONSTRAINTS_MAP.get(lambdaFunction.getName()).apply(gremlinConstraint));
         return gremlinConstraint.getTraversal();
     }
 

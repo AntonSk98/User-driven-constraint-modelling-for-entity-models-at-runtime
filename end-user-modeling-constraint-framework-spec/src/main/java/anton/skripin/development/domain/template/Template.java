@@ -1,5 +1,7 @@
 package anton.skripin.development.domain.template;
 
+import anton.skripin.development.domain.constraint.functions.ConstraintFunction;
+import anton.skripin.development.domain.constraint.Constraint;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,9 +10,9 @@ import java.util.UUID;
 
 /**
  * Represents a template bag that can be either
- * {@link anton.skripin.development.domain.constraint.functions.ConstraintFunction}
+ * {@link ConstraintFunction}
  * or
- * {@link anton.skripin.development.domain.constraint.Constraint}.
+ * {@link Constraint}.
  * <p>
  * Every template is a predefined instance with default values.
  * <p>

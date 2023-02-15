@@ -40,6 +40,7 @@ public class CollectionBasedFunction extends ConstraintFunction {
         super(name);
         validateNavigation(navigation);
         validateLambdaFunctionHasNoNavigation(name, lambdaFunction);
+        validateLambdaFunctionIsNotLogicalFunction(name, lambdaFunction);
         this.navigation = navigation;
         this.lambdaFunction = lambdaFunction;
         this.params = params;
@@ -56,6 +57,7 @@ public class CollectionBasedFunction extends ConstraintFunction {
         if (!asTemplate) {
             validateNavigation(navigation);
             validateLambdaFunctionHasNoNavigation(name, constraintFunction);
+            validateLambdaFunctionIsNotLogicalFunction(name, constraintFunction);
         }
         this.navigation = navigation;
         this.lambdaFunction = constraintFunction;
@@ -75,7 +77,7 @@ public class CollectionBasedFunction extends ConstraintFunction {
 
     @Override
     public Optional<Map<String, String>> params() {
-        return Optional.of(params);
+        return Optional.ofNullable(params);
     }
 
     @Override

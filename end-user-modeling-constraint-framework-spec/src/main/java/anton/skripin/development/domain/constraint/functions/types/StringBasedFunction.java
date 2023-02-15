@@ -64,7 +64,7 @@ public class StringBasedFunction extends ConstraintFunction {
 
     @Override
     public Optional<Map<String, String>> params() {
-        return Optional.of(params);
+        return Optional.ofNullable(params);
     }
 
     @Override

@@ -3,6 +3,7 @@ package ansk.development.mapper;
 import ansk.development.domain.GremlinConstraint;
 import ansk.development.dsl.__;
 import ansk.development.exception.GraphConstraintException;
+import anton.skripin.development.domain.NavigationUtils;
 import org.apache.groovy.internal.util.Function;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 
@@ -145,7 +146,9 @@ public class GremlinFunctionMapper {
             var params = gremlinConstraint
                     .params()
                     .orElseThrow(() -> new GraphConstraintException("MinCardinality() must have two value attribute"));
-            String association = params.get(FUNCTION_TO_PARAMETER_NAMES.get(MIN_CARDINALITY).get(0));
+            String association = NavigationUtils
+                    .getNavigationRoot(params.get(FUNCTION_TO_PARAMETER_NAMES.get(MIN_CARDINALITY).get(0)))
+                    .get(0);
             Integer minValue = Integer.valueOf(params.get(FUNCTION_TO_PARAMETER_NAMES.get(MIN_CARDINALITY).get(1)));
             if (gremlinConstraint.context().isPresent()) {
                 return gremlinConstraint.context().get().minCardinality(association, minValue);
@@ -158,7 +161,9 @@ public class GremlinFunctionMapper {
             var params = gremlinConstraint
                     .params()
                     .orElseThrow(() -> new GraphConstraintException("MaxCardinality() must have two value attribute"));
-            String association = params.get(FUNCTION_TO_PARAMETER_NAMES.get(MAX_CARDINALITY).get(0));
+            String association = NavigationUtils
+                    .getNavigationRoot(params.get(FUNCTION_TO_PARAMETER_NAMES.get(MAX_CARDINALITY).get(0)))
+                    .get(0);
             Integer maxValue = Integer.valueOf(params.get(FUNCTION_TO_PARAMETER_NAMES.get(MAX_CARDINALITY).get(1)));
             if (gremlinConstraint.context().isPresent()) {
                 return gremlinConstraint.context().get().maxCardinality(association, maxValue);
