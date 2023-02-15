@@ -1,5 +1,4 @@
 import ansk.development.GremlinRegistry;
-import ansk.development.Registry;
 import ansk.development.mapper.GremlinConstraintMapper;
 import anton.skripin.development.domain.constraint.Constraint;
 import anton.skripin.development.domain.instance.InstanceElement;
@@ -24,7 +23,7 @@ public class GremlinConstraintMapperTest {
     @BeforeEach
     public void init() {
         GremlinRegistry.spawnNewGraph();
-        List<InstanceElement> instances = Registry.getSubgraph();
+        List<InstanceElement> instances = TestGraphProvider.getSubgraph();
         this.constraintMapper.mapToPlatformSpecificGraph(instances);
     }
 

@@ -1,5 +1,4 @@
 import ansk.development.GremlinRegistry;
-import ansk.development.Registry;
 import ansk.development.dsl.ConstraintGraphTraversalSource;
 import ansk.development.dsl.__;
 import ansk.development.exception.GraphConstraintException;
@@ -17,7 +16,7 @@ public class GremlinConstraintsTest {
     public void init() {
         GremlinRegistry.spawnNewGraph();
         ConstraintGraphTraversalSource graphSource = GremlinRegistry.getConstraintTraversal();
-        var testGraph = Registry.getSubgraph();
+        var testGraph = TestGraphProvider.getSubgraph();
         testGraph.forEach(graphSource::addInstance);
         testGraph
                 .stream()
