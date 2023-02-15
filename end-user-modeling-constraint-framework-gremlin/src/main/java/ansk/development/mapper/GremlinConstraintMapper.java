@@ -15,13 +15,12 @@ import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import java.util.List;
 import java.util.Objects;
 
-public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<ConstraintGraphTraversalSource> {
+public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<ConstraintGraphTraversalSource, GraphTraversal<?, Boolean>> {
 
     @Override
-    public ConstraintGraphTraversalSource mapToPlatformSpecificConstraint(String uuid, Constraint constraint) {
+    public GraphTraversal<?, Boolean> mapToPlatformSpecificConstraint(String uuid, Constraint constraint) {
         ConstraintFunction constraintFunction = constraint.getConstraintFunction();
-        System.out.println(mapFunction(uuid, constraintFunction, true).next());
-        return null;
+        return mapFunction(uuid, constraintFunction, true);
     }
 
     private GraphTraversal<?, Boolean> mapFunction(String uuid, ConstraintFunction constraintFunction, boolean traversalStart) {
@@ -32,8 +31,8 @@ public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<Con
         constraintFunction.attribute().map(AttributeUtils::getAttributeRoot).ifPresent(gremlinConstraint::setAttribute);
         constraintFunction.navigation().map(NavigationUtils::getNavigationRoot).ifPresent(gremlinConstraint::setNavigation);
         constraintFunction.lambdaFunction().ifPresent(lambdaFunction -> gremlinConstraint.setLambdaFunction(mapLambdaFunction(lambdaFunction)));
-        constraintFunction.booleanFunctions().ifPresent(booleanFunction -> {
-            gremlinConstraint.addNestedFunction(mapFunction(uuid, constraintFunction, false));
+        constraintFunction.booleanFunctions().ifPresent(booleanFunctions -> {
+            booleanFunctions.forEach(booleanFunction -> gremlinConstraint.addNestedFunction(mapFunction(uuid, booleanFunction, false)));
         });
         constraintFunction.params().ifPresent(gremlinConstraint::setParams);
         gremlinConstraint.setTraversal(GremlinFunctionMapper.CONSTRAINTS_MAP.get(constraintFunction.getName()).apply(gremlinConstraint));

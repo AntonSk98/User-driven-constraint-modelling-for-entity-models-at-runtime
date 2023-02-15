@@ -11,7 +11,7 @@ import java.util.List;
  * Simple implementation of {@link AbstractToPSConstraintMapper}.
  * Unless necessary, it should not be used in production
  */
-public class SimpleAbstractToPSConstraintMapper implements AbstractToPSConstraintMapper<String> {
+public class SimpleAbstractToPSConstraintMapper implements AbstractToPSConstraintMapper<String, String> {
 
     /**
      * Maps a {@link Constraint} to its string representation in JSON-format.
