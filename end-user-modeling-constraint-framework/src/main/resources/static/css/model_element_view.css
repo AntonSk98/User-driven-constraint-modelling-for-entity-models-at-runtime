@@ -1,3 +1,31 @@
+@media (max-width: 1600px) {
+    .editor {
+        max-width: 500px;
+    }
+}
+
+@media (max-width: 1350px) {
+    .editor {
+        max-width: 450px;
+    }
+
+    .styled-table tr td input {
+        max-width: 100px;
+    }
+}
+
+@media (max-width: 1350px) {
+    .editor {
+        max-width: 450px;
+    }
+}
+
+@media (max-width: 1200px) {
+    .editor {
+        max-width: 350px;
+    }
+}
+
 .subtitle {
     margin-top: 2em;
 }

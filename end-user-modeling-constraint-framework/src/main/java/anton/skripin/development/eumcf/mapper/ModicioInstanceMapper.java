@@ -52,7 +52,7 @@ public class ModicioInstanceMapper implements InstanceMapper<DeepInstance> {
                         link.setTargetInstanceUuid(associationData.targetInstanceId());
                         return link;
                     })
-                    .toList());
+                    .collect(Collectors.toList()));
 
             return instanceElement;
         } catch (InterruptedException | ExecutionException e) {

@@ -150,7 +150,7 @@ public class InstanceServiceImpl implements InstanceService {
                         link.setName(association);
                         return link;
                     })
-                    .toList());
+                    .collect(Collectors.toList()));
             instanceElement.setLinks(listOfLinks);
             return instanceElement;
         } catch (ExecutionException | InterruptedException e) {
@@ -187,7 +187,7 @@ public class InstanceServiceImpl implements InstanceService {
                                 .filter(deepInstance -> deepInstance.getTypeHandle().getTypeName().equals(modelElement))
                                 .collect(Collectors.toSet()));
                     }
-                    instanceElements.addAll(temp.stream().map(instanceMapper::mapToInstanceElement).toList());
+                    instanceElements.addAll(temp.stream().map(instanceMapper::mapToInstanceElement).collect(Collectors.toList()));
                     nodesToVisit.clear();
                     nodesToVisit.addAll(temp);
                 }
@@ -195,7 +195,7 @@ public class InstanceServiceImpl implements InstanceService {
                 throw new RuntimeException(String.format("Error occurred while trying to get a subgraph for instance %s", instanceUuid), e);
             }
         });
-        return instanceElements.stream().toList();
+        return new ArrayList<>(instanceElements);
     }
 
     private void commonOperation(DeepInstance deepInstance, List<Slot> slots, List<Link> links) throws ExecutionException, InterruptedException {

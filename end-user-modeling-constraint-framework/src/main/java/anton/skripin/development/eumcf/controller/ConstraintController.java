@@ -2,19 +2,24 @@ package anton.skripin.development.eumcf.controller;
 
 import ansk.development.mapper.GremlinConstraintMapper;
 import anton.skripin.development.domain.constraint.Constraint;
+import anton.skripin.development.domain.constraint.ConstraintValidationReport;
 import anton.skripin.development.domain.constraint.functions.FunctionType;
 import anton.skripin.development.domain.constraint.functions.types.RuntimeFunction;
 import anton.skripin.development.domain.instance.InstanceElement;
 import anton.skripin.development.domain.template.Template;
 import anton.skripin.development.eumcf.service.api.InstanceService;
 import anton.skripin.development.exception.constraint.PersistConstraintException;
+import anton.skripin.development.exception.constraint.function.FunctionException;
+import anton.skripin.development.exception.constraint.function.FunctionValidationException;
 import anton.skripin.development.service.api.ConstraintDefinitionService;
 import anton.skripin.development.service.api.ConstraintPersistenceService;
 import anton.skripin.development.service.api.ConstraintValidationService;
 import anton.skripin.development.service.api.TemplateFunctionService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Set;
@@ -81,15 +86,11 @@ public class ConstraintController {
      * @return todo return a domain object
      */
     @GetMapping("/validate_constraint_by_id")
-    public boolean validateConstraintById(@RequestParam String instanceUuid, @RequestParam String constraintUuid) {
+    public ConstraintValidationReport validateConstraintById(@RequestParam String instanceUuid, @RequestParam String constraintUuid) {
         Constraint constraint = constraintPersistenceService.getConstraintByUuid(constraintUuid);
         Set<Set<String>> requiredSubgraphElements = constraintValidationService.getRequiredSubgraphElements(constraint);
-        GremlinConstraintMapper gremlinConstraintMapper = new GremlinConstraintMapper();
         List<InstanceElement> instanceGraph = instanceService.getRequiredSubgraph(instanceUuid, requiredSubgraphElements);
-        gremlinConstraintMapper.mapToPlatformSpecificGraph(instanceGraph);
-        constraintValidationService.validateConstraint(instanceUuid, instanceGraph, constraint);
-        System.out.println("It should be changed later!");
-        return true;
+        return constraintValidationService.validateConstraint(instanceUuid, instanceGraph, constraint);
     }
 
 
@@ -111,7 +112,7 @@ public class ConstraintController {
                 return false;
             }
         } catch (JsonProcessingException e) {
-            throw new PersistConstraintException("Error occurred while persisting a constraint", e);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Constraint does not adhere to its specification", e);
         }
         return true;
     }

@@ -15,9 +15,7 @@ public class ModelController {
     private final ModelService modelService;
 
 
-    public ModelController(ModelService modelService,
-                           TemplateFunctionService templateFunctionService,
-                           ConstraintDefinitionService constraintDefinitionService) {
+    public ModelController(ModelService modelService) {
         this.modelService = modelService;
     }
 

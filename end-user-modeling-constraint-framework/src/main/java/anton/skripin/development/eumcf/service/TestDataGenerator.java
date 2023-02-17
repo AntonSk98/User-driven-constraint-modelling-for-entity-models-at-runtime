@@ -1,6 +1,5 @@
 package anton.skripin.development.eumcf.service;
 
-import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.SneakyThrows;
@@ -16,10 +15,10 @@ import scala.Option;
 import scala.Some;
 import scala.jdk.javaapi.CollectionConverters;
 
+import javax.annotation.PostConstruct;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 import static anton.skripin.development.eumcf.util.ScalaToJavaMapper.future;
 
@@ -57,7 +56,7 @@ public class TestDataGenerator {
      * Initialization class for bootstrapping test data.
      */
     @PostConstruct
-    public void generateTestDate() throws ExecutionException, InterruptedException {
+    public void generateTestDate() {
         generateRoot();
         generateModelElements();
         generateInstanceElements();
@@ -120,22 +119,22 @@ public class TestDataGenerator {
         var project = NON_TEMPLATE_MODEL_ELEMENT_NAMES[1];
         var sprint = NON_TEMPLATE_MODEL_ELEMENT_NAMES[2];
 
-        String anton = createTestSwEngineer("Anton", "24", "10000");
+        String john = createTestSwEngineer("John", "24", "10000");
         String egor = createTestSwEngineer("Egor", "23", "8000");
-        String thesis = createTestProject("Thesis", "Anton", "true");
+        String thesis = createTestProject("Thesis", "John", "true");
         String designProcess = createTestSprint("Design process");
         String architectureProcess = createTestSprint("Architecture process");
         String implementationProcess = createTestSprint("Implementation process");
 
-        associateTwoInstances(anton, worksOnAssociation, thesis, project);
+        associateTwoInstances(john, worksOnAssociation, thesis, project);
         associateTwoInstances(egor, worksOnAssociation, thesis, project);
 
-        associateTwoInstances(thesis, participatesAssociation, anton, swEngineer);
+        associateTwoInstances(thesis, participatesAssociation, john, swEngineer);
         associateTwoInstances(thesis, participatesAssociation, egor, swEngineer);
 
-        associateTwoInstances(anton, takesPartInAssociation, designProcess, sprint);
-        associateTwoInstances(anton, takesPartInAssociation, architectureProcess, sprint);
-        associateTwoInstances(anton, takesPartInAssociation, implementationProcess, sprint);
+        associateTwoInstances(john, takesPartInAssociation, designProcess, sprint);
+        associateTwoInstances(john, takesPartInAssociation, architectureProcess, sprint);
+        associateTwoInstances(john, takesPartInAssociation, implementationProcess, sprint);
         associateTwoInstances(egor, takesPartInAssociation, implementationProcess, sprint);
 
         associateTwoInstances(thesis, consistsOfAssociation, designProcess, sprint);

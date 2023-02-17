@@ -1,4 +1,7 @@
 async function createInstance(elementName) {
+    const successNotification = getSuccessNotification();
+    const errorNotification = getErrorNotification();
+
     const attributeKeys = Array.from(document.querySelectorAll('[attribute-key]')).map(element => element.innerText);
     const attributeValues = Array.from(document.querySelectorAll('[attribute-value]')).map(element => element.value);
     const associationNames = Array.from(document.querySelectorAll('[association-name]')).map(element => element.innerText);
@@ -22,11 +25,17 @@ async function createInstance(elementName) {
     });
 
     if (response.ok) {
-        location.replace("/");
+        successNotification({message: "Successfully created a new instance"});
+        setTimeout(() => location.replace("/"), 1500);
+    } else {
+        errorNotification({message: "Unexpected error occurred while creating an instance"});
     }
 }
 
 async function updateInstance(instanceId) {
+    const successNotification = getSuccessNotification();
+    const errorNotification = getErrorNotification();
+
     const slotKeys = Array.from(document.querySelectorAll('[slot-key]')).map(element => element.innerText);
     const slotValues = Array.from(document.querySelectorAll('[slot-value]')).map(element => element.value);
     const linkNames = Array.from(document.querySelectorAll('[link-name]')).map(element => element.innerText);
@@ -50,7 +59,10 @@ async function updateInstance(instanceId) {
     });
 
     if (response.ok) {
-        location.replace("/");
+        successNotification({message: "Successfully updated an instance"});
+        setTimeout(() => location.replace("/"), 1500);
+    } else {
+        errorNotification({message: "Unexpected error occurred while updating an instance"});
     }
 }
 
@@ -60,4 +72,20 @@ function newAssociation(element) {
     Array.from(newRow.getElementsByTagName('input')).forEach(element => element.value = '')
     focusRow.parentNode.insertBefore(newRow, focusRow.nextSibling);
     focusRow.getElementsByClassName("add-button")[0].remove();
+}
+
+function getErrorNotification() {
+    return window.createNotification({
+        theme: 'error',
+        showDuration: 3000,
+        closeOnClick: true
+    })
+}
+
+function getSuccessNotification() {
+    return window.createNotification({
+        theme: 'success',
+        showDuration: 3000,
+        closeOnClick: true
+    })
 }

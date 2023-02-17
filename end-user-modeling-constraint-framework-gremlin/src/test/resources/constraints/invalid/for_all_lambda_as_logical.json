@@ -1,6 +1,6 @@
 {
   "uuid": "ef0f2d15-db7c-42cc-b1b9-b1bd878f1cdf",
-  "name": "Provide a meaningful name for a constraint.",
+  "name": "FOR_ALL_LAMBDA_AS_LOGICAL_INVALID",
   "modelElementUuid": "#",
   "modelElementType": "SoftwareEngineer",
   "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",

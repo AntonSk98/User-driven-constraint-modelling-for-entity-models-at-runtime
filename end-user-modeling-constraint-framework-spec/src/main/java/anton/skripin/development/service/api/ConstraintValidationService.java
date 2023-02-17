@@ -1,6 +1,7 @@
 package anton.skripin.development.service.api;
 
 import anton.skripin.development.domain.constraint.Constraint;
+import anton.skripin.development.domain.constraint.ConstraintValidationReport;
 import anton.skripin.development.domain.instance.InstanceElement;
 
 import java.util.List;
@@ -24,7 +25,7 @@ public interface ConstraintValidationService {
      * @param uuid of an element that should be evaluated against constraint conformance
      * @param subgraphForValidation subgraph of instance data and relations
      * @param constraint {@link Constraint}
-     * @return evaluation report
+     * @return validation report
      */
-    Object validateConstraint(String uuid, List<InstanceElement> subgraphForValidation, Constraint constraint);
+    ConstraintValidationReport validateConstraint(String uuid, List<InstanceElement> subgraphForValidation, Constraint constraint);
 }

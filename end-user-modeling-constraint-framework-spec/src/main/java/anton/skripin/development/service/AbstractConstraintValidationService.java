@@ -1,6 +1,7 @@
 package anton.skripin.development.service;
 
 import anton.skripin.development.domain.constraint.Constraint;
+import anton.skripin.development.domain.constraint.ConstraintValidationReport;
 import anton.skripin.development.domain.constraint.functions.ConstraintFunction;
 import anton.skripin.development.domain.instance.InstanceElement;
 import anton.skripin.development.service.api.ConstraintValidationService;
@@ -47,14 +48,12 @@ public class AbstractConstraintValidationService implements ConstraintValidation
     }
 
     private void resolveNestedPaths(String contextType, ConstraintFunction constraintFunction, Set<Set<String>> requiredSubgraphElements) {
-        constraintFunction.booleanFunctions().ifPresent(constraintFunctions -> {
-            constraintFunctions
-                    .forEach(function -> resolvePathsRecursively(contextType, function, requiredSubgraphElements));
-        });
+        constraintFunction.booleanFunctions().ifPresent(constraintFunctions -> constraintFunctions
+                .forEach(function -> resolvePathsRecursively(contextType, function, requiredSubgraphElements)));
     }
 
     @Override
-    public Object validateConstraint(String uuid, List<InstanceElement> subgraphForValidation, Constraint constraint) {
+    public ConstraintValidationReport validateConstraint(String uuid, List<InstanceElement> subgraphForValidation, Constraint constraint) {
         throw new UnsupportedOperationException("It is an abstract validation service!" +
                 "Validation is not supported!" +
                 "Please use the constraint validation of one of the constraint engine provider or implement it yourself!");

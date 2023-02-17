@@ -1,3 +1,9 @@
+@media (max-width: 1700px) {
+    .instance-elements {
+        display: inline-grid !important;
+    }
+}
+
 .container {
     display: flex;
     justify-content: space-between;
@@ -12,6 +18,7 @@
 }
 
 .inner-container {
+    flex-wrap: wrap;
     display: flex;
     justify-content: start;
     column-gap: 3em;
@@ -33,12 +40,6 @@
 }
 
 .instance-details, .constraint-details {
-    position: absolute;
-    top: 50%;  /* position the top  edge of the element at the middle of the parent */
-    left: 50%; /* position the left edge of the element at the middle of the parent */
-    transform: translate(-50%, -50%);
-    width: 25em;
-    display: none;
     border: 2px solid #0b2a51;
     background-color: white;
 }
@@ -88,4 +89,54 @@
 
 .actions {
     display: flex;
+}
+
+#validation-report table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    border: 1px solid #ddd;
+}
+
+#validation-report table th, td {
+    text-align: left;
+    padding: 1em;
+}
+
+#validation-report td {
+    color: #0b2a51;
+}
+
+#validation-report table tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+
+#validation-report .valid-constraint-validation {
+    background-color: #51a351;
+    font-weight: bold;
+    padding: 1em;
+}
+
+#validation-report .invalid-constraint-validation {
+    background-color: #bd362f;
+    font-weight: bold;
+    padding: 1em;
+}
+
+#validation-report .valid-constraint-validation-result {
+    font-weight: bold;
+    color: #51a351;
+}
+
+#validation-report .invalid-constraint-validation-result {
+    font-weight: bold;
+    color: #bd362f;
+}
+
+#validation-report .hidden-violation-message {
+    display: none;
+}
+
+#validation-report .bold {
+    font-weight: bold;
 }

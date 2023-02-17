@@ -1,6 +1,6 @@
 {
   "uuid": "6bca5d2f-0874-4234-8a0a-314b6bb3784f",
-  "name": "Provide a meaningful name for a constraint.",
+  "name": "MANY_NESTED_LOGICALS_INVALID",
   "modelElementUuid": "#",
   "modelElementType": "SoftwareEngineer",
   "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",

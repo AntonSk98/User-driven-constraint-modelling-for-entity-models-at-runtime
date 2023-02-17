@@ -1,6 +1,6 @@
 {
   "uuid": "67b513b7-99bb-4705-9fe0-34c069017993",
-  "name": "Provide a meaningful name for a constraint.",
+  "name": "RUNTIME_CONSTRAINT_INVALID",
   "modelElementUuid": "#",
   "modelElementType": "SoftwareEngineer",
   "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",

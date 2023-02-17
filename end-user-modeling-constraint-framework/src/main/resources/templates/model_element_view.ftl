@@ -179,7 +179,7 @@
                             </div>
                             <div class="functions">
                                 <#list functions as function>
-                                    <div class="info constraint-function" title="${function.getDescription()}" onclick="addConstraint(`${function.functionName}`)">${function.functionName}()
+                                    <div class="info constraint-function" title="${function.getDescription()}" onclick="addConstraintFunction(`${function.functionName}`)">${function.functionName}()
                                     </div>
                                 </#list>
                             </div>

@@ -1,6 +1,6 @@
 {
   "uuid": "ff8f4d8b-9cd4-4dfb-ad6a-6ffd04f10fec",
-  "name": "Provide a meaningful name for a constraint.",
+  "name": "MAX_CARDINALITY_INVALID",
   "modelElementUuid": "#",
   "modelElementType": "SoftwareEngineer",
   "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",

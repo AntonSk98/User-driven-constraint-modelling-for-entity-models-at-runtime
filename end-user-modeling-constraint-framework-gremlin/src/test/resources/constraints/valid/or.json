@@ -1,6 +1,6 @@
 {
   "uuid": "ebecccaf-40ea-4041-bc60-5b833b284c93",
-  "name": "Provide a meaningful name for a constraint.",
+  "name": "OR",
   "modelElementUuid": "#",
   "modelElementType": "SoftwareEngineer",
   "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",

@@ -1,6 +1,6 @@
 {
   "uuid": "2490ab3d-73a7-4c6b-b87b-58efc7ae8f1c",
-  "name": "Provide a meaningful name for a constraint.",
+  "name": "MIN_CARDINALITY_INVALID",
   "modelElementUuid": "#",
   "modelElementType": "SoftwareEngineer",
   "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",

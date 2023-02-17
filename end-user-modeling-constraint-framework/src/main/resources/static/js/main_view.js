@@ -1,40 +1,44 @@
-async function displayInstanceDetails(instanceId) {
-    toggleInputs(true);
-    const result = await fetch('/get_instance_by_id?' + new URLSearchParams({uuid: instanceId}))
+let modalView;
 
-    if (result.ok) {
-        const instance = await result.json();
-        const textarea = document.getElementById('instance-details-textarea');
-        blurMainElement(true);
-        toggleInstancePopup(true);
-        textarea.value = JSON.stringify(instance, undefined, 2);
-    }
+window.onload = () => {
+    modalView = spawnModal();
+    return modalView;
 }
 
 async function deleteInstanceById(uuid) {
     const result = await fetch('/delete_instance_by_id?' + new URLSearchParams({uuid: uuid}));
-
+    const errorNotification = getErrorNotification();
     if (result.ok) {
         location.reload();
     } else {
-        window.alert('Unexpected error occurred!')
+        errorNotification({message: "Unexpected error occurred while deleting an instance"});
+    }
+}
+
+async function displayInstanceDetails(instanceId) {
+    const errorNotification = getErrorNotification();
+    const result = await fetch('/get_instance_by_id?' + new URLSearchParams({uuid: instanceId}))
+    if (result.ok) {
+        const instance = await result.json();
+        renderInstanceDetails(instance);
+    } else {
+        errorNotification({message: "Unexpected error occurred while fetching instance details"});
     }
 }
 
 async function displayConstraintById(instanceId, constraintId) {
-    toggleInputs(true);
+    const errorNotification = getErrorNotification();
     const result = await fetch('/get_constraint_by_id?' + new URLSearchParams({uuid: constraintId}))
-    document.getElementById('instance-id').value = instanceId;
     if (result.ok) {
         const constraint = await result.json();
-        const textarea = document.getElementById('constraint-details-textarea');
-        blurMainElement(true);
-        toggleConstraintPopup(true);
-        textarea.value = JSON.stringify(constraint, undefined, 2);
+        renderConstraintDetails(instanceId, constraint);
+    } else {
+        errorNotification({message: "Unexpected error occurred while getting constraint details"});
     }
 }
 
 async function validateConstraint() {
+    const errorNotification = getErrorNotification();
     const textarea = document.getElementById('constraint-details-textarea');
     const constraint = JSON.parse(textarea.value);
     const constraintUuid = constraint.uuid;
@@ -44,11 +48,15 @@ async function validateConstraint() {
 
     }));
     if (result.ok) {
-        closeDetailsPopup();
+        const validationReport = await result.json();
+        renderValidationReport(validationReport)
+    } else {
+        errorNotification({message: "Unexpected error occurred while validating a constraint"});
     }
 }
 
 async function removeConstraint() {
+    const errorNotification = getErrorNotification();
     const textarea = document.getElementById('constraint-details-textarea');
     const constraint = JSON.parse(textarea.value);
     const constraintUuid = constraint.uuid;
@@ -56,34 +64,100 @@ async function removeConstraint() {
     if (result.ok) {
         closeDetailsPopup();
         location.reload();
+    } else {
+        errorNotification({message: "Unexpected error occurred while deleting a constraint"})
     }
 }
 
-function toggleInputs(disabled) {
-    const inputs = document.getElementsByTagName('input');
-    for (let index = 0; index < inputs.length; index++) {
-        inputs[index].disabled = disabled;
+
+function renderValidationReport(validationReport) {
+    closeModal();
+    const modalBody = document.getElementById('modal-body');
+    const validationReportElement = document.getElementById('validation-report-template').cloneNode(true);
+    modalBody.appendChild(validationReportElement.content);
+    openModal();
+
+    const validationReportHeader = document.getElementById('validation-report-header');
+    const constraintName = document.getElementById('constraint-name');
+    const constraintContext = document.getElementById('constraint-context');
+    const constraintResult = document.getElementById('constraint-result');
+    const constraintViolationMessageRow = document.getElementById('constraint-violation-message-row');
+    const constraintViolationMessage = document.getElementById('constraint-violation-message');
+
+    const name = validationReport.name;
+    const context = validationReport.elementType;
+    const result = validationReport.result;
+    const isConstraintValid = validationReport.valid;
+    const violationMessage = validationReport.violationMessage;
+
+    constraintName.innerHTML = name;
+    constraintContext.innerHTML = context;
+    constraintResult.innerHTML = result;
+
+    if (isConstraintValid) {
+        validationReportHeader.classList.add('valid-constraint-validation');
+        constraintResult.classList.add('valid-constraint-validation-result');
+    } else {
+        validationReportHeader.classList.add('invalid-constraint-validation');
+        constraintViolationMessageRow.classList.remove('hidden-violation-message')
+        constraintResult.classList.add('invalid-constraint-validation-result');
+        constraintViolationMessage.innerHTML = violationMessage;
     }
 }
 
-function toggleInstancePopup(showWindow) {
-    const instanceDetails = document.getElementById('instance-details');
-    showWindow ? instanceDetails.style.display = 'block' : instanceDetails.style.display = 'none';
+function renderInstanceDetails(instance) {
+    const modalBody = document.getElementById('modal-body');
+    const validationReportElement = document.getElementById('instance-details-template').cloneNode(true);
+    modalBody.appendChild(validationReportElement.content);
+    const textarea = document.getElementById('instance-details-textarea');
+    textarea.value = JSON.stringify(instance, undefined, 2);
 }
 
-function toggleConstraintPopup(showWindow) {
-    const constraintDetails = document.getElementById('constraint-details');
-    showWindow ? constraintDetails.style.display = 'block' : constraintDetails.style.display = 'none';
+function renderConstraintDetails(instanceId, constraint) {
+    const modalBody = document.getElementById('modal-body');
+    const constraintDetails = document.getElementById('constraint-details-template').cloneNode(true);
+    modalBody.appendChild(constraintDetails.content);
+    document.getElementById('instance-id').value = instanceId;
+    const textarea = document.getElementById('constraint-details-textarea');
+    textarea.value = JSON.stringify(constraint, undefined, 2);
 }
 
-function blurMainElement(shouldBlur) {
-    const main = document.getElementsByTagName('main').item(0);
-    shouldBlur ? main.style.filter = 'blur(3px)' : main.style.filter = 'none';
+function getErrorNotification() {
+    return window.createNotification({
+        theme: 'error',
+        showDuration: 3000,
+        closeOnClick: true
+    })
 }
 
-function closeDetailsPopup() {
-    toggleInputs(false);
-    blurMainElement(false);
-    toggleInstancePopup(false)
-    toggleConstraintPopup(false);
+function getSuccessNotification() {
+    return window.createNotification({
+        theme: 'success',
+        showDuration: 3000,
+        closeOnClick: true
+    })
+}
+
+function spawnModal() {
+    return new HystModal({
+        linkAttributeName: "data-hystmodal",
+        afterClose: () => {
+            clearModalContent();
+        }
+    });
+}
+
+function clearModalContent() {
+    let modalContent = document.getElementById('modal-body');
+    while (modalContent.firstChild) {
+        modalContent.removeChild(modalContent.lastChild);
+    }
+}
+
+function closeModal() {
+    modalView.close();
+}
+
+function openModal() {
+    modalView.open();
 }

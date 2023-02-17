@@ -8,7 +8,11 @@
     <title>Models</title>
     <link rel="stylesheet" href="css/main_view.css">
     <link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="libs/notification/notifications.css">
+    <link rel="stylesheet" href="libs/modal/hystmodal.min.css">
+    <script src="libs/modal/hystmodal.min.js"></script>
     <script src="js/main_view.js"></script>
+    <script src="libs/notification/notifications.js"></script>
 </head>
 <body>
 <header>
@@ -72,9 +76,10 @@
                                 <td>${instance.uuid}</td>
                                 <td>${type}</td>
                                 <td>
-                                    <div class="actions">
+                                    <div class="actions instance-elements">
                                         <input class="button-details" type="button"
                                                value="details"
+                                               data-hystmodal="#myModal"
                                                onclick="displayInstanceDetails('${instance.uuid}')">
                                         <input class="button-details" type="button"
                                                value="delete"
@@ -89,7 +94,9 @@
                                     <#if constraintsByType[type]??>
                                         <td>
                                             <#list constraintsByType[type] as constraint>
-                                                <div class="display-constraint-window" onclick="displayConstraintById('${instance.uuid}', '${constraint.uuid}')">${constraint?counter}) ${constraint.name}</div>
+                                                <div class="display-constraint-window"
+                                                     data-hystmodal="#myModal"
+                                                     onclick="displayConstraintById('${instance.uuid}', '${constraint.uuid}')">${constraint?counter}) ${constraint.name}</div>
                                             </#list>
                                         </td>
                                     <#else>
@@ -110,35 +117,71 @@
 </main>
 </body>
 
-<div class="instance-details" id="instance-details">
-    <div class="title-instance-details">
-        <div style="margin: 1em 2em; color: white; font-weight: bold;">Instance details</div>
-        <div class="close" onclick="closeDetailsPopup()">&times;</div>
-    </div>
-
-    <textarea id="instance-details-textarea" name="instance_details" cols="70" rows="40" readonly style="resize: none"></textarea>
-</div>
-
-<div class="constraint-details" id="constraint-details">
-    <input type="hidden" id="instance-id">
-    <div class="title-constraint-detils">
-        <div style="margin: 1em 2em; color: white; font-weight: bold;">Constraint details</div>
-        <div class="close" onclick="closeDetailsPopup()">&times;</div>
-    </div>
-
-    <textarea id="constraint-details-textarea" name="constraint_details" cols="70" rows="40" readonly style="resize: none"></textarea>
-    <div>
-        <button type="button"
-                onclick="validateConstraint()"
-                id="validate-button"
-                class="button-details"
-                style="margin: 1em;">Validate</button>
-        <button type="button"
-                onclick="removeConstraint()"
-                id="delete-button"
-                class="button-details"
-                style="margin: 1em;">Remove</button>
+<div class="hystmodal" id="myModal" aria-hidden="true">
+    <div class="hystmodal__wrap">
+        <div class="hystmodal__window" role="dialog" aria-modal="true">
+            <button data-hystclose class="hystmodal__close">Close</button>
+            <div id="modal-body">
+            </div>
+        </div>
     </div>
 </div>
+
+<template id="constraint-details-template">
+    <div class="constraint-details" id="constraint-details">
+        <input type="hidden" id="instance-id">
+        <div class="title-constraint-detils">
+            <div style="margin: 1em 2em; color: white; font-weight: bold;">Constraint details</div>
+        </div>
+        <textarea id="constraint-details-textarea" name="constraint_details" cols="70" rows="40" readonly style="resize: none"></textarea>
+        <div>
+            <button type="button"
+                    onclick="validateConstraint()"
+                    id="validate-button"
+                    class="button-details"
+                    style="margin: 1em;">Validate</button>
+            <button type="button"
+                    onclick="removeConstraint()"
+                    id="delete-button"
+                    class="button-details"
+                    style="margin: 1em;">Remove</button>
+        </div>
+    </div>
+</template>
+
+<template id="instance-details-template">
+    <div class="instance-details" id="instance-details">
+        <div class="title-instance-details">
+            <div style="margin: 1em 2em; color: white; font-weight: bold;">Instance details</div>
+        </div>
+
+        <textarea id="instance-details-textarea" name="instance_details" cols="70" rows="40" readonly style="resize: none"></textarea>
+    </div>
+</template>
+
+<template id="validation-report-template">
+    <div id="validation-report">
+        <header id="validation-report-header">Constraint validation report</header>
+        <table>
+            <tr>
+                <td class="bold">Constraint name</td>
+                <td id="constraint-name"></td>
+            </tr>
+            <tr>
+                <td class="bold">Context</td>
+                <td id="constraint-context"></td>
+            </tr>
+            <tr>
+                <td class="bold">Result</td>
+                <td id="constraint-result"></td>
+            </tr>
+            <tr id="constraint-violation-message-row" class="hidden-violation-message">
+                <td class="bold">Details</td>
+                <td id="constraint-violation-message"></td>
+            </tr>
+        </table>
+    </div>
+</template>
+
 </html>
 

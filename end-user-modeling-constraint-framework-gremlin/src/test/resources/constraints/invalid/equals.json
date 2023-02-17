@@ -1,6 +1,6 @@
 {
   "uuid": "972b5596-3383-4e98-9761-eecadb414afd",
-  "name": "Provide a meaningful name for a constraint.",
+  "name": "EQUALS_INVALID",
   "modelElementUuid": "#",
   "modelElementType": "SoftwareEngineer",
   "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",

@@ -8,6 +8,8 @@
     <title>Instance view</title>
     <link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/instance_view.css">
+    <link rel="stylesheet" href="libs/notification/notifications.css">
+    <script src="libs/notification/notifications.js"></script>
     <script src="js/instance_view.js"></script>
 </head>
 <body>

@@ -1,3 +1,11 @@
+async function copyAttribute(path) {
+    await copyPath(path, 'attribute');
+}
+
+async function copyNavigation(path) {
+    await copyPath(path, 'association');
+}
+
 async function copyPath(path, type) {
     const successNotification = getSuccessNotification();
     const errorNotification = getErrorNotification();
@@ -7,14 +15,6 @@ async function copyPath(path, type) {
     } catch (e) {
         errorNotification({message: `Error occurred while copying ${type}}`});
     }
-}
-
-async function copyAttribute(path) {
-    await copyPath(path, 'attribute');
-}
-
-async function copyNavigation(path) {
-    await copyPath(path, 'association');
 }
 
 function prettyPrint() {
@@ -32,7 +32,7 @@ function prettyPrint() {
     }
 }
 
-async function addConstraint(functionName) {
+async function addConstraintFunction(functionName) {
     const errorNotification = getErrorNotification();
     try {
         let constrainSpace = document.getElementById('constrain_space');
@@ -64,7 +64,8 @@ async function addConstraint(functionName) {
 async function resetFunctionTemplates() {
     const errorNotification = getErrorNotification();
     const successNotification = getSuccessNotification();
-    let response = await fetch('/reset_function_templates');
+
+    const response = await fetch('/reset_function_templates');
     if (response.ok) {
         successNotification({message: 'Successfully reset all template functions!'})
         setTimeout(() => location.reload(), 1500)
@@ -91,7 +92,8 @@ async function saveConstraint(typeName) {
         successNotification({message: 'Successfully saved a constraint!'})
         setTimeout(() => location.reload(), 3000)
     } else {
-        errorNotification({message: 'Error occurred while saving a constraint!'})
+        const error = await response.json();
+        errorNotification({message: error.message})
     }
 }
 
@@ -258,22 +260,6 @@ async function updateAssociation(element, id, type, associationId) {
     }
 }
 
-function getErrorNotification() {
-    return window.createNotification({
-        theme: 'error',
-        showDuration: 3000,
-        closeOnClick: true
-    })
-}
-
-function getSuccessNotification() {
-    return window.createNotification({
-        theme: 'success',
-        showDuration: 3000,
-        closeOnClick: true
-    })
-}
-
 async function addRuntimeFunction() {
     const result = await fetch('/get_runtime_function_template');
     if (result.ok) {
@@ -306,6 +292,22 @@ async function saveRuntimeFunction() {
     } else {
         errorNotification({message: 'Error occurred while adding a new function type!'})
     }
+}
+
+function getErrorNotification() {
+    return window.createNotification({
+        theme: 'error',
+        showDuration: 3000,
+        closeOnClick: true
+    })
+}
+
+function getSuccessNotification() {
+    return window.createNotification({
+        theme: 'success',
+        showDuration: 3000,
+        closeOnClick: true
+    })
 }
 
 function closeDetailsPopup() {

@@ -95,4 +95,8 @@ public class ConstraintGraphTraversalSourceDsl extends GraphTraversalSource {
     private boolean doesInstanceExists(String uuid) {
         return this.V().has(UUID_PROPERTY, uuid).hasNext();
     }
+
+    public boolean isValid(GraphTraversal<?, Boolean> gremlinConstraint) {
+        return gremlinConstraint.next();
+    }
 }

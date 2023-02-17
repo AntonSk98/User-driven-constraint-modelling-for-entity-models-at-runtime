@@ -1,6 +1,6 @@
 {
   "uuid": "caf6ef96-3fb1-49aa-939c-8a52132a37aa",
-  "name": "Provide a meaningful name for a constraint.",
+  "name": "NESTED_LOGICAL_WITH_FOR_ALL",
   "modelElementUuid": "#",
   "modelElementType": "SoftwareEngineer",
   "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",

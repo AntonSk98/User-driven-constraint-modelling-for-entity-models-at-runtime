@@ -1,4 +1,23 @@
 html, body { height: fit-content; }
+
+@media (max-width: 1700px) {
+    .outer-container {
+        max-width: 700px !important;
+    }
+}
+
+@media (max-width: 1600px) {
+    .outer-container {
+        max-width: 600px !important;
+    }
+}
+
+@media (max-width: 1350px) {
+    .outer-container {
+        max-width: 500px !important;
+    }
+}
+
 body {
     font-size: 20px;
     margin: 0;
@@ -97,6 +116,8 @@ header div {
     margin: 40px 100px;
     display: flex;
     justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 1em;
 }
 
 .outer-container {
