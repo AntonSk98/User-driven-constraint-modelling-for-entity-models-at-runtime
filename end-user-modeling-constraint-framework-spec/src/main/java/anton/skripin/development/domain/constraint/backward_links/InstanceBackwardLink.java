@@ -1,9 +1,7 @@
-package anton.skripin.development.domain.constraint;
+package anton.skripin.development.domain.constraint.backward_links;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-
-import java.util.List;
 
 /**
  * Element for integrity mechanisms.
@@ -34,7 +32,7 @@ import java.util.List;
  */
 @Getter
 @AllArgsConstructor
-public class ConstraintBackwardLink {
+public class InstanceBackwardLink {
     String targetInstanceUuid;
     String contextInstanceUuid;
     String constraintUuid;

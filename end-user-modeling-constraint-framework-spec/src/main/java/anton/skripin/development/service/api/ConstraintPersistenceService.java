@@ -1,7 +1,9 @@
 package anton.skripin.development.service.api;
 
 import anton.skripin.development.domain.constraint.Constraint;
-import anton.skripin.development.domain.constraint.ConstraintBackwardLink;
+import anton.skripin.development.domain.constraint.backward_links.InstanceBackwardLink;
+import anton.skripin.development.domain.constraint.functions.ConstraintFunction;
+import anton.skripin.development.domain.constraint.backward_links.ModelElementBackwardLink;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,24 @@ public interface ConstraintPersistenceService {
     boolean saveConstraint(String id, Constraint constraint);
 
     /**
+     * By adding a new constraint this function analyzes what other types this constraint is referencing to.
+     * If it finds external references to other model elements via navigation, it adds them to model element backward link space.
+     * @param constraint {@link Constraint}
+     * @param constraintFunction {@link ConstraintFunction}
+     */
+    void resolveModelElementBackwardLinks(Constraint constraint, ConstraintFunction constraintFunction);
+
+
+    /**
+     * Adds model element backward link.
+     * @param targetModelElement target model element name
+     * @param contextModelElement context model element
+     * @param constraintUuid uuid of a constraint
+     * @return true if persisted
+     */
+    boolean addModelElementBackwardLink(String targetModelElement, String contextModelElement, String constraintUuid);
+
+    /**
      * Fetches all constraint for a required model element type.
      *
      * @param type of a model element
@@ -28,6 +48,13 @@ public interface ConstraintPersistenceService {
      */
     List<Constraint> getAllConstraints(String type);
 
+
+    /**
+     * Returns all constraints associated with a model element type via {@link ModelElementBackwardLink}.
+     * @param type model element name
+     * @return list of associated {@link Constraint}
+     */
+    List<Constraint> getAllBackwardLinkConstraints(String type);
 
     /**
      * Fetches all constraints of a required name of a certain model element type.
@@ -65,15 +92,21 @@ public interface ConstraintPersistenceService {
     boolean removeConstraintByUuid(String uuid);
 
     /**
-     * Get all associated backward links by an instance uuid.
-     *
-     * @param instanceUuid of an instance
-     * @return list of {@link ConstraintBackwardLink}
+     * Whenever a constraint is removed all its reference in {@link ModelElementBackwardLink} must also be removed.
+     * @param uuid of a constraint
      */
-    List<ConstraintBackwardLink> getConstraintLinksByInstanceUuid(String instanceUuid);
+    void removeModelElementBackwardLinkByConstraintUuid(String uuid);
 
     /**
-     * Adds a {@link ConstraintBackwardLink} to an instance element.
+     * Get all associated instance backward links by an instance uuid.
+     *
+     * @param instanceUuid of an instance
+     * @return list of {@link InstanceBackwardLink}
+     */
+    List<InstanceBackwardLink> getConstraintLinksByInstanceUuid(String instanceUuid);
+
+    /**
+     * Adds a {@link InstanceBackwardLink} to an instance element.
      *
      * @param targetInstanceUuid  of an instance that is associated with the link and triggers constraint check on its every change
      * @param contextInstanceUuid of an instance in what context the constraint is defined
@@ -92,7 +125,7 @@ public interface ConstraintPersistenceService {
     boolean removeConstraintLinkFromInstance(String targetInstanceUuid, String constraintUuid);
 
     /**
-     * Checks whether a given constraint is linked with an instance element via {@link ConstraintBackwardLink}.
+     * Checks whether a given constraint is linked with an instance element via {@link InstanceBackwardLink}.
      *
      * @param targetInstanceUuid of an instance that is associated with the link and triggers constraint check on its every change
      * @param constraintUuid     of a {@link Constraint}
