@@ -5,7 +5,6 @@ import anton.skripin.development.domain.instance.Link;
 import anton.skripin.development.service.SimpleConstraintPersistenceService;
 import anton.skripin.development.service.api.ConstraintPersistenceService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -16,18 +15,12 @@ import static anton.skripin.development.domain.constraint.functions.FunctionMeta
 
 public class InstanceIntegrityMechanismsTest {
 
-    private ConstraintPersistenceService constraintPersistenceService;
-
-    @BeforeEach
-    public void init() {
-        this.constraintPersistenceService = new SimpleConstraintPersistenceService();
-    }
-
     /**
      * Tests the workflow of instance-related backward link.
      */
     @Test
     public void testConstraintIntegrityInstanceLevel() {
+        ConstraintPersistenceService constraintPersistenceService = new SimpleConstraintPersistenceService();
         Constraint constraint = getTestConstraint("1", "SoftwareEngineer");
         constraintPersistenceService.saveConstraint("SoftwareEngineer", constraint);
 

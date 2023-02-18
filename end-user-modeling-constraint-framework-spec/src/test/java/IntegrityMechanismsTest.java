@@ -10,7 +10,6 @@ import anton.skripin.development.service.SimpleConstraintPersistenceService;
 import anton.skripin.development.service.api.ConstraintIntegrityService;
 import anton.skripin.development.service.api.ConstraintPersistenceService;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -27,14 +26,8 @@ import static anton.skripin.development.domain.constraint.functions.FunctionMeta
  */
 public class IntegrityMechanismsTest {
 
-    private ConstraintPersistenceService constraintPersistenceService;
-    private ConstraintIntegrityService constraintIntegrityService;
-
-    @BeforeEach
-    public void init() {
-        this.constraintPersistenceService = new SimpleConstraintPersistenceService();
-        this.constraintIntegrityService = new ConstraintIntegrityServiceImpl();
-    }
+    ConstraintPersistenceService constraintPersistenceService = new SimpleConstraintPersistenceService();
+    ConstraintIntegrityService constraintIntegrityService = new ConstraintIntegrityServiceImpl();
 
     /**
      * Shows the workflow to keep constraints valid in the presence of model element changes.

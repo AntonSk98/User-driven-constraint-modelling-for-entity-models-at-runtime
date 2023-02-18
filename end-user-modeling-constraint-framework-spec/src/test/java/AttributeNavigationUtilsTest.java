@@ -24,4 +24,14 @@ public class AttributeNavigationUtilsTest {
         Assertions.assertEquals(List.of("works_on", "consists_of"), NavigationUtils.getNavigationRoot(secondPath));
         Assertions.assertEquals(List.of("works_on", "consists_of", "participates"), NavigationUtils.getNavigationRoot(thirdPath));
     }
+
+    @Test
+    public void getNavigationTypes() {
+        String firstPath = "works_on(Project)";
+        String secondPath = "works_on(Project).consists_of(Sprint)";
+        String thirdPath = "works_on(Project).consists_of(Sprint).participates(SoftwareEngineer)";
+        Assertions.assertEquals(List.of("Project"), NavigationUtils.getNavigationTypes(firstPath));
+        Assertions.assertEquals(List.of("Project", "Sprint"), NavigationUtils.getNavigationTypes(secondPath));
+        Assertions.assertEquals(List.of("Project", "Sprint", "SoftwareEngineer"), NavigationUtils.getNavigationTypes(thirdPath));
+    }
 }
