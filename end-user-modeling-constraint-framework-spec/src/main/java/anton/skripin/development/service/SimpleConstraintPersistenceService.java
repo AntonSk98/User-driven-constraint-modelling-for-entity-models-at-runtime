@@ -49,8 +49,6 @@ public class SimpleConstraintPersistenceService implements ConstraintPersistence
         constraintFunction.navigation().ifPresent(navigation -> {
             ValidationUtils.validateNavigation(navigation);
             List<String> navigationTypes = new ArrayList<>(NavigationUtils.getNavigationTypes(navigation));
-//            int lastElementIndex = navigationTypes.size() - 1;
-//            navigationTypes.remove(lastElementIndex);
             navigationTypes.forEach(navigationType -> addModelElementBackwardLink(navigationType, constraint.getModelElementType(), constraint.getUuid()));
         });
         constraintFunction
@@ -145,12 +143,6 @@ public class SimpleConstraintPersistenceService implements ConstraintPersistence
 
     @Override
     public void removeModelElementBackwardLinkByConstraintUuid(String uuid) {
-        var a = this.modelElementBackwardLinks
-                .entrySet()
-                .stream()
-                .filter(stringListEntry -> stringListEntry.getValue().stream().anyMatch(constraint -> constraint.getConstraintUuid().equals(uuid)))
-                .collect(Collectors.toList());
-        System.out.println(a);
         modelElementBackwardLinks
                 .entrySet()
                 .stream()
@@ -166,33 +158,42 @@ public class SimpleConstraintPersistenceService implements ConstraintPersistence
     }
 
     @Override
-    public boolean linkConstraintToInstance(String targetInstanceUuid, String contextInstanceUuid, String constraintUuid) {
+    public boolean addInstanceBackwardLink(String targetInstanceUuid, String contextInstanceUuid, String constraintUuid) {
         assert targetInstanceUuid != null;
         assert contextInstanceUuid != null;
         assert constraintUuid != null;
         var backwardLink = new InstanceBackwardLink(targetInstanceUuid, contextInstanceUuid, constraintUuid);
 
-        List<InstanceBackwardLink> linkedConstraints = this.instanceBackwardLinks.get(targetInstanceUuid);
-        if (linkedConstraints == null) {
-            linkedConstraints = new ArrayList<>();
-            linkedConstraints.add(backwardLink);
-            this.instanceBackwardLinks.put(targetInstanceUuid, linkedConstraints);
+        List<InstanceBackwardLink> instanceBackwardLinks = this.instanceBackwardLinks.get(targetInstanceUuid);
+        if (instanceBackwardLinks == null) {
+            instanceBackwardLinks = new ArrayList<>();
+            instanceBackwardLinks.add(backwardLink);
+            this.instanceBackwardLinks.put(targetInstanceUuid, instanceBackwardLinks);
         } else {
-            linkedConstraints.add(backwardLink);
+            instanceBackwardLinks.add(backwardLink);
         }
         return true;
     }
 
     @Override
-    public boolean removeConstraintLinkFromInstance(String targetInstanceUuid, String constraintUuid) {
-        assert targetInstanceUuid != null;
+    public void removeInstanceBackwardLinkByConstraintUuid(String constraintUuid) {
         assert constraintUuid != null;
+        this.instanceBackwardLinks
+                .values()
+                .forEach(instanceBackwardLinksList -> instanceBackwardLinksList
+                        .removeIf(instanceBackwardLink -> constraintUuid
+                                .equals(instanceBackwardLink.getConstraintUuid())));
+    }
+
+    @Override
+    public boolean removeInstanceBackwardLink(String targetInstanceUuid) {
+        assert targetInstanceUuid != null;
         List<InstanceBackwardLink> linkedConstraints = this.instanceBackwardLinks.get(targetInstanceUuid);
         if (linkedConstraints == null) {
             return false;
         } else {
             return linkedConstraints
-                    .removeIf(instanceBackwardLink -> constraintUuid.equals(instanceBackwardLink.getConstraintUuid()));
+                    .removeIf(instanceBackwardLink -> targetInstanceUuid.equals(instanceBackwardLink.getTargetInstanceUuid()));
         }
     }
 

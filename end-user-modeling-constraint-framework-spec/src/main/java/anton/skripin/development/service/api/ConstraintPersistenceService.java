@@ -110,19 +110,24 @@ public interface ConstraintPersistenceService {
      *
      * @param targetInstanceUuid  of an instance that is associated with the link and triggers constraint check on its every change
      * @param contextInstanceUuid of an instance in what context the constraint is defined
-     * @param constraintUuids     of a {@link Constraint}
+     * @param constraintUuid     of a {@link Constraint}
      * @return true if linking is successful
      */
-    boolean linkConstraintToInstance(String targetInstanceUuid, String contextInstanceUuid, String constraintUuids);
+    boolean addInstanceBackwardLink(String targetInstanceUuid, String contextInstanceUuid, String constraintUuid);
 
     /**
      * Removes a given Constraint from an instance linking space by its uuid.
      *
-     * @param targetInstanceUuid of an instance that is associated with the link and triggers constraint check on its every change
      * @param constraintUuid     of a {@link Constraint}
+     */
+    void removeInstanceBackwardLinkByConstraintUuid(String constraintUuid);
+
+    /**
+     * Removes {@link InstanceBackwardLink}.
+     * @param targetInstanceUuid target instance uuid
      * @return true if found and removed
      */
-    boolean removeConstraintLinkFromInstance(String targetInstanceUuid, String constraintUuid);
+    boolean removeInstanceBackwardLink(String targetInstanceUuid);
 
     /**
      * Checks whether a given constraint is linked with an instance element via {@link InstanceBackwardLink}.
