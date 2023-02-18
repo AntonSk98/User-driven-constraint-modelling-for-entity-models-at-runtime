@@ -62,7 +62,6 @@ async function removeConstraint() {
     const constraintUuid = constraint.uuid;
     const result = await fetch('/remove_constraint_by_id?' + new URLSearchParams({uuid: constraintUuid}))
     if (result.ok) {
-        closeDetailsPopup();
         location.reload();
     } else {
         errorNotification({message: "Unexpected error occurred while deleting a constraint"})
