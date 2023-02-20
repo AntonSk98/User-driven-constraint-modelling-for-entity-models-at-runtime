@@ -1,0 +1,13 @@
+{
+  "uuid": "069b89c1-89a8-4af3-96a2-98b4c7b862c2",
+  "name": "NOT_NULL_OR_EMPTY",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "STRING_BASED_FUNCTION",
+    "name": "NOT_NULL_OR_EMPTY",
+    "attribute": "<SoftwareEngineer>name"
+  }
+}

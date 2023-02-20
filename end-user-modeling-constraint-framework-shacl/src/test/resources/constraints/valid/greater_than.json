@@ -1,0 +1,16 @@
+{
+  "uuid": "234a4405-b875-4f60-b4dc-b1f9c7cfa425",
+  "name": "GREATER_THAN",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "RANGE_BASED_FUNCTION",
+    "name": "GREATER_THAN",
+    "attribute": "<SoftwareEngineer>age",
+    "params": {
+      "value": "18"
+    }
+  }
+}

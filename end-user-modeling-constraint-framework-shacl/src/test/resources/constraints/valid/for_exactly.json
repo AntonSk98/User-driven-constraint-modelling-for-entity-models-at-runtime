@@ -1,0 +1,24 @@
+{
+  "uuid": "6e9874f7-9ddc-4f39-8ba0-4906bb48b39b",
+  "name": "FOR_EXACTLY",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "COLLECTION_BASED_FUNCTION",
+    "name": "FOR_EXACTLY",
+    "navigation": "works_on(Project)",
+    "lambdaFunction": {
+      "@type": "RANGE_BASED_FUNCTION",
+      "name": "EQUALS",
+      "attribute": "<Project>responsible",
+      "params": {
+        "value": "John"
+      }
+    },
+    "params": {
+      "match_number": "1"
+    }
+  }
+}

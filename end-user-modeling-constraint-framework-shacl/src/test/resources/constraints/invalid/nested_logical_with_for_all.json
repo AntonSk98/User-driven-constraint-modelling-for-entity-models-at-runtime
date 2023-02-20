@@ -1,0 +1,35 @@
+{
+  "uuid": "caf6ef96-3fb1-49aa-939c-8a52132a37aa",
+  "name": "NESTED_LOGICAL_WITH_FOR_ALL_INVALID",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "LOGICAL_FUNCTION",
+    "name": "AND",
+    "booleanFunctions": [
+      {
+        "@type": "RANGE_BASED_FUNCTION",
+        "name": "GREATER_THAN_OR_EQUALS",
+        "attribute": "<SoftwareEngineer>age",
+        "params": {
+          "value": "18"
+        }
+      },
+      {
+        "@type": "COLLECTION_BASED_FUNCTION",
+        "name": "FOR_ALL",
+        "navigation": "works_on(Project)",
+        "lambdaFunction": {
+          "@type": "RANGE_BASED_FUNCTION",
+          "name": "EQUALS",
+          "attribute": "<Project>responsible",
+          "params": {
+            "value": "Sven"
+          }
+        }
+      }
+    ]
+  }
+}

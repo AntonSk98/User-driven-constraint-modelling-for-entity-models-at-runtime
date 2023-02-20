@@ -1,0 +1,16 @@
+{
+  "uuid": "66e214c2-cb6c-4d5d-bf74-2bccde47d9b0",
+  "name": "MIN_LENGTH_INVALID",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "STRING_BASED_FUNCTION",
+    "name": "MIN_LENGTH",
+    "attribute": "<SoftwareEngineer>name",
+    "params": {
+      "min_length": "255"
+    }
+  }
+}

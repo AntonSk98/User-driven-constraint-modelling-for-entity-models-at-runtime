@@ -1,0 +1,21 @@
+{
+  "uuid": "0bb874d0-c809-4e34-829d-63b58ef19ae5",
+  "name": "FOR_SOME",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "COLLECTION_BASED_FUNCTION",
+    "name": "FOR_SOME",
+    "navigation": "takes_part_in(Sprint)",
+    "lambdaFunction": {
+      "@type": "RANGE_BASED_FUNCTION",
+      "name": "EQUALS",
+      "attribute": "<Sprint>name",
+      "params": {
+        "value": "Design process"
+      }
+    }
+  }
+}

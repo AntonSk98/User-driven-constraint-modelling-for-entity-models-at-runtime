@@ -1,0 +1,16 @@
+{
+  "uuid": "89b28d09-88eb-4275-baaa-9b90012125c7",
+  "name": "GREATER_THAN_OR_EQUALS",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "RANGE_BASED_FUNCTION",
+    "name": "GREATER_THAN_OR_EQUALS",
+    "attribute": "<SoftwareEngineer>salary",
+    "params": {
+      "value": "10000"
+    }
+  }
+}

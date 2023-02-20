@@ -1,0 +1,13 @@
+{
+  "uuid": "159451d6-7747-4f62-9a78-b7881bac76e4",
+  "name": "UNIQUE",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "STRING_BASED_FUNCTION",
+    "name": "UNIQUE",
+    "attribute": "<SoftwareEngineer>name"
+  }
+}

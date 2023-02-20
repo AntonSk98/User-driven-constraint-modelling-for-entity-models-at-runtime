@@ -1,0 +1,30 @@
+{
+  "uuid": "ebecccaf-40ea-4041-bc60-5b833b284c93",
+  "name": "OR_INVALID",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "LOGICAL_FUNCTION",
+    "name": "OR",
+    "booleanFunctions": [
+      {
+        "@type": "RANGE_BASED_FUNCTION",
+        "name": "LESS_THAN",
+        "attribute": "<SoftwareEngineer>age",
+        "params": {
+          "value": "18"
+        }
+      },
+      {
+        "@type": "RANGE_BASED_FUNCTION",
+        "name": "GREATER_THAN_OR_EQUALS",
+        "attribute": "<SoftwareEngineer>salary",
+        "params": {
+          "value": "50000"
+        }
+      }
+    ]
+  }
+}

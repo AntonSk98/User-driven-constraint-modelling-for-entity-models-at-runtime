@@ -1,0 +1,62 @@
+{
+  "uuid": "063d6fb2-e1ca-429a-85dc-238508473af8",
+  "name": "COMBINING_ALL_COMPLEX_INVALID",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "LOGICAL_FUNCTION",
+    "name": "AND",
+    "booleanFunctions": [
+      {
+        "@type": "RANGE_BASED_FUNCTION",
+        "name": "EQUALS",
+        "attribute": "<SoftwareEngineer>name",
+        "params": {
+          "value": "John"
+        }
+      },
+      {
+        "@type": "RANGE_BASED_FUNCTION",
+        "name": "GREATER_THAN",
+        "attribute": "<SoftwareEngineer>salary",
+        "params": {
+          "value": "5000"
+        }
+      },
+      {
+        "@type": "LOGICAL_FUNCTION",
+        "name": "OR",
+        "booleanFunctions": [
+          {
+            "@type": "COLLECTION_BASED_FUNCTION",
+            "name": "FOR_ALL",
+            "navigation": "takes_part_in(Sprint)",
+            "lambdaFunction": {
+              "@type": "STRING_BASED_FUNCTION",
+              "name": "MIN_LENGTH",
+              "attribute": "<Sprint>name",
+              "params": {
+                "min_length": "255"
+              }
+            }
+          },
+          {
+            "@type": "COLLECTION_BASED_FUNCTION",
+            "name": "FOR_ALL",
+            "navigation": "works_on(Project)",
+            "lambdaFunction": {
+              "@type": "RANGE_BASED_FUNCTION",
+              "name": "EQUALS",
+              "attribute": "<Project>responsible",
+              "params": {
+                "value": "Sven"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

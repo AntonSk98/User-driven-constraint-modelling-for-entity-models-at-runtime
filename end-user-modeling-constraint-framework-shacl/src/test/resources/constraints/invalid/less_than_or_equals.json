@@ -1,0 +1,16 @@
+{
+  "uuid": "cf9e0ce7-fbb6-41c9-9b99-19e5f94fcd42",
+  "name": "LESS_THAN_OR_EQUALS_INVALID",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "RANGE_BASED_FUNCTION",
+    "name": "LESS_THAN_OR_EQUALS",
+    "attribute": "<SoftwareEngineer>salary",
+    "params": {
+      "value": "5000"
+    }
+  }
+}

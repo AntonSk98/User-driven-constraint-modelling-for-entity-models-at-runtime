@@ -1,0 +1,16 @@
+{
+  "uuid": "2490ab3d-73a7-4c6b-b87b-58efc7ae8f1c",
+  "name": "MIN_CARDINALITY_INVALID",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "ASSOCIATION_BASED_FUNCTION",
+    "name": "MIN_CARDINALITY",
+    "params": {
+      "min_value": "5",
+      "association": "works_on(Project)"
+    }
+  }
+}

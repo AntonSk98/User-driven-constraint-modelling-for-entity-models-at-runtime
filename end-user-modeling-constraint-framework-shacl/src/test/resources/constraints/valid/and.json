@@ -1,0 +1,30 @@
+{
+  "uuid": "987ad7d8-5d3a-46a4-bd16-cab69ef08ed3",
+  "name": "AND",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "LOGICAL_FUNCTION",
+    "name": "AND",
+    "booleanFunctions": [
+      {
+        "@type": "STRING_BASED_FUNCTION",
+        "name": "MAX_LENGTH",
+        "attribute": "<SoftwareEngineer>name",
+        "params": {
+          "max_length": "255"
+        }
+      },
+      {
+        "@type": "RANGE_BASED_FUNCTION",
+        "name": "LESS_THAN",
+        "attribute": "<SoftwareEngineer>age",
+        "params": {
+          "value": "65"
+        }
+      }
+    ]
+  }
+}

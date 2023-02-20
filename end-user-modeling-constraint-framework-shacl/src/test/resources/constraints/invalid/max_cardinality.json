@@ -1,0 +1,16 @@
+{
+  "uuid": "ff8f4d8b-9cd4-4dfb-ad6a-6ffd04f10fec",
+  "name": "MAX_CARDINALITY_INVALID",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "ASSOCIATION_BASED_FUNCTION",
+    "name": "MAX_CARDINALITY",
+    "params": {
+      "association": "takes_part_in(Sprint)",
+      "max_value": "1"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "uuid": "244fe98b-e151-45f4-bd9e-8a82404aa516",
+  "name": "MAX_LENGTH",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "STRING_BASED_FUNCTION",
+    "name": "MAX_LENGTH",
+    "attribute": "<SoftwareEngineer>name",
+    "params": {
+      "max_length": "255"
+    }
+  }
+}

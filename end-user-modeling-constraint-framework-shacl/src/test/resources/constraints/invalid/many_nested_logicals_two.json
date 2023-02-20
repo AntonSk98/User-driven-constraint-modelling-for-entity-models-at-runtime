@@ -1,0 +1,83 @@
+{
+  "uuid": "6bca5d2f-0874-4234-8a0a-314b6bb3784f",
+  "name": "MANY_NESTED_LOGICALS_TWO_INVALID",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "LOGICAL_FUNCTION",
+    "name": "AND",
+    "booleanFunctions": [
+      {
+        "@type": "LOGICAL_FUNCTION",
+        "name": "AND",
+        "booleanFunctions": [
+          {
+            "@type": "RANGE_BASED_FUNCTION",
+            "name": "EQUALS",
+            "attribute": "<SoftwareEngineer>name",
+            "params": {
+              "value": "Sven"
+            }
+          },
+          {
+            "@type": "STRING_BASED_FUNCTION",
+            "name": "MIN_LENGTH",
+            "attribute": "<SoftwareEngineer>name",
+            "params": {
+              "min_length": "1"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "LOGICAL_FUNCTION",
+        "name": "AND",
+        "booleanFunctions": [
+          {
+            "@type": "RANGE_BASED_FUNCTION",
+            "name": "GREATER_THAN",
+            "attribute": "<SoftwareEngineer>salary",
+            "params": {
+              "value": "5000"
+            }
+          },
+          {
+            "@type": "LOGICAL_FUNCTION",
+            "name": "OR",
+            "booleanFunctions": [
+              {
+                "@type": "RANGE_BASED_FUNCTION",
+                "name": "LESS_THAN",
+                "attribute": "<SoftwareEngineer>age",
+                "params": {
+                  "value": "18"
+                }
+              },
+              {
+                "@type": "LOGICAL_FUNCTION",
+                "name": "AND",
+                "booleanFunctions": [
+                  {
+                    "@type": "RANGE_BASED_FUNCTION",
+                    "name": "LESS_THAN",
+                    "attribute": "<SoftwareEngineer>age",
+                    "params": {
+                      "value": "18"
+                    }
+                  },
+                  {
+                    "@type": "STRING_BASED_FUNCTION",
+                    "name": "NOT_NULL_OR_EMPTY",
+                    "attribute": "<SoftwareEngineer>name"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}

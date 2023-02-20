@@ -1,0 +1,21 @@
+{
+  "uuid": "f06242a7-4b78-4f2a-883e-505940e16889",
+  "name": "FOR_ALL_INVALID",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "COLLECTION_BASED_FUNCTION",
+    "name": "FOR_ALL",
+    "navigation": "works_on(Project).consists_of(Sprint)",
+    "lambdaFunction": {
+      "@type": "RANGE_BASED_FUNCTION",
+      "name": "EQUALS",
+      "attribute": "<SoftwareEngineer>name",
+      "params": {
+        "value": "Design process"
+      }
+    }
+  }
+}

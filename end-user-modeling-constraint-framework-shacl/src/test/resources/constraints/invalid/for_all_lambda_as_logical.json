@@ -1,0 +1,43 @@
+{
+  "uuid": "ef0f2d15-db7c-42cc-b1b9-b1bd878f1cdf",
+  "name": "FOR_ALL_LAMBDA_AS_LOGICAL_INVALID",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "COLLECTION_BASED_FUNCTION",
+    "name": "FOR_ALL",
+    "navigation": "works_on(Project)",
+    "lambdaFunction": {
+      "@type": "LOGICAL_FUNCTION",
+      "name": "AND",
+      "booleanFunctions": [
+        {
+          "@type": "RANGE_BASED_FUNCTION",
+          "name": "EQUALS",
+          "attribute": "<Project>name",
+          "params": {
+            "value": "Thesis"
+          }
+        },
+        {
+          "@type": "RANGE_BASED_FUNCTION",
+          "name": "EQUALS",
+          "attribute": "<Project>started",
+          "params": {
+            "value": "true"
+          }
+        },
+        {
+          "@type": "RANGE_BASED_FUNCTION",
+          "name": "EQUALS",
+          "attribute": "<Project>responsible",
+          "params": {
+            "value": "John"
+          }
+        }
+      ]
+    }
+  }
+}

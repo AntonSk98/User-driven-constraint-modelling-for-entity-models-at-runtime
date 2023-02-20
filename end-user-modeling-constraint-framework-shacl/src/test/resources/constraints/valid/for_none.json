@@ -1,0 +1,21 @@
+{
+  "uuid": "58f57937-eefc-4e71-971e-02467f02205d",
+  "name": "FOR_NONE",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "COLLECTION_BASED_FUNCTION",
+    "name": "FOR_NONE",
+    "navigation": "works_on(Project)",
+    "lambdaFunction": {
+      "@type": "STRING_BASED_FUNCTION",
+      "name": "MIN_LENGTH",
+      "attribute": "<Project>name",
+      "params": {
+        "min_length": "255"
+      }
+    }
+  }
+}
