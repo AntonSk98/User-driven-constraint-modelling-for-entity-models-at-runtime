@@ -1,21 +1,16 @@
 package ansk.development.mapper;
 
-import ansk.development.domain.ShaclConstraint;
-import ansk.development.domain.ShaclConstraintData;
-import ansk.development.domain.ShaclConstraintShape;
-import anton.skripin.development.domain.AttributeUtils;
-import anton.skripin.development.domain.NavigationUtils;
-import anton.skripin.development.domain.constraint.Constraint;
-import anton.skripin.development.domain.constraint.functions.ConstraintFunction;
-import anton.skripin.development.domain.instance.InstanceElement;
-import anton.skripin.development.mapper.AbstractToPSConstraintMapper;
+import ansk.development.domain.*;
+import ansk.development.domain.constraint.Constraint;
+import ansk.development.domain.constraint.functions.ConstraintFunction;
+import ansk.development.domain.instance.InstanceElement;
 import org.apache.jena.rdf.model.Resource;
 
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-import static anton.skripin.development.domain.constraint.functions.FunctionType.RUNTIME_FUNCTION;
+import static ansk.development.domain.constraint.functions.FunctionType.RUNTIME_FUNCTION;
 
 /**
  * Implementation of {@link AbstractToPSConstraintMapper}.

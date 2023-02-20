@@ -1,9 +1,9 @@
 package ansk.development.mapper;
 
+import ansk.development.domain.NavigationUtils;
 import ansk.development.domain.ShaclConstraint;
 import ansk.development.domain.ShaclConstraintShape;
-import anton.skripin.development.domain.NavigationUtils;
-import anton.skripin.development.exception.constraint.GraphConstraintException;
+import ansk.development.exception.constraint.GraphConstraintException;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.shacl.Shapes;
 import org.apache.jena.util.FileUtils;
@@ -18,9 +18,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
-import static anton.skripin.development.domain.constraint.functions.FunctionMetadata.FUNCTION_TO_PARAMETER_NAMES;
-import static anton.skripin.development.domain.constraint.functions.FunctionMetadata.FunctionNames.*;
-import static anton.skripin.development.domain.constraint.functions.FunctionType.RUNTIME_FUNCTION;
+import static ansk.development.domain.constraint.functions.FunctionMetadata.FUNCTION_TO_PARAMETER_NAMES;
+import static ansk.development.domain.constraint.functions.FunctionMetadata.FunctionNames.*;
+import static ansk.development.domain.constraint.functions.FunctionType.RUNTIME_FUNCTION;
 
 /**
  * Maps function with its concrete SHACL implementation.

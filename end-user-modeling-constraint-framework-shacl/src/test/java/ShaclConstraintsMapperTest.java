@@ -1,10 +1,10 @@
 import ansk.development.domain.ShaclConstraintData;
 import ansk.development.domain.ShaclConstraintShape;
+import ansk.development.domain.constraint.Constraint;
+import ansk.development.domain.instance.InstanceElement;
+import ansk.development.exception.constraint.GraphConstraintException;
+import ansk.development.exception.constraint.function.FunctionException;
 import ansk.development.mapper.ShaclConstraintMapper;
-import anton.skripin.development.domain.constraint.Constraint;
-import anton.skripin.development.domain.instance.InstanceElement;
-import anton.skripin.development.exception.constraint.GraphConstraintException;
-import anton.skripin.development.exception.constraint.function.FunctionException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.jena.riot.Lang;
 import org.apache.jena.riot.RDFDataMgr;
@@ -25,11 +25,9 @@ import java.util.List;
  */
 public class ShaclConstraintsMapperTest {
 
-    private ShaclConstraintMapper constraintMapper = new ShaclConstraintMapper();
-
-    private ShaclConstraintData shaclConstraintData;
-
     private static final String JOHN_UUID = "ea9f52ee-a86f-48f1-b9c3-b259764a6b04";
+    private final ShaclConstraintMapper constraintMapper = new ShaclConstraintMapper();
+    private ShaclConstraintData shaclConstraintData;
 
     @BeforeEach
     public void init() {
@@ -222,7 +220,7 @@ public class ShaclConstraintsMapperTest {
         RDFDataMgr.write(System.out, shaclConstraintData, Lang.TTL);
         System.out.println("***************************************");
         RDFDataMgr.write(System.out, constraintShape.getGraph(), Lang.TTL);
-        
+
         return report.conforms();
     }
 }

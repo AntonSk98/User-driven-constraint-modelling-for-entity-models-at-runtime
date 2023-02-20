@@ -1,8 +1,8 @@
 import ansk.development.domain.ShaclConstraintData;
 import ansk.development.domain.ShaclConstraintShape;
+import ansk.development.domain.instance.InstanceElement;
+import ansk.development.exception.constraint.GraphConstraintException;
 import ansk.development.mapper.ShaclConstraintMapper;
-import anton.skripin.development.domain.instance.InstanceElement;
-import anton.skripin.development.exception.constraint.GraphConstraintException;
 import jdk.jfr.Description;
 import org.apache.jena.graph.Graph;
 import org.apache.jena.rdf.model.Resource;
@@ -235,6 +235,7 @@ public class ShaclConstraintTest {
 
     /**
      * For testing purposes to print current RDF graph and a respective constraint.
+     *
      * @param constraint
      */
     private void printDataAndConstraint(ShaclConstraintShape constraint) {

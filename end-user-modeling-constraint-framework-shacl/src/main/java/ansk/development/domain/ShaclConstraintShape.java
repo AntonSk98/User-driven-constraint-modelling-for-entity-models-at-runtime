@@ -1,6 +1,6 @@
 package ansk.development.domain;
 
-import anton.skripin.development.exception.constraint.GraphConstraintException;
+import ansk.development.exception.constraint.GraphConstraintException;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
@@ -28,16 +28,16 @@ public class ShaclConstraintShape extends ModelCom {
     private String targetInstanceResource;
     private String targetInstance;
 
-    public String getTargetInstance() {
-        return targetInstance;
-    }
-
     /**
      * Constructor.
      */
     public ShaclConstraintShape() {
         super(org.apache.jena.graph.Factory.createGraphMem());
         this.setUpNamespace();
+    }
+
+    public String getTargetInstance() {
+        return targetInstance;
     }
 
     public Resource getConstraint() {

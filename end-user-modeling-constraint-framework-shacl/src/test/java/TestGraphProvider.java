@@ -1,6 +1,6 @@
-import anton.skripin.development.domain.instance.InstanceElement;
-import anton.skripin.development.domain.instance.Link;
-import anton.skripin.development.domain.instance.Slot;
+import ansk.development.domain.instance.InstanceElement;
+import ansk.development.domain.instance.Link;
+import ansk.development.domain.instance.Slot;
 
 import java.util.List;
 
