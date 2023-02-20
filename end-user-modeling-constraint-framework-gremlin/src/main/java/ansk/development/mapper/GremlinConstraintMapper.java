@@ -3,12 +3,12 @@ package ansk.development.mapper;
 import ansk.development.GremlinRegistry;
 import ansk.development.domain.GremlinConstraint;
 import ansk.development.dsl.ConstraintGraphTraversalSource;
-import ansk.development.exception.GraphTransformationException;
 import anton.skripin.development.domain.AttributeUtils;
 import anton.skripin.development.domain.NavigationUtils;
 import anton.skripin.development.domain.constraint.Constraint;
 import anton.skripin.development.domain.constraint.functions.ConstraintFunction;
 import anton.skripin.development.domain.instance.InstanceElement;
+import anton.skripin.development.exception.constraint.GraphTransformationException;
 import anton.skripin.development.mapper.AbstractToPSConstraintMapper;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 

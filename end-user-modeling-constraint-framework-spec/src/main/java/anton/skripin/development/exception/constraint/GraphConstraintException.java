@@ -1,7 +1,7 @@
-package ansk.development.exception;
+package anton.skripin.development.exception.constraint;
 
 /**
- * Exception related to Gremlin constraint evaluation.
+ * Exception related to constraint evaluation.
  */
 public class GraphConstraintException extends RuntimeException {
     public GraphConstraintException(String message) {

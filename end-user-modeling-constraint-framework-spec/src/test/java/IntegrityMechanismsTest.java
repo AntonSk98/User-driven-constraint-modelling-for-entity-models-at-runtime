@@ -10,6 +10,7 @@ import anton.skripin.development.service.SimpleConstraintPersistenceService;
 import anton.skripin.development.service.api.ConstraintIntegrityService;
 import anton.skripin.development.service.api.ConstraintPersistenceService;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Collections;
@@ -26,8 +27,14 @@ import static anton.skripin.development.domain.constraint.functions.FunctionMeta
  */
 public class IntegrityMechanismsTest {
 
-    ConstraintPersistenceService constraintPersistenceService = new SimpleConstraintPersistenceService();
-    ConstraintIntegrityService constraintIntegrityService = new ConstraintIntegrityServiceImpl();
+    ConstraintPersistenceService constraintPersistenceService;
+    ConstraintIntegrityService constraintIntegrityService;
+
+    @BeforeEach
+    public void init() {
+        this.constraintPersistenceService = new SimpleConstraintPersistenceService();
+        this.constraintIntegrityService = new ConstraintIntegrityServiceImpl();
+    }
 
     /**
      * Shows the workflow to keep constraints valid in the presence of model element changes.
@@ -156,7 +163,8 @@ public class IntegrityMechanismsTest {
 
     /**
      * Function to mock the workflow of deleting a property on a model element.
-     * @param modelElement model element
+     *
+     * @param modelElement        model element
      * @param removedPropertyName removed property name
      * @return {@link IntegrityReport}
      */

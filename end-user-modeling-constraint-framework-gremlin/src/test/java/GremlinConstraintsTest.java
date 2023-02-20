@@ -1,7 +1,7 @@
 import ansk.development.GremlinRegistry;
 import ansk.development.dsl.ConstraintGraphTraversalSource;
 import ansk.development.dsl.__;
-import ansk.development.exception.GraphConstraintException;
+import anton.skripin.development.exception.constraint.GraphConstraintException;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -92,7 +92,7 @@ public class GremlinConstraintsTest {
     public void greaterThanOrEquals() {
         Assertions.assertTrue(GremlinRegistry.getConstraintTraversal()
                 .instanceByName("John")
-                .greaterThan("age", "18")
+                .greaterThanOrEquals("age", "18")
                 .next());
     }
 
@@ -137,7 +137,7 @@ public class GremlinConstraintsTest {
     }
 
     @Test
-    @Description("Every project must have only one spring named 'Design process'")
+    @Description("Every project must have only one sprint named 'Design process'")
     public void forExactly() {
         Assertions.assertTrue(GremlinRegistry.getConstraintTraversal()
                 .instanceByName("Thesis")

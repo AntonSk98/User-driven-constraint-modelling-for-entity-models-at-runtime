@@ -1,7 +1,7 @@
-package ansk.development.exception;
+package anton.skripin.development.exception.constraint;
 
 /**
- * Exception related to abstract to Gremlin graph transformation.
+ * Exception related to abstract to platform-specific graph transformation.
  */
 public class GraphTransformationException extends RuntimeException {
     public GraphTransformationException(String message) {
