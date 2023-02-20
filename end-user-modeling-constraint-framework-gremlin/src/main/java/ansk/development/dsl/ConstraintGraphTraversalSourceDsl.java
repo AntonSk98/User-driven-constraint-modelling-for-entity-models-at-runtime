@@ -1,7 +1,7 @@
 package ansk.development.dsl;
 
-import anton.skripin.development.domain.instance.InstanceElement;
-import anton.skripin.development.domain.instance.Link;
+import ansk.development.domain.instance.InstanceElement;
+import ansk.development.domain.instance.Link;
 import org.apache.tinkerpop.gremlin.process.remote.RemoteConnection;
 import org.apache.tinkerpop.gremlin.process.remote.RemoteConnectionException;
 import org.apache.tinkerpop.gremlin.process.remote.traversal.RemoteTraversal;
@@ -46,6 +46,7 @@ public class ConstraintGraphTraversalSourceDsl extends GraphTraversalSource {
 
     /**
      * Get instance element by uuid.
+     *
      * @param uuid uuid
      * @return instance as a Vertex
      */
@@ -56,6 +57,7 @@ public class ConstraintGraphTraversalSourceDsl extends GraphTraversalSource {
 
     /**
      * Get instance element by name.
+     *
      * @param name name
      * @return instance as a Vertex
      */
@@ -66,6 +68,7 @@ public class ConstraintGraphTraversalSourceDsl extends GraphTraversalSource {
 
     /**
      * Adds instance to the Gremlin graph.
+     *
      * @param instanceElement See {@link InstanceElement}
      */
     public void addInstance(InstanceElement instanceElement) {
@@ -81,6 +84,7 @@ public class ConstraintGraphTraversalSourceDsl extends GraphTraversalSource {
 
     /**
      * Links two instances in a graph by link.
+     *
      * @param link See {@link Link}
      */
     public void linkTwoInstances(Link link) {

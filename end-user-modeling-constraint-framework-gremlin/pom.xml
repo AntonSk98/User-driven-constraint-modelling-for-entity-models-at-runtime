@@ -4,22 +4,22 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>anton.skripin.development</groupId>
+    <groupId>ansk.development</groupId>
     <artifactId>end-user-modeling-constraint-framework-gremlin</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
 
     <properties>
         <maven.compiler.source>15</maven.compiler.source>
         <maven.compiler.target>15</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <end-user-modeling-constraint-frameword-spec.version>1.0-SNAPSHOT</end-user-modeling-constraint-frameword-spec.version>
+        <end-user-modeling-constraint-frameword-spec.version>1.0</end-user-modeling-constraint-frameword-spec.version>
         <gremlin.version>3.6.2</gremlin.version>
         <junit.version>5.9.2</junit.version>
     </properties>
 
     <dependencies>
         <dependency>
-            <groupId>anton.skripin.development</groupId>
+            <groupId>ansk.development</groupId>
             <artifactId>end-user-modeling-constraint-framework-spec</artifactId>
             <version>${end-user-modeling-constraint-frameword-spec.version}</version>
         </dependency>

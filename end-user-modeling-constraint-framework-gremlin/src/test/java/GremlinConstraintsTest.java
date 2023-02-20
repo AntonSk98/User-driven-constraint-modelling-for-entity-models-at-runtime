@@ -1,7 +1,7 @@
 import ansk.development.GremlinRegistry;
 import ansk.development.dsl.ConstraintGraphTraversalSource;
 import ansk.development.dsl.__;
-import anton.skripin.development.exception.constraint.GraphConstraintException;
+import ansk.development.exception.constraint.GraphConstraintException;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

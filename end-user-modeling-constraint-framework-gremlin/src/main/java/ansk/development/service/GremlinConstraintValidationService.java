@@ -1,12 +1,11 @@
 package ansk.development.service;
 
+import ansk.development.domain.constraint.Constraint;
+import ansk.development.domain.constraint.ConstraintValidationReport;
+import ansk.development.domain.instance.InstanceElement;
 import ansk.development.dsl.ConstraintGraphTraversalSource;
+import ansk.development.exception.constraint.ConstraintValidationException;
 import ansk.development.mapper.GremlinConstraintMapper;
-import anton.skripin.development.domain.constraint.Constraint;
-import anton.skripin.development.domain.constraint.ConstraintValidationReport;
-import anton.skripin.development.domain.instance.InstanceElement;
-import anton.skripin.development.exception.constraint.ConstraintValidationException;
-import anton.skripin.development.service.AbstractConstraintValidationService;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 
 import java.util.List;
@@ -17,15 +16,15 @@ public class GremlinConstraintValidationService extends AbstractConstraintValida
 
     @Override
     public ConstraintValidationReport validateConstraint(String uuid, List<InstanceElement> subgraphForValidation, Constraint constraint) {
-        try(
+        try (
                 ConstraintGraphTraversalSource gremlinGraph = constraintMapper.mapToPlatformSpecificGraph(subgraphForValidation);
                 GraphTraversal<?, Boolean> gremlinConstraint = constraintMapper.mapToPlatformSpecificConstraint(uuid, constraint)) {
-                return new ConstraintValidationReport(
-                        constraint.getName(),
-                        constraint.getModelElementType(),
-                        gremlinGraph.isValid(gremlinConstraint),
-                        constraint.getViolationLevel(),
-                        constraint.getViolationMessage());
+            return new ConstraintValidationReport(
+                    constraint.getName(),
+                    constraint.getModelElementType(),
+                    gremlinGraph.isValid(gremlinConstraint),
+                    constraint.getViolationLevel(),
+                    constraint.getViolationMessage());
         } catch (Exception e) {
             throw new ConstraintValidationException(e);
         }

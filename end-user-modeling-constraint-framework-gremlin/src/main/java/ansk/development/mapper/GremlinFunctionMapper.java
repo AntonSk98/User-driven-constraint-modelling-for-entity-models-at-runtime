@@ -1,10 +1,10 @@
 package ansk.development.mapper;
 
 import ansk.development.domain.GremlinConstraint;
+import ansk.development.domain.NavigationUtils;
 import ansk.development.dsl.ConstraintGraphTraversal;
 import ansk.development.dsl.__;
-import anton.skripin.development.domain.NavigationUtils;
-import anton.skripin.development.exception.constraint.GraphConstraintException;
+import ansk.development.exception.constraint.GraphConstraintException;
 import org.apache.groovy.internal.util.Function;
 import org.apache.tinkerpop.gremlin.groovy.engine.GremlinExecutor;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
@@ -15,9 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
-import static anton.skripin.development.domain.constraint.functions.FunctionMetadata.FUNCTION_TO_PARAMETER_NAMES;
-import static anton.skripin.development.domain.constraint.functions.FunctionMetadata.FunctionNames.*;
-import static anton.skripin.development.domain.constraint.functions.FunctionType.RUNTIME_FUNCTION;
+import static ansk.development.domain.constraint.functions.FunctionMetadata.FUNCTION_TO_PARAMETER_NAMES;
+import static ansk.development.domain.constraint.functions.FunctionMetadata.FunctionNames.*;
+import static ansk.development.domain.constraint.functions.FunctionType.RUNTIME_FUNCTION;
 
 /**
  * Maps function with its concrete Gremlin implementation.

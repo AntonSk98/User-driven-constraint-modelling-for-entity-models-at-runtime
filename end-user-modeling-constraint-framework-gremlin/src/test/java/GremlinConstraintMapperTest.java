@@ -1,8 +1,8 @@
 import ansk.development.GremlinRegistry;
+import ansk.development.domain.constraint.Constraint;
+import ansk.development.domain.instance.InstanceElement;
+import ansk.development.exception.constraint.function.FunctionException;
 import ansk.development.mapper.GremlinConstraintMapper;
-import anton.skripin.development.domain.constraint.Constraint;
-import anton.skripin.development.domain.instance.InstanceElement;
-import anton.skripin.development.exception.constraint.function.FunctionException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 import org.junit.jupiter.api.Assertions;
@@ -16,9 +16,8 @@ import java.util.List;
 
 public class GremlinConstraintMapperTest {
 
-    private GremlinConstraintMapper constraintMapper = new GremlinConstraintMapper();
-
     private static final String JOHN_UUID = "ea9f52ee-a86f-48f1-b9c3-b259764a6b04";
+    private final GremlinConstraintMapper constraintMapper = new GremlinConstraintMapper();
 
     @BeforeEach
     public void init() {

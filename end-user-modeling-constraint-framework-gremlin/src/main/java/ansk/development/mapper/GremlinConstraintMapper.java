@@ -1,21 +1,20 @@
 package ansk.development.mapper;
 
 import ansk.development.GremlinRegistry;
+import ansk.development.domain.AttributeUtils;
 import ansk.development.domain.GremlinConstraint;
+import ansk.development.domain.NavigationUtils;
+import ansk.development.domain.constraint.Constraint;
+import ansk.development.domain.constraint.functions.ConstraintFunction;
+import ansk.development.domain.instance.InstanceElement;
 import ansk.development.dsl.ConstraintGraphTraversalSource;
-import anton.skripin.development.domain.AttributeUtils;
-import anton.skripin.development.domain.NavigationUtils;
-import anton.skripin.development.domain.constraint.Constraint;
-import anton.skripin.development.domain.constraint.functions.ConstraintFunction;
-import anton.skripin.development.domain.instance.InstanceElement;
-import anton.skripin.development.exception.constraint.GraphTransformationException;
-import anton.skripin.development.mapper.AbstractToPSConstraintMapper;
+import ansk.development.exception.constraint.GraphTransformationException;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 
 import java.util.List;
 import java.util.Objects;
 
-import static anton.skripin.development.domain.constraint.functions.FunctionType.RUNTIME_FUNCTION;
+import static ansk.development.domain.constraint.functions.FunctionType.RUNTIME_FUNCTION;
 
 /**
  * Implementation of {@link AbstractToPSConstraintMapper}.

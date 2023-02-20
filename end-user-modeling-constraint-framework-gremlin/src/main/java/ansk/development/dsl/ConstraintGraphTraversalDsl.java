@@ -1,6 +1,6 @@
 package ansk.development.dsl;
 
-import anton.skripin.development.exception.constraint.GraphConstraintException;
+import ansk.development.exception.constraint.GraphConstraintException;
 import org.apache.tinkerpop.gremlin.process.traversal.P;
 import org.apache.tinkerpop.gremlin.process.traversal.TextP;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.GremlinDsl;
