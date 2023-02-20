@@ -19,6 +19,9 @@ import static anton.skripin.development.domain.constraint.functions.FunctionMeta
 import static anton.skripin.development.domain.constraint.functions.FunctionMetadata.FunctionNames.*;
 import static anton.skripin.development.domain.constraint.functions.FunctionType.RUNTIME_FUNCTION;
 
+/**
+ * Maps function with its concrete Gremlin implementation.
+ */
 public class GremlinFunctionMapper {
     public static Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> CONSTRAINTS_MAP = new HashMap<>();
 

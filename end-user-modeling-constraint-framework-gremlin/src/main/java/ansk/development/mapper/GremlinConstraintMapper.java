@@ -17,6 +17,9 @@ import java.util.Objects;
 
 import static anton.skripin.development.domain.constraint.functions.FunctionType.RUNTIME_FUNCTION;
 
+/**
+ * Implementation of {@link AbstractToPSConstraintMapper}.
+ */
 public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<ConstraintGraphTraversalSource, GraphTraversal<?, Boolean>> {
 
     @Override
