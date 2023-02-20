@@ -42,10 +42,7 @@ public class ShaclConstraintsMapperTest {
     public void and() {
         final String constraintName = "and";
         Assertions.assertTrue(getConstraintEvaluationResult(fetchConstraint(constraintName, true)));
-        // Since forAll() function cannot be implemented using SHACL mechanisms, this function behaves as forSome()...
-        // For this reason an invalid constraint is expected to return true.
-        // For more information see forAll() function definition.
-        Assertions.assertTrue(getConstraintEvaluationResult(fetchConstraint(constraintName, false)));
+        Assertions.assertFalse(getConstraintEvaluationResult(fetchConstraint(constraintName, false)));
     }
 
     @Test
@@ -59,7 +56,10 @@ public class ShaclConstraintsMapperTest {
     public void forAll() {
         final String constraintName = "for_all";
         Assertions.assertTrue(getConstraintEvaluationResult(fetchConstraint(constraintName, true)));
-        Assertions.assertFalse(getConstraintEvaluationResult(fetchConstraint(constraintName, false)));
+        // Since forAll() function cannot be implemented using SHACL mechanisms, this function behaves as forSome()...
+        // For this reason an invalid constraint is expected to return true.
+        // For more information see forAll() function definition.
+        Assertions.assertTrue(getConstraintEvaluationResult(fetchConstraint(constraintName, false)));
     }
 
     @Test
