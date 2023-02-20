@@ -1,14 +1,14 @@
-import anton.skripin.development.domain.constraint.Constraint;
-import anton.skripin.development.domain.constraint.functions.ConstraintFunction;
-import anton.skripin.development.domain.constraint.functions.types.CollectionBasedFunction;
-import anton.skripin.development.domain.constraint.functions.types.LogicalFunction;
-import anton.skripin.development.domain.constraint.functions.types.RangeBasedFunction;
-import anton.skripin.development.domain.constraint.functions.types.StringBasedFunction;
-import anton.skripin.development.domain.integrity.IntegrityReport;
-import anton.skripin.development.service.ConstraintIntegrityServiceImpl;
-import anton.skripin.development.service.SimpleConstraintPersistenceService;
-import anton.skripin.development.service.api.ConstraintIntegrityService;
-import anton.skripin.development.service.api.ConstraintPersistenceService;
+import ansk.development.domain.constraint.Constraint;
+import ansk.development.domain.constraint.functions.ConstraintFunction;
+import ansk.development.domain.constraint.functions.types.CollectionBasedFunction;
+import ansk.development.domain.constraint.functions.types.LogicalFunction;
+import ansk.development.domain.constraint.functions.types.RangeBasedFunction;
+import ansk.development.domain.constraint.functions.types.StringBasedFunction;
+import ansk.development.domain.integrity.IntegrityReport;
+import ansk.development.service.ConstraintIntegrityServiceImpl;
+import ansk.development.service.SimpleConstraintPersistenceService;
+import ansk.development.service.api.ConstraintIntegrityService;
+import ansk.development.service.api.ConstraintPersistenceService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,8 +19,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static anton.skripin.development.domain.constraint.functions.FunctionMetadata.FUNCTION_TO_PARAMETER_NAMES;
-import static anton.skripin.development.domain.constraint.functions.FunctionMetadata.FunctionNames.*;
+import static ansk.development.domain.constraint.functions.FunctionMetadata.FUNCTION_TO_PARAMETER_NAMES;
+import static ansk.development.domain.constraint.functions.FunctionMetadata.FunctionNames.*;
 
 /**
  * Showcases model element integrity mechanisms.

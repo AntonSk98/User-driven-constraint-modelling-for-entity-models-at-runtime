@@ -1,5 +1,5 @@
-import anton.skripin.development.domain.AttributeUtils;
-import anton.skripin.development.domain.NavigationUtils;
+import ansk.development.domain.AttributeUtils;
+import ansk.development.domain.NavigationUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

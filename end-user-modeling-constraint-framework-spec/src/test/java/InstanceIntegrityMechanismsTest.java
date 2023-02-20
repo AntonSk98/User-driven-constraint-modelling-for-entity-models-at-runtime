@@ -1,9 +1,9 @@
-import anton.skripin.development.domain.constraint.Constraint;
-import anton.skripin.development.domain.constraint.functions.types.StringBasedFunction;
-import anton.skripin.development.domain.instance.InstanceElement;
-import anton.skripin.development.domain.instance.Link;
-import anton.skripin.development.service.SimpleConstraintPersistenceService;
-import anton.skripin.development.service.api.ConstraintPersistenceService;
+import ansk.development.domain.constraint.Constraint;
+import ansk.development.domain.constraint.functions.types.StringBasedFunction;
+import ansk.development.domain.instance.InstanceElement;
+import ansk.development.domain.instance.Link;
+import ansk.development.service.SimpleConstraintPersistenceService;
+import ansk.development.service.api.ConstraintPersistenceService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static anton.skripin.development.domain.constraint.functions.FunctionMetadata.FunctionNames.MIN_LENGTH;
+import static ansk.development.domain.constraint.functions.FunctionMetadata.FunctionNames.MIN_LENGTH;
 
 public class InstanceIntegrityMechanismsTest {
 

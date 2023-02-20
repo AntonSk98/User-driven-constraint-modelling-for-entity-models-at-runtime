@@ -1,10 +1,10 @@
-import anton.skripin.development.domain.constraint.Constraint;
-import anton.skripin.development.domain.constraint.functions.ConstraintFunction;
-import anton.skripin.development.domain.constraint.functions.types.CollectionBasedFunction;
-import anton.skripin.development.domain.constraint.functions.types.LogicalFunction;
-import anton.skripin.development.domain.constraint.functions.types.StringBasedFunction;
-import anton.skripin.development.exception.constraint.function.FunctionValidationException;
-import anton.skripin.development.service.AbstractConstraintValidationService;
+import ansk.development.domain.constraint.Constraint;
+import ansk.development.domain.constraint.functions.ConstraintFunction;
+import ansk.development.domain.constraint.functions.types.CollectionBasedFunction;
+import ansk.development.domain.constraint.functions.types.LogicalFunction;
+import ansk.development.domain.constraint.functions.types.StringBasedFunction;
+import ansk.development.exception.constraint.function.FunctionValidationException;
+import ansk.development.service.AbstractConstraintValidationService;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.Test;
 
@@ -13,8 +13,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static anton.skripin.development.domain.ValidationUtils.validateAttribute;
-import static anton.skripin.development.domain.ValidationUtils.validateNavigation;
+import static ansk.development.domain.ValidationUtils.validateAttribute;
+import static ansk.development.domain.ValidationUtils.validateNavigation;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ValidationServiceTest {
