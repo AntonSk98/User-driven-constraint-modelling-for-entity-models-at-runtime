@@ -17,6 +17,7 @@
 <body>
 <header>
     <div>User-Driven Constraint Modeling for Entity Models at Runtime</div>
+    <div>Implemented with ${implementation}</div>
 </header>
 <main>
     <div class="container">

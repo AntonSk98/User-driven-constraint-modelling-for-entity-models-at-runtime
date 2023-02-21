@@ -18,8 +18,8 @@
 		<maven.compiler.target>15</maven.compiler.target>
 		<modicio.version>1.0.0-SNAPSHOT</modicio.version>
 		<scala-library.version>2.13.10</scala-library.version>
-		<end-user-modeling-constraint-framework-gremlin.version>1.0-SNAPSHOT</end-user-modeling-constraint-framework-gremlin.version>
-		<end-user-modeling-constraint-framework-shacl></end-user-modeling-constraint-framework-shacl>
+		<end-user-modeling-constraint-framework-gremlin.version>1.0</end-user-modeling-constraint-framework-gremlin.version>
+		<end-user-modeling-constraint-framework-shacl>1.0</end-user-modeling-constraint-framework-shacl>
 	</properties>
 	<dependencies>
 
@@ -51,14 +51,14 @@
 		</dependency>
 
 		<dependency>
-			<groupId>anton.skripin.development</groupId>
+			<groupId>ansk.development</groupId>
 			<artifactId>end-user-modeling-constraint-framework-gremlin</artifactId>
 			<version>${end-user-modeling-constraint-framework-gremlin.version}</version>
 		</dependency>
 
 		<dependency>
-			<groupId>anton.skripin.development</groupId>
-			<artifactId>end-user-modeling-constraint-framework-gremlin</artifactId>
+			<groupId>ansk.development</groupId>
+			<artifactId>end-user-modeling-constraint-framework-shacl</artifactId>
 			<version>${end-user-modeling-constraint-framework-gremlin.version}</version>
 		</dependency>
 
