@@ -8,8 +8,9 @@ import ansk.development.domain.constraint.Constraint;
 import ansk.development.domain.constraint.functions.ConstraintFunction;
 import ansk.development.domain.instance.InstanceElement;
 import ansk.development.dsl.ConstraintGraphTraversalSource;
-import ansk.development.exception.constraint.GraphTransformationException;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,6 +21,15 @@ import static ansk.development.domain.constraint.functions.FunctionType.RUNTIME_
  * Implementation of {@link AbstractToPSConstraintMapper}.
  */
 public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<ConstraintGraphTraversalSource, GraphTraversal<?, Boolean>> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(GremlinConstraintMapper.class);
+
+    private static void measureExecutionTime(String name, Runnable function) {
+        long startTime = System.currentTimeMillis();
+        function.run();
+        long finishTime = System.currentTimeMillis();
+        LOGGER.info("Execution time for '{}' is {} ms", name, finishTime - startTime);
+    }
 
     @Override
     public GraphTraversal<?, Boolean> mapToPlatformSpecificConstraint(String uuid, Constraint constraint) {
@@ -50,19 +60,16 @@ public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<Con
 
     @Override
     public ConstraintGraphTraversalSource mapToPlatformSpecificGraph(List<InstanceElement> instanceElementGraph) {
-        GremlinRegistry.spawnNewGraph();
+        LOGGER.info("Total number of graph elements to be mapped: {}", instanceElementGraph.size());
         ConstraintGraphTraversalSource graphSource = GremlinRegistry.getConstraintTraversal();
+        measureExecutionTime("create elements", () -> instanceElementGraph.forEach(graphSource::addInstance));
 
-        try {
-            instanceElementGraph.forEach(graphSource::addInstance);
-            instanceElementGraph
-                    .stream()
-                    .filter(instanceElement -> Objects.nonNull(instanceElement.getLinks()))
-                    .flatMap(instanceElement -> instanceElement.getLinks().stream())
-                    .forEach(graphSource::linkTwoInstances);
-        } catch (Exception e) {
-            throw new GraphTransformationException("Error occurred while constructing a gremlin graph", e);
-        }
+        measureExecutionTime("create links", () -> instanceElementGraph
+                .stream()
+                .filter(instanceElement -> Objects.nonNull(instanceElement.getLinks()))
+                .flatMap(instanceElement -> instanceElement.getLinks().stream())
+                .forEach(graphSource::linkTwoInstances));
+
 
         return graphSource;
     }

@@ -217,10 +217,16 @@ public class ShaclConstraintsMapperTest {
         Shapes shapes = Shapes.parse(constraintShape.getGraph());
         ValidationReport report = ShaclValidator.get().validate(shapes, shaclConstraintData.getGraph());
 
-        RDFDataMgr.write(System.out, shaclConstraintData, Lang.TTL);
-        System.out.println("***************************************");
-        RDFDataMgr.write(System.out, constraintShape.getGraph(), Lang.TTL);
-
         return report.conforms();
+    }
+
+    /**
+     * For testing purposes to print current RDF graph and a respective constraint.
+     *
+     * @param constraint
+     */
+    private void printDataAndConstraint(ShaclConstraintShape constraint) {
+        RDFDataMgr.write(System.out, shaclConstraintData, Lang.TTL);
+        RDFDataMgr.write(System.out, constraint, Lang.TTL);
     }
 }

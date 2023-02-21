@@ -45,7 +45,6 @@ public class ShaclConstraintTest {
                 constraint.minLength("name", "14", true),
                 dataGraph.getNumberOfConnectedLinks(JOHN_UUID, navigation),
                 false);
-        printDataAndConstraint(constraint);
         Assertions.assertTrue(this.validateConstraint(constraint.getGraph()));
 
 

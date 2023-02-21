@@ -5,6 +5,8 @@ import ansk.development.domain.constraint.Constraint;
 import ansk.development.domain.constraint.functions.ConstraintFunction;
 import ansk.development.domain.instance.InstanceElement;
 import org.apache.jena.rdf.model.Resource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -16,21 +18,19 @@ import static ansk.development.domain.constraint.functions.FunctionType.RUNTIME_
  */
 public class ShaclConstraintMapper implements AbstractToPSConstraintMapper<ShaclConstraintData, ShaclConstraintShape> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(ShaclConstraintMapper.class);
 
+    private static void measureExecutionTime(String name, Runnable function) {
+        long startTime = System.currentTimeMillis();
+        function.run();
+        long finishTime = System.currentTimeMillis();
+        LOGGER.info("Execution time for '{}' is {} ms", name, finishTime - startTime);
+    }
     @Override
     public ShaclConstraintShape mapToPlatformSpecificConstraint(String instanceUuid, Constraint constraint) {
         ConstraintFunction constraintFunction = constraint.getConstraintFunction();
         Resource shaclConstraint = mapFunction(instanceUuid, constraintFunction, true, new ShaclConstraintShape());
         return (ShaclConstraintShape) shaclConstraint.getModel();
-    }
-
-    private ShaclConstraint initializeConstraintContext(String instanceUuid) {
-        ShaclConstraint shaclConstraint = new ShaclConstraint();
-        ShaclConstraintShape shaclConstraintShape = new ShaclConstraintShape();
-        shaclConstraint.setNested(false);
-        shaclConstraintShape.getTargetInstance(instanceUuid);
-        shaclConstraint.setContext(shaclConstraintShape);
-        return shaclConstraint;
     }
 
     private Resource mapFunction(String instanceUuid, ConstraintFunction constraintFunction, boolean initial, ShaclConstraintShape shaclConstraintShape) {
@@ -61,15 +61,14 @@ public class ShaclConstraintMapper implements AbstractToPSConstraintMapper<Shacl
 
     @Override
     public ShaclConstraintData mapToPlatformSpecificGraph(List<InstanceElement> graph) {
+        LOGGER.info("Total number of graph elements to be mapped: {}", graph.size());
         ShaclConstraintData model = new ShaclConstraintData();
-        graph.forEach(model::createInstance);
-
-        graph
+        measureExecutionTime("create elements", () -> graph.forEach(model::createInstance));
+        measureExecutionTime("create links", () -> graph
                 .stream()
                 .filter(instanceElement -> Objects.nonNull(instanceElement.getLinks()))
                 .flatMap(instanceElement -> instanceElement.getLinks().stream())
-                .forEach(model::addLinkToInstance);
-
+                .forEach(model::addLinkToInstance));
         return model;
     }
 }
