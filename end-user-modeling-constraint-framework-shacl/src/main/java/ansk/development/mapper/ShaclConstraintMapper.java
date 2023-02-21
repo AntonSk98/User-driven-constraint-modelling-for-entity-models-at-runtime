@@ -8,7 +8,6 @@ import org.apache.jena.rdf.model.Resource;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import static ansk.development.domain.constraint.functions.FunctionType.RUNTIME_FUNCTION;
 
@@ -63,18 +62,13 @@ public class ShaclConstraintMapper implements AbstractToPSConstraintMapper<Shacl
     @Override
     public ShaclConstraintData mapToPlatformSpecificGraph(List<InstanceElement> graph) {
         ShaclConstraintData model = new ShaclConstraintData();
-        graph.forEach(instanceElement -> {
-            model.createInstance(instanceElement.getUuid(), instanceElement.getInstanceOf());
-            Optional.ofNullable(instanceElement.getSlots())
-                    .ifPresent(slots -> slots
-                            .forEach(slot -> model
-                                    .addSlotToInstance(instanceElement.getUuid(), slot.getKey(), slot.getValue())));
-        });
+        graph.forEach(model::createInstance);
+
         graph
                 .stream()
                 .filter(instanceElement -> Objects.nonNull(instanceElement.getLinks()))
                 .flatMap(instanceElement -> instanceElement.getLinks().stream())
-                .forEach(link -> model.addLinkToInstance(link.getInstanceUuid(), link.getName(), link.getTargetInstanceUuid()));
+                .forEach(model::addLinkToInstance);
 
         return model;
     }

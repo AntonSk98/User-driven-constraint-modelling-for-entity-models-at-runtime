@@ -1,5 +1,8 @@
 package ansk.development.domain;
 
+import ansk.development.domain.instance.InstanceElement;
+import ansk.development.domain.instance.Link;
+import ansk.development.domain.instance.Slot;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.impl.ModelCom;
@@ -29,31 +32,34 @@ public class ShaclConstraintData extends ModelCom {
     /**
      * Creates an instance by uuid and associates it with a class.
      *
-     * @param instanceUuid instance uuid
-     * @param instanceOf   model element name an instance is instantiated from
+     * @param instanceElement {@link InstanceElement}
      * @return {@link Resource}
      */
-    public Resource createInstance(String instanceUuid, String instanceOf) {
-        return super.createResource(CONSTRAINT_NAMESPACE + instanceUuid, super.createResource(CONSTRAINT_NAMESPACE + instanceOf));
+    public void createInstance(InstanceElement instanceElement) {
+        super.createResource(CONSTRAINT_NAMESPACE + instanceElement.getUuid(),
+                super.createResource(CONSTRAINT_NAMESPACE + instanceElement.getInstanceOf()));
+        List<Slot> slots = instanceElement.getSlots();
+        slots.forEach(slot -> addSlotToInstance(instanceElement.getUuid(), slot));
     }
 
     /**
      * Adds a slot key-value pair to instance.
      *
      * @param instanceUuid instance uuid
-     * @param key          key
-     * @param value        value
+     * @param slot         {@link Slot}
      * @return {@link Resource}
      */
-    public Resource addSlotToInstance(String instanceUuid, String key, String value) {
-        return super.getResource(CONSTRAINT_NAMESPACE + instanceUuid).addProperty(super.createProperty(CONSTRAINT_NAMESPACE + key), value, getXsdDatatypeByValue(value));
+    private Resource addSlotToInstance(String instanceUuid, Slot slot) {
+        return super.getResource(CONSTRAINT_NAMESPACE + instanceUuid)
+                .addProperty(super.createProperty(CONSTRAINT_NAMESPACE + slot.getKey()), slot.getValue(), getXsdDatatypeByValue(slot.getValue()));
     }
 
     /**
      * Supplementary method for forAll() function.
      * SHACL does not support for_all semantics and must be provided with the exact number of required matching elements.
+     *
      * @param instanceUuid uuid of an instance
-     * @param navigation navigation as list
+     * @param navigation   navigation as list
      * @return number of connected links with a target instance
      */
     public int getNumberOfConnectedLinks(String instanceUuid, List<String> navigation) {
@@ -75,16 +81,16 @@ public class ShaclConstraintData extends ModelCom {
     /**
      * Adds a link between two instances.
      *
-     * @param instanceUuid       instance uuid
-     * @param byRelation         connector
-     * @param targetInstanceUuid target instance uuid
+     * @param link {@link Link}
      * @return {@link Resource}
      */
-    public Resource addLinkToInstance(String instanceUuid, String byRelation, String targetInstanceUuid) {
-        if (doesInstanceExist(targetInstanceUuid)) {
-            return super.getResource(CONSTRAINT_NAMESPACE + instanceUuid).addProperty(super.createProperty(CONSTRAINT_NAMESPACE + byRelation), super.createProperty(CONSTRAINT_NAMESPACE + targetInstanceUuid));
+    public void addLinkToInstance(Link link) {
+        if (doesInstanceExist(link.getTargetInstanceUuid())) {
+            super
+                    .getResource(CONSTRAINT_NAMESPACE + link.getInstanceUuid())
+                    .addProperty(super.createProperty(CONSTRAINT_NAMESPACE + link.getName()),
+                            super.createProperty(CONSTRAINT_NAMESPACE + link.getTargetInstanceUuid()));
         }
-        return null;
     }
 
     private boolean doesInstanceExist(String instanceUuid) {
