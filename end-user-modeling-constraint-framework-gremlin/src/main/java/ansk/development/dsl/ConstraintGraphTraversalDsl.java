@@ -94,7 +94,7 @@ public interface ConstraintGraphTraversalDsl<S, E> extends GraphTraversal.Admin<
         return values(attribute).map(traverser -> {
             String value = (String) traverser.get();
             boolean valid = value != null && value.length() >= Integer.parseInt(length);
-            LOGGER.info("MinLength({}, {}) -> valid: {}:", attribute, value, valid);
+            LOGGER.info("MinLength({}({}), {}) -> valid: {}:", attribute, value, length, valid);
             return valid;
         });
     }
@@ -110,7 +110,7 @@ public interface ConstraintGraphTraversalDsl<S, E> extends GraphTraversal.Admin<
         return values(attribute).map(traverser -> {
             String value = (String) traverser.get();
             boolean valid = value != null && value.length() <= Integer.parseInt(length);
-            LOGGER.info("MaxLength({}, {}) -> valid: {}", attribute, value, valid);
+            LOGGER.info("MaxLength({}({}), {}) -> valid: {}", attribute, value, length, valid);
             return valid;
         });
     }
@@ -124,8 +124,9 @@ public interface ConstraintGraphTraversalDsl<S, E> extends GraphTraversal.Admin<
      */
     default GraphTraversal<S, Boolean> greaterThan(String attribute, String value) {
         return values(attribute).map(traverser -> {
-            boolean valid = Long.parseLong(String.valueOf(traverser.get())) > Long.parseLong(value);
-            LOGGER.info("GreaterThan({}, {}) -> valid: {}", attribute, value, valid);
+            long elementValue = Long.parseLong(String.valueOf(traverser.get()));
+            boolean valid = elementValue > Long.parseLong(value);
+            LOGGER.info("GreaterThan({}({}), {}) -> valid: {}", attribute, elementValue, value, valid);
             return valid;
         });
     }
@@ -139,8 +140,9 @@ public interface ConstraintGraphTraversalDsl<S, E> extends GraphTraversal.Admin<
      */
     default GraphTraversal<S, Boolean> greaterThanOrEquals(String attribute, String value) {
         return values(attribute).map(traverser -> {
-            boolean valid = Long.parseLong(String.valueOf(traverser.get())) >= Long.parseLong(value);
-            LOGGER.info("GreaterThanOrEquals({}, {}) -> valid: {}", attribute, value, valid);
+            long elementValue = Long.parseLong(String.valueOf(traverser.get()));
+            boolean valid = elementValue >= Long.parseLong(value);
+            LOGGER.info("GreaterThanOrEquals({}({}), {}) -> valid: {}", attribute, elementValue, value, valid);
             return valid;
         });
     }
@@ -154,8 +156,9 @@ public interface ConstraintGraphTraversalDsl<S, E> extends GraphTraversal.Admin<
      */
     default GraphTraversal<S, Boolean> lessThan(String attribute, String value) {
         return values(attribute).map(traverser -> {
-            boolean valid = Long.parseLong(String.valueOf(traverser.get())) < Long.parseLong(value);
-            LOGGER.info("LessThan({}, {}) -> valid: {}", attribute, value, valid);
+            long elementValue = Long.parseLong(String.valueOf(traverser.get()));
+            boolean valid = elementValue < Long.parseLong(value);
+            LOGGER.info("LessThan({}({}), {}) -> valid: {}", attribute, elementValue, value, valid);
             return valid;
         });
     }
@@ -169,8 +172,9 @@ public interface ConstraintGraphTraversalDsl<S, E> extends GraphTraversal.Admin<
      */
     default GraphTraversal<S, Boolean> lessThanOrEquals(String attribute, String value) {
         return values(attribute).map(traverser -> {
-            boolean valid = Long.parseLong(String.valueOf(traverser.get())) <= Long.parseLong(value);
-            LOGGER.info("LessThanOrEquals({}, {}) -> valid: {}", attribute, value, valid);
+            long elementValue = Long.parseLong(String.valueOf(traverser.get()));
+            boolean valid = elementValue <= Long.parseLong(value);
+            LOGGER.info("LessThanOrEquals({}({}), {}) -> valid: {}", attribute, elementValue, value, valid);
             return valid;
         });
     }
@@ -184,8 +188,9 @@ public interface ConstraintGraphTraversalDsl<S, E> extends GraphTraversal.Admin<
      */
     default GraphTraversal<S, Boolean> equals(String attribute, String value) {
         return values(attribute).map(traverser -> {
-            boolean valid = traverser.get().equals(value);
-            LOGGER.info("Equals({}, {}) -> valid: {}", attribute, value, valid);
+            var elementValue = traverser.get();
+            boolean valid = elementValue.equals(value);
+            LOGGER.info("Equals({}({}), {}) -> valid: {}", attribute, elementValue, value, valid);
             return valid;
         });
     }

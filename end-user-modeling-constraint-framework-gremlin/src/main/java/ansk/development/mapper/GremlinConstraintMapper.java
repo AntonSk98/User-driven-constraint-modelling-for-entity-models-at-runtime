@@ -60,6 +60,7 @@ public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<Con
 
     @Override
     public ConstraintGraphTraversalSource mapToPlatformSpecificGraph(List<InstanceElement> instanceElementGraph) {
+        GremlinRegistry.spawnNewGraph();
         LOGGER.info("Total number of graph elements to be mapped: {}", instanceElementGraph.size());
         ConstraintGraphTraversalSource graphSource = GremlinRegistry.getConstraintTraversal();
         measureExecutionTime("create elements", () -> instanceElementGraph.forEach(graphSource::addInstance));

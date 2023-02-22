@@ -33,10 +33,10 @@ public class ConstraintValidationReport {
         if (isValid) {
             return ValidationResult.VALID;
         }
-        if (result.equals(ViolationLevel.WARN)) {
+        if (ViolationLevel.WARN.equals(result)) {
             return ValidationResult.WARN;
         }
-        if (result.equals(ViolationLevel.ERROR)) {
+        if (ViolationLevel.ERROR.equals(result)) {
             return ValidationResult.INVALID;
         }
         throw new RuntimeException("Unknown violation level: " + result);

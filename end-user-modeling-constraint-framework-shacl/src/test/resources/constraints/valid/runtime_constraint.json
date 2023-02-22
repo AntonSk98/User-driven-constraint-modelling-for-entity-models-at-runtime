@@ -8,6 +8,6 @@
   "constraintFunction": {
     "@type": "RUNTIME_FUNCTION",
     "name": "Maximum age of employee",
-    "runtimeFunction": "@prefix eumcf:         <http://eumcf/shacl/> .\n@prefix instanceShape: <http://eumcf/shacl/shape/> .\n@prefix sh:            <http://www.w3.org/ns/shacl#> .\n\ninstanceShape:ea9f52ee-a86f-48f1-b9c3-b259764a6b04\n        a              sh:NodeShape ;\n        sh:property    [ sh:minLength  \"1\"^^<http://www.w3.org/2001/XMLSchema#int> ;\n                         sh:path       eumcf:name\n                       ] ;\n        sh:targetNode  eumcf:### ."
+    "runtimeFunction": "@prefix eumcf: <http://eumcf/shacl/>. @prefix instanceShape: <http://eumcf/shacl/shape/>. @prefix sh: <http://www.w3.org/ns/shacl#>. instanceShape:### a sh:NodeShape; sh:property [ sh:minLength  \"1\"^^<http://www.w3.org/2001/XMLSchema#int>; sh:path eumcf:name]; sh:targetNode  eumcf:### ."
   }
 }
