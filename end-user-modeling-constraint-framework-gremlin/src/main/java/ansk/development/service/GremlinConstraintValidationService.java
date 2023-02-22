@@ -19,10 +19,14 @@ public class GremlinConstraintValidationService extends AbstractConstraintValida
         try (
                 ConstraintGraphTraversalSource gremlinGraph = constraintMapper.mapToPlatformSpecificGraph(subgraphForValidation);
                 GraphTraversal<?, Boolean> gremlinConstraint = constraintMapper.mapToPlatformSpecificConstraint(uuid, constraint)) {
+            boolean isValid = gremlinGraph.isValid(gremlinConstraint);
+            gremlinConstraint.close();
+            gremlinConstraint.notifyClose();
+            gremlinGraph.close();
             return new ConstraintValidationReport(
                     constraint.getName(),
                     constraint.getModelElementType(),
-                    gremlinGraph.isValid(gremlinConstraint),
+                    isValid,
                     constraint.getViolationLevel(),
                     constraint.getViolationMessage());
         } catch (Exception e) {
