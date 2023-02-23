@@ -1,9 +1,22 @@
+/*
+ * Copyright (c) 2023 Anton Skripin
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations under the License.
+ */
+
 package ansk.development.service.api;
 
 import ansk.development.domain.constraint.Constraint;
 import ansk.development.domain.constraint.backward_links.InstanceBackwardLink;
-import ansk.development.domain.constraint.functions.ConstraintFunction;
 import ansk.development.domain.constraint.backward_links.ModelElementBackwardLink;
+import ansk.development.domain.constraint.functions.ConstraintFunction;
 
 import java.util.List;
 import java.util.Map;
@@ -25,7 +38,8 @@ public interface ConstraintPersistenceService {
     /**
      * By adding a new constraint this function analyzes what other types this constraint is referencing to.
      * If it finds external references to other model elements via navigation, it adds them to model element backward link space.
-     * @param constraint {@link Constraint}
+     *
+     * @param constraint         {@link Constraint}
      * @param constraintFunction {@link ConstraintFunction}
      */
     void resolveModelElementBackwardLinks(Constraint constraint, ConstraintFunction constraintFunction);
@@ -33,9 +47,10 @@ public interface ConstraintPersistenceService {
 
     /**
      * Adds model element backward link.
-     * @param targetModelElement target model element name
+     *
+     * @param targetModelElement  target model element name
      * @param contextModelElement context model element
-     * @param constraintUuid uuid of a constraint
+     * @param constraintUuid      uuid of a constraint
      * @return true if persisted
      */
     boolean addModelElementBackwardLink(String targetModelElement, String contextModelElement, String constraintUuid);
@@ -51,6 +66,7 @@ public interface ConstraintPersistenceService {
 
     /**
      * Returns all constraints associated with a model element type via {@link ModelElementBackwardLink}.
+     *
      * @param type model element name
      * @return list of associated {@link Constraint}
      */
@@ -93,6 +109,7 @@ public interface ConstraintPersistenceService {
 
     /**
      * Whenever a constraint is removed all its reference in {@link ModelElementBackwardLink} must also be removed.
+     *
      * @param uuid of a constraint
      */
     void removeModelElementBackwardLinkByConstraintUuid(String uuid);
@@ -110,7 +127,7 @@ public interface ConstraintPersistenceService {
      *
      * @param targetInstanceUuid  of an instance that is associated with the link and triggers constraint check on its every change
      * @param contextInstanceUuid of an instance in what context the constraint is defined
-     * @param constraintUuid     of a {@link Constraint}
+     * @param constraintUuid      of a {@link Constraint}
      * @return true if linking is successful
      */
     boolean addInstanceBackwardLink(String targetInstanceUuid, String contextInstanceUuid, String constraintUuid);
@@ -118,12 +135,13 @@ public interface ConstraintPersistenceService {
     /**
      * Removes a given Constraint from an instance linking space by its uuid.
      *
-     * @param constraintUuid     of a {@link Constraint}
+     * @param constraintUuid of a {@link Constraint}
      */
     void removeInstanceBackwardLinkByConstraintUuid(String constraintUuid);
 
     /**
      * Removes {@link InstanceBackwardLink}.
+     *
      * @param targetInstanceUuid target instance uuid
      * @return true if found and removed
      */
