@@ -1,0 +1,44 @@
+{
+  "uuid": "ce67ec54-f28a-4b58-aa62-93540c51fe7f",
+  "name": "AND_WITH_IF",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "LOGICAL_FUNCTION",
+    "name": "AND",
+    "booleanFunctions": [
+      {
+        "@type": "RANGE_BASED_FUNCTION",
+        "name": "GREATER_THAN",
+        "attribute": "<SoftwareEngineer>salary",
+        "params": {
+          "value": "5000"
+        }
+      },
+      {
+        "@type": "CONDITIONAL_BASED_FUNCTION",
+        "name": "IF_THEN",
+        "booleanFunctions": [
+          {
+            "@type": "RANGE_BASED_FUNCTION",
+            "name": "LESS_THAN",
+            "attribute": "<SoftwareEngineer>age",
+            "params": {
+              "value": "65"
+            }
+          },
+          {
+            "@type": "STRING_BASED_FUNCTION",
+            "name": "MIN_LENGTH",
+            "attribute": "<SoftwareEngineer>name",
+            "params": {
+              "min_length": "10"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

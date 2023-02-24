@@ -38,6 +38,7 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
         @JsonSubTypes.Type(value = RangeBasedFunction.class, name = FunctionType.RANGE_BASED_FUNCTION),
         @JsonSubTypes.Type(value = AssociationBasedFunction.class, name = FunctionType.ASSOCIATION_BASED_FUNCTION),
         @JsonSubTypes.Type(value = RuntimeFunction.class, name = FunctionType.RUNTIME_FUNCTION),
+        @JsonSubTypes.Type(value = ConditionalBasedFunction.class, name = FunctionType.CONDITIONAL_BASED_FUNCTION),
         @JsonSubTypes.Type(value = ObjectTemplatePlaceholder.class, name = FunctionType.OBJECT_TEMPLATE_PLACEHOLDER)
 }
 )
@@ -128,9 +129,5 @@ public abstract class ConstraintFunction {
      */
     public Optional<String> runtimeFunction() {
         return Optional.empty();
-    }
-
-    public void setParentFunction(ConstraintFunction parentFunction) {
-        this.parentFunction = parentFunction;
     }
 }

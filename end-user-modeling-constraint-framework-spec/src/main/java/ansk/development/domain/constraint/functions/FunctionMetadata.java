@@ -57,5 +57,7 @@ public class FunctionMetadata {
         public static final String NOT_NULL_OR_EMPTY = "NOT_NULL_OR_EMPTY";
         public static final String MIN_CARDINALITY = "MIN_CARDINALITY";
         public static final String MAX_CARDINALITY = "MAX_CARDINALITY";
+        public static final String IF_THEN = "IF_THEN";
+        public static final String IF_THEN_ELSE = "IF_THEN_ELSE";
     }
 }

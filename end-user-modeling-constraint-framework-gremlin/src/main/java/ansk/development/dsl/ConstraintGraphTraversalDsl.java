@@ -24,6 +24,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Contains constraint functions written for Gremlin dialect.
@@ -244,6 +246,51 @@ public interface ConstraintGraphTraversalDsl<S, E> extends GraphTraversal.Admin<
             nestedResult.tryNext().ifPresent(e -> results.add((Boolean) e));
         }
         return this.asAdmin().constant(results).map(listTraverser -> listTraverser.get().stream().anyMatch(value -> value));
+    }
+
+    default GraphTraversal<S, Boolean> ifThen(GraphTraversal<?, Boolean> condition, GraphTraversal<?, Boolean> thenClause) {
+        GraphTraversal.Admin<S, E> currentGraph = this.asAdmin().clone();
+        if (currentGraph.getGraph().isEmpty() || currentGraph.getGraph().get().equals(EmptyGraph.instance())) {
+            throw new GraphConstraintException("IfThen() function must be applied within a context!");
+        }
+        condition.asAdmin().getSteps().forEach(step -> currentGraph.asAdmin().addStep(step));
+        AtomicBoolean isConditionSatisfied = new AtomicBoolean(false);
+        currentGraph.tryNext().ifPresent(e -> isConditionSatisfied.set((Boolean) e));
+        if (isConditionSatisfied.get()) {
+            GraphTraversal.Admin<S, E> thenGraph = this.asAdmin().clone();
+            thenClause.asAdmin().getSteps().forEach(step -> thenGraph.asAdmin().addStep(step));
+            Optional<Boolean> result = (Optional<Boolean>) thenGraph.tryNext();
+            if (result.isPresent()) {
+                return this.constant(result.get());
+            }
+        }
+        return this.constant(true);
+    }
+
+    default GraphTraversal<S, Boolean> ifThenElse(GraphTraversal<?, Boolean> condition, GraphTraversal<?, Boolean> thenClause, GraphTraversal<?, Boolean> elseClause) {
+        GraphTraversal.Admin<S, E> currentGraph = this.asAdmin().clone();
+        if (currentGraph.getGraph().isEmpty() || currentGraph.getGraph().get().equals(EmptyGraph.instance())) {
+            throw new GraphConstraintException("IfThen() function must be applied within a context!");
+        }
+        condition.asAdmin().getSteps().forEach(step -> currentGraph.asAdmin().addStep(step));
+        AtomicBoolean isConditionSatisfied = new AtomicBoolean(false);
+        currentGraph.tryNext().ifPresent(e -> isConditionSatisfied.set((Boolean) e));
+        if (isConditionSatisfied.get()) {
+            GraphTraversal.Admin<S, E> thenGraph = this.asAdmin().clone();
+            thenClause.asAdmin().getSteps().forEach(step -> thenGraph.asAdmin().addStep(step));
+            Optional<Boolean> result = (Optional<Boolean>) thenGraph.tryNext();
+            if (result.isPresent()) {
+                return this.constant(result.get());
+            }
+        } else {
+            GraphTraversal.Admin<S, E> elseGraph = this.asAdmin().clone();
+            elseClause.asAdmin().getSteps().forEach(step -> elseGraph.asAdmin().addStep(step));
+            Optional<Boolean> result = (Optional<Boolean>) elseGraph.tryNext();
+            if (result.isPresent()) {
+                return this.constant(result.get());
+            }
+        }
+        return this.constant(false);
     }
 
     /**

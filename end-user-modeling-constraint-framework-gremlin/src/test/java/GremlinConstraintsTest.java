@@ -119,6 +119,69 @@ public class GremlinConstraintsTest {
     }
 
     @Test
+    @Description("If a software engineer is older than 20 years their salary must be greater than 8000")
+    public void ifThen() {
+        Assertions.assertTrue(GremlinRegistry.getConstraintTraversal()
+                .instanceByName("John")
+                .ifThen(__.greaterThan("age", "20"), __.greaterThan("salary", "8000"))
+                .next());
+    }
+
+    @Test
+    @Description("If a software engineer is older than 30 years their salary must be greater than 12000 else greater than 8000")
+    public void ifThenElse() {
+        Assertions.assertTrue(GremlinRegistry.getConstraintTraversal()
+                .instanceByName("John")
+                .ifThenElse(
+                        __.greaterThan("age", "30"),
+                        __.greaterThan("salary", "12000"),
+                        __.greaterThan("salary", "8000"))
+                .next());
+    }
+
+    @Test
+    @Description("If the name of a software engineer is John all of the projects he is responsible for must be started")
+    public void ifJohnThenResponsibleForAllProjectsHimself() {
+        Assertions.assertTrue(GremlinRegistry.getConstraintTraversal()
+                .instance("ea9f52ee-a86f-48f1-b9c3-b259764a6b04")
+                .ifThen(
+                        __.equals("name", "Johna"),
+                        __.forAll(List.of("works_on"), __.equals("started", "true")))
+                .next());
+    }
+
+    @Test
+    @Description("If the name of a software engineer is John all of the projects he is responsible for must be started and his salary must be greater than 15000")
+    public void ifJohnThenResponsibleForAllProjectsHimselfAndEarnsEnough() {
+        var traversal = GremlinRegistry.getConstraintTraversal();
+        Assertions.assertFalse(traversal.instance("ea9f52ee-a86f-48f1-b9c3-b259764a6b04").ifThen(
+                        __.equals("name", "John"),
+                        traversal.instance("ea9f52ee-a86f-48f1-b9c3-b259764a6b04").and(
+                                List.of(
+                                        __.greaterThan("salary", "15000"),
+                                        __.forAll(List.of("works_on"), __.equals("started", "true"))
+                                )
+                        ))
+                .next());
+
+    }
+
+    @Test
+    @Description("If the name of a software engineer is John all of the projects he is responsible for must be started or his salary must be greater than 15000")
+    public void ifJohnThenResponsibleForAllProjectsHimselfOrEarnsEnough() {
+        var traversal = GremlinRegistry.getConstraintTraversal();
+        Assertions.assertTrue(traversal.instance("ea9f52ee-a86f-48f1-b9c3-b259764a6b04").ifThen(
+                        __.equals("name", "John"),
+                        traversal.instance("ea9f52ee-a86f-48f1-b9c3-b259764a6b04").or(
+                                List.of(
+                                        __.greaterThan("salary", "15000"),
+                                        __.forAll(List.of("works_on"), __.equals("started", "true"))
+                                )
+                        ))
+                .next());
+    }
+
+    @Test
     @Description("John earns at least 10000")
     public void lessThanOrEquals() {
         Assertions.assertTrue(GremlinRegistry.getConstraintTraversal()

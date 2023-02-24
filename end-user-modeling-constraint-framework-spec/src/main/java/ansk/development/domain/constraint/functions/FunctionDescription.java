@@ -53,6 +53,8 @@ public class FunctionDescription {
         FUNCTION_TO_DESCRIPTION_MAP.put(FunctionMetadata.FunctionNames.NOT_NULL_OR_EMPTY, properties.get(FunctionMetadata.FunctionNames.NOT_NULL_OR_EMPTY));
         FUNCTION_TO_DESCRIPTION_MAP.put(FunctionMetadata.FunctionNames.MIN_CARDINALITY, properties.get(FunctionMetadata.FunctionNames.MIN_CARDINALITY));
         FUNCTION_TO_DESCRIPTION_MAP.put(FunctionMetadata.FunctionNames.MAX_CARDINALITY, properties.get(FunctionMetadata.FunctionNames.MAX_CARDINALITY));
+        FUNCTION_TO_DESCRIPTION_MAP.put(FunctionMetadata.FunctionNames.IF_THEN, properties.get(FunctionMetadata.FunctionNames.IF_THEN));
+        FUNCTION_TO_DESCRIPTION_MAP.put(FunctionMetadata.FunctionNames.IF_THEN_ELSE, properties.get(FunctionMetadata.FunctionNames.IF_THEN_ELSE));
     }
 
     private FunctionDescription() {

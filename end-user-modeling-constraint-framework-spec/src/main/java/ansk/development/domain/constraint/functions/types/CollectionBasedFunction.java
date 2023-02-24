@@ -55,7 +55,6 @@ public class CollectionBasedFunction extends ConstraintFunction {
         this.navigation = navigation;
         this.lambdaFunction = lambdaFunction;
         this.params = params;
-        this.lambdaFunction.setParentFunction(this);
     }
 
     public CollectionBasedFunction(
@@ -73,7 +72,6 @@ public class CollectionBasedFunction extends ConstraintFunction {
         this.navigation = navigation;
         this.lambdaFunction = constraintFunction;
         this.params = params;
-        this.lambdaFunction.setParentFunction(this);
     }
 
     @Override

@@ -201,6 +201,34 @@ public class GremlinConstraintMapperTest {
         Assertions.assertFalse(getConstraintEvaluationResult(fetchConstraint(constraintName, false)));
     }
 
+    @Test
+    public void ifThen() {
+        final String constraintName = "if_then";
+        Assertions.assertTrue(getConstraintEvaluationResult(fetchConstraint(constraintName, true)));
+        Assertions.assertFalse(getConstraintEvaluationResult(fetchConstraint(constraintName, false)));
+    }
+
+    @Test
+    public void ifThenElse() {
+        final String constraintName = "if_then_else";
+        Assertions.assertTrue(getConstraintEvaluationResult(fetchConstraint(constraintName, true)));
+        Assertions.assertFalse(getConstraintEvaluationResult(fetchConstraint(constraintName, false)));
+    }
+
+    @Test
+    public void ifComplex() {
+        final String constraintName = "if_complex";
+        Assertions.assertTrue(getConstraintEvaluationResult(fetchConstraint(constraintName, true)));
+        Assertions.assertFalse(getConstraintEvaluationResult(fetchConstraint(constraintName, false)));
+    }
+
+    @Test
+    public void andWithIf() {
+        final String constraintName = "and_with_if";
+        Assertions.assertTrue(getConstraintEvaluationResult(fetchConstraint(constraintName, true)));
+        Assertions.assertFalse(getConstraintEvaluationResult(fetchConstraint(constraintName, false)));
+    }
+
     private Constraint fetchConstraint(String constraintName, boolean valid) {
         try {
             String path = String.format("src/test/resources/constraints/%s/%s.json", valid ? "valid" : "invalid", constraintName);

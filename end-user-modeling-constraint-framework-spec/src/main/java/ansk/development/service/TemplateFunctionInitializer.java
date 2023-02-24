@@ -42,6 +42,9 @@ public class TemplateFunctionInitializer {
                 createLogicalFunctionTemplate(FunctionMetadata.FunctionNames.AND),
                 createLogicalFunctionTemplate(FunctionMetadata.FunctionNames.OR),
 
+                createConditionBasedTemplate(FunctionMetadata.FunctionNames.IF_THEN, false),
+                createConditionBasedTemplate(FunctionMetadata.FunctionNames.IF_THEN_ELSE, true),
+
                 createStringBasedFunctionTemplate(FunctionMetadata.FunctionNames.MIN_LENGTH, FunctionMetadata.FUNCTION_TO_PARAMETER_NAMES.get(FunctionMetadata.FunctionNames.MIN_LENGTH)),
                 createStringBasedFunctionTemplate(FunctionMetadata.FunctionNames.MAX_LENGTH, FunctionMetadata.FUNCTION_TO_PARAMETER_NAMES.get(FunctionMetadata.FunctionNames.MAX_LENGTH)),
                 createStringBasedFunctionTemplate(FunctionMetadata.FunctionNames.UNIQUE, Collections.emptyList()),
@@ -74,6 +77,24 @@ public class TemplateFunctionInitializer {
             String template = new ObjectMapper()
                     .writeValueAsString(collectionBasedFunction);
             return Template.ofFunction(name, FunctionDescription.descriptionByName(name), FunctionType.COLLECTION_BASED_FUNCTION, template);
+        } catch (JsonProcessingException e) {
+            throw new ConstraintTemplateCreationException(name);
+        }
+    }
+
+    private Template createConditionBasedTemplate(String name, boolean withElseClause) {
+        var objectPlaceholder = templateProps.objectKeyValuePlaceholder();
+        List<ConstraintFunction> clauses = withElseClause ? List.of(
+                new ObjectTemplatePlaceholder("Condition", objectPlaceholder.getRight()),
+                new ObjectTemplatePlaceholder("Then clause", objectPlaceholder.getRight()),
+                new ObjectTemplatePlaceholder("Else clause", objectPlaceholder.getRight())
+        ) : List.of(
+                new ObjectTemplatePlaceholder("Condition", objectPlaceholder.getRight()),
+                new ObjectTemplatePlaceholder("Then clause", objectPlaceholder.getRight())
+        );
+        try {
+            String template = new ObjectMapper().writeValueAsString(new ConditionalBasedFunction(name, clauses));
+            return Template.ofFunction(name, FunctionDescription.descriptionByName(name), FunctionType.CONDITIONAL_BASED_FUNCTION, template);
         } catch (JsonProcessingException e) {
             throw new ConstraintTemplateCreationException(name);
         }

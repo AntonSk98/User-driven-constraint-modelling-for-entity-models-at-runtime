@@ -1,0 +1,30 @@
+{
+  "uuid": "07520116-bf4b-441c-8056-a67cb9642fc6",
+  "name": "IF_THEN",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "CONDITIONAL_BASED_FUNCTION",
+    "name": "IF_THEN",
+    "booleanFunctions": [
+      {
+        "@type": "RANGE_BASED_FUNCTION",
+        "name": "GREATER_THAN",
+        "attribute": "<SoftwareEngineer>age",
+        "params": {
+          "value": "20"
+        }
+      },
+      {
+        "@type": "RANGE_BASED_FUNCTION",
+        "name": "GREATER_THAN",
+        "attribute": "<SoftwareEngineer>salary",
+        "params": {
+          "value": "8000"
+        }
+      }
+    ]
+  }
+}

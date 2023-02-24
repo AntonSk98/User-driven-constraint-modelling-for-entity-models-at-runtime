@@ -1,0 +1,49 @@
+{
+  "uuid": "4ff4ef5b-c07f-4fdf-99e0-b82c7670aa05",
+  "name": "IF_COMPLEX",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "CONDITIONAL_BASED_FUNCTION",
+    "name": "IF_THEN",
+    "booleanFunctions": [
+      {
+        "@type": "RANGE_BASED_FUNCTION",
+        "name": "EQUALS",
+        "attribute": "<SoftwareEngineer>name",
+        "params": {
+          "value": "John"
+        }
+      },
+      {
+        "@type": "LOGICAL_FUNCTION",
+        "name": "AND",
+        "booleanFunctions": [
+          {
+            "@type": "RANGE_BASED_FUNCTION",
+            "name": "LESS_THAN",
+            "attribute": "<SoftwareEngineer>salary",
+            "params": {
+              "value": "15000"
+            }
+          },
+          {
+            "@type": "COLLECTION_BASED_FUNCTION",
+            "name": "FOR_ALL",
+            "navigation": "works_on(Project)",
+            "lambdaFunction": {
+              "@type": "RANGE_BASED_FUNCTION",
+              "name": "EQUALS",
+              "attribute": "<Project>started",
+              "params": {
+                "value": "true"
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+}

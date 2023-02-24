@@ -13,9 +13,40 @@
 
 package ansk.development.domain.constraint.functions.types;
 
+import ansk.development.domain.constraint.functions.ConstraintFunction;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
+
+import java.util.List;
+import java.util.Optional;
+
 /**
  * Enforces the evaluation engine to trigger the correspondence of an instance
  * to a constraint if and only if a given condition is satisfied.
  */
-public class ConditionalBasedFunction {
+@Getter
+public class ConditionalBasedFunction extends ConstraintFunction {
+
+    private final List<ConstraintFunction> booleanFunctions;
+
+    /**
+     * Constructor.
+     *
+     * @param name            name of a constraint
+     * @param nestedFunctions list of nested functions
+     */
+    @JsonCreator
+    public ConditionalBasedFunction(
+            @JsonProperty("name") String name,
+            @JsonProperty("booleanFunctions") List<ConstraintFunction> nestedFunctions) {
+        super(name);
+        assert nestedFunctions != null && nestedFunctions.size() > 0;
+        this.booleanFunctions = nestedFunctions;
+    }
+
+    @Override
+    public Optional<List<ConstraintFunction>> booleanFunctions() {
+        return Optional.of(booleanFunctions);
+    }
 }

@@ -1,0 +1,38 @@
+{
+  "uuid": "5aa83acc-b595-428b-85c1-540338a2018b",
+  "name": "IF_THEN_ELSE",
+  "modelElementUuid": "#",
+  "modelElementType": "SoftwareEngineer",
+  "violationMessage": "Provide a meaningful message that will be delivered in case of constraint violation",
+  "violationLevel": "ERROR",
+  "constraintFunction": {
+    "@type": "CONDITIONAL_BASED_FUNCTION",
+    "name": "IF_THEN_ELSE",
+    "booleanFunctions": [
+      {
+        "@type": "RANGE_BASED_FUNCTION",
+        "name": "GREATER_THAN",
+        "attribute": "<SoftwareEngineer>age",
+        "params": {
+          "value": "30"
+        }
+      },
+      {
+        "@type": "RANGE_BASED_FUNCTION",
+        "name": "GREATER_THAN",
+        "attribute": "<SoftwareEngineer>salary",
+        "params": {
+          "value": "15000"
+        }
+      },
+      {
+        "@type": "RANGE_BASED_FUNCTION",
+        "name": "GREATER_THAN",
+        "attribute": "<SoftwareEngineer>salary",
+        "params": {
+          "value": "11000"
+        }
+      }
+    ]
+  }
+}

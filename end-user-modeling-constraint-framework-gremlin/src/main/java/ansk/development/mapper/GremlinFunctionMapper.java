@@ -225,6 +225,28 @@ public class GremlinFunctionMapper {
             return context.or(nestedFunction);
         });
 
+        CONSTRAINTS_MAP.put(IF_THEN, gremlinConstraint -> {
+            var context = gremlinConstraint
+                    .context()
+                    .orElseThrow(() -> new GraphConstraintException("IfThen() cannot be used without a context element"));
+            var clauses = gremlinConstraint
+                    .nestedFunctions()
+                    .filter(graphTraversals -> graphTraversals.size() == 2)
+                    .orElseThrow(() -> new GraphConstraintException("IfThen() cannot be used without clauses"));
+            return context.ifThen(clauses.get(0), clauses.get(1));
+        });
+
+        CONSTRAINTS_MAP.put(IF_THEN_ELSE, gremlinConstraint -> {
+            var context = gremlinConstraint
+                    .context()
+                    .orElseThrow(() -> new GraphConstraintException("IfThenElse() cannot be used without a context element"));
+            var clauses = gremlinConstraint
+                    .nestedFunctions()
+                    .filter(graphTraversals -> graphTraversals.size() == 3)
+                    .orElseThrow(() -> new GraphConstraintException("IfThenElse() cannot be used without clauses"));
+            return context.ifThenElse(clauses.get(0), clauses.get(1), clauses.get(2));
+        });
+
         CONSTRAINTS_MAP.put(RUNTIME_FUNCTION, gremlinConstraint -> {
             var context = gremlinConstraint
                     .context()
