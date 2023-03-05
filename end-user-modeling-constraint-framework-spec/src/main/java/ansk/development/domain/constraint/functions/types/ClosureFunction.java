@@ -14,25 +14,15 @@
 package ansk.development.domain.constraint.functions.types;
 
 import ansk.development.domain.constraint.functions.ConstraintFunction;
-import ansk.development.exception.constraint.function.FunctionException;
 import ansk.development.exception.constraint.function.NotImplementedException;
 
-import java.util.Map;
-
 /**
- * Function that takes an array of attributes and applies an aggregation like
- * total number of elements,
- * average value,
- * etc.
+ * Returns the result of direct attribute elements, elements of its attribute elements, and so forth
+ * until it reaches the leaf level and then applies a lambda constraint function on them.
  */
-public class AggregationBasedFunction extends CollectionBasedFunction {
-    public AggregationBasedFunction(String name, String navigation, ConstraintFunction lambdaFunction, Map<String, String> params) {
-        super(name, navigation, lambdaFunction, params);
-        throw new NotImplementedException(this.getClass().getSimpleName());
-    }
+public class ClosureFunction extends ConstraintFunction {
 
-    public AggregationBasedFunction(String name, String navigation, ConstraintFunction constraintFunction, Map<String, String> params, boolean asTemplate) {
-        super(name, navigation, constraintFunction, params, asTemplate);
+    public ClosureFunction() {
         throw new NotImplementedException(this.getClass().getSimpleName());
     }
 }

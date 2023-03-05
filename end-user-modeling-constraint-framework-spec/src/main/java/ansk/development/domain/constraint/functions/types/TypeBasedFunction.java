@@ -13,8 +13,15 @@
 
 package ansk.development.domain.constraint.functions.types;
 
+import ansk.development.domain.constraint.functions.ConstraintFunction;
+import ansk.development.exception.constraint.function.NotImplementedException;
+
 /**
  * Enforces the correctness of an attribute's data type to enforce strict type checking.
  */
-public class TypeBasedFunction {
+public class TypeBasedFunction extends ConstraintFunction {
+
+    public TypeBasedFunction() {
+        throw new NotImplementedException(this.getClass().getSimpleName());
+    }
 }

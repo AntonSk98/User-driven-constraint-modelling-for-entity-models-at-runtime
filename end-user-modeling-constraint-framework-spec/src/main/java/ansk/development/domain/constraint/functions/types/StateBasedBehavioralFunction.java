@@ -13,15 +13,16 @@
 
 package ansk.development.domain.constraint.functions.types;
 
-import ansk.development.domain.constraint.functions.ConstraintFunction;
 import ansk.development.exception.constraint.function.NotImplementedException;
 
 /**
- * Defines a condition that must hold between two attributes.
+ * Specifies the instance evolution process when a transition of one instance attribute to another state
+ * is only possible if the state of another attribute is satisfied by a given requirement.
  */
-public class PairBasedFunction extends ConstraintFunction {
+public class StateBasedBehavioralFunction extends LogicalFunction {
 
-    public PairBasedFunction() {
+    public StateBasedBehavioralFunction() {
+        super(null, null);
         throw new NotImplementedException(this.getClass().getSimpleName());
     }
 }

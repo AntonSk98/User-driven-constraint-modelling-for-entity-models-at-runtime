@@ -11,17 +11,14 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package ansk.development.domain.constraint.functions.types;
-
-import ansk.development.domain.constraint.functions.ConstraintFunction;
-import ansk.development.exception.constraint.function.NotImplementedException;
+package ansk.development.exception.constraint.function;
 
 /**
- * Defines a condition that must hold between two attributes.
+ * Exception to indicate that this function is not implemented in the initial version of specification.
  */
-public class PairBasedFunction extends ConstraintFunction {
+public class NotImplementedException extends FunctionException {
 
-    public PairBasedFunction() {
-        throw new NotImplementedException(this.getClass().getSimpleName());
+    public NotImplementedException(String functionName) {
+        super(String.format("Function '%s' is not implemented!", functionName));
     }
 }
