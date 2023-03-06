@@ -21,7 +21,7 @@ import ansk.development.exception.constraint.function.NotImplementedException;
  */
 public class InstanceObjectNetsFunction extends ConstraintFunction {
 
-    public InstanceObjectNetsFunction() {
+    public InstanceObjectNetsFunction(String name) {
         throw new NotImplementedException(this.getClass().getSimpleName());
     }
 }

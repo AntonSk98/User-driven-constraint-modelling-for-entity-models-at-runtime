@@ -15,7 +15,6 @@ package ansk.development.domain.constraint.functions;
 
 import ansk.development.domain.constraint.functions.types.*;
 import ansk.development.domain.template.ObjectTemplatePlaceholder;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -46,9 +45,6 @@ import static com.fasterxml.jackson.annotation.JsonTypeInfo.Id.NAME;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public abstract class ConstraintFunction {
     private String name;
-
-    @JsonIgnore
-    private ConstraintFunction parentFunction;
 
     public ConstraintFunction() {
     }
