@@ -40,6 +40,7 @@ public class ShaclConstraintValidationService extends AbstractConstraintValidati
         Shapes shapes = Shapes.parse(shaclConstraint.getGraph());
         ValidationReport report = ShaclValidator.get().validate(shapes, dataGraph.getGraph());
         return new ConstraintValidationReport(
+                uuid,
                 constraint.getName(),
                 constraint.getModelElementType(),
                 report.conforms(),

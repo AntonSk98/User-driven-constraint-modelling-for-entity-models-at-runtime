@@ -37,6 +37,7 @@ public class GremlinConstraintValidationService extends AbstractConstraintValida
             gremlinConstraint.notifyClose();
             gremlinGraph.close();
             return new ConstraintValidationReport(
+                    uuid,
                     constraint.getName(),
                     constraint.getModelElementType(),
                     isValid,

@@ -20,6 +20,8 @@ import lombok.Getter;
  */
 @Getter
 public class ConstraintValidationReport {
+
+    private final String uuid;
     private final String name;
     private final String elementType;
     private final ValidationResult result;
@@ -29,13 +31,15 @@ public class ConstraintValidationReport {
     /**
      * Constructor
      *
+     * @param uuid             uuid of an instance that is used as a context for constraint validation
      * @param name             of a constraint
      * @param elementType      context element which a constraint is applied to
      * @param isValid          whether evaluation result is true
      * @param violationLevel   See {@link ViolationLevel}
      * @param violationMessage Message that should be returned to an end-user in case a constraint is invalid
      */
-    public ConstraintValidationReport(String name, String elementType, boolean isValid, ViolationLevel violationLevel, String violationMessage) {
+    public ConstraintValidationReport(String uuid, String name, String elementType, boolean isValid, ViolationLevel violationLevel, String violationMessage) {
+        this.uuid = uuid;
         this.name = name;
         this.elementType = elementType;
         this.isValid = isValid;
