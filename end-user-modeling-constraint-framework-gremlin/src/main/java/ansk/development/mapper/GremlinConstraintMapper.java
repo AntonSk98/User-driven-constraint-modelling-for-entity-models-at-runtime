@@ -37,6 +37,8 @@ public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<Con
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GremlinConstraintMapper.class);
 
+    private static final GremlinFunctionMapper GREMLIN_FUNCTION_MAPPER = new GremlinFunctionMapper();
+
     private static void measureExecutionTime(String name, Runnable function) {
         long startTime = System.currentTimeMillis();
         function.run();
@@ -64,9 +66,9 @@ public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<Con
         });
         constraintFunction.params().ifPresent(gremlinConstraint::setParams);
         if (constraintFunction.runtimeFunction().isPresent()) {
-            gremlinConstraint.setTraversal(GremlinFunctionMapper.CONSTRAINTS_MAP.get(RUNTIME_FUNCTION).apply(gremlinConstraint));
+            gremlinConstraint.setTraversal(GREMLIN_FUNCTION_MAPPER.getFunctionByName(RUNTIME_FUNCTION).apply(gremlinConstraint));
         } else {
-            gremlinConstraint.setTraversal(GremlinFunctionMapper.CONSTRAINTS_MAP.get(constraintFunction.getName()).apply(gremlinConstraint));
+            gremlinConstraint.setTraversal(GREMLIN_FUNCTION_MAPPER.getFunctionByName(constraintFunction.getName()).apply(gremlinConstraint));
         }
         return gremlinConstraint.getTraversal();
     }

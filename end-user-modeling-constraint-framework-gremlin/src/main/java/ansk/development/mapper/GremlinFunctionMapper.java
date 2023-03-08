@@ -18,7 +18,8 @@ import ansk.development.domain.NavigationUtils;
 import ansk.development.dsl.ConstraintGraphTraversal;
 import ansk.development.dsl.__;
 import ansk.development.exception.constraint.GraphConstraintException;
-import org.apache.groovy.internal.util.Function;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.tinkerpop.gremlin.groovy.engine.GremlinExecutor;
 import org.apache.tinkerpop.gremlin.process.traversal.dsl.graph.GraphTraversal;
 
@@ -27,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
+import java.util.function.Function;
 
 import static ansk.development.domain.constraint.functions.FunctionMetadata.FUNCTION_TO_PARAMETER_NAMES;
 import static ansk.development.domain.constraint.functions.FunctionMetadata.FunctionNames.*;
@@ -35,11 +37,12 @@ import static ansk.development.domain.constraint.functions.FunctionType.RUNTIME_
 /**
  * Maps function with its concrete Gremlin implementation.
  */
-public class GremlinFunctionMapper {
-    public static Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> CONSTRAINTS_MAP = new HashMap<>();
+public class GremlinFunctionMapper extends AbstractFunctionMapper<GremlinConstraint, GraphTraversal<?, Boolean>> {
+    @Override
+    public Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapCollectionBasedFunctions() {
+        Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapper = new HashMap<>();
 
-    static {
-        CONSTRAINTS_MAP.put(FOR_ALL, gremlinConstraint -> {
+        mapper.put(FOR_ALL, gremlinConstraint -> {
             List<String> navigation = gremlinConstraint
                     .navigation()
                     .orElseThrow(() -> new GraphConstraintException("ForAll() must have a navigation"));
@@ -50,7 +53,7 @@ public class GremlinFunctionMapper {
 
         });
 
-        CONSTRAINTS_MAP.put(FOR_SOME, gremlinConstraint -> {
+        mapper.put(FOR_SOME, gremlinConstraint -> {
             List<String> navigation = gremlinConstraint
                     .navigation()
                     .orElseThrow(() -> new GraphConstraintException("ForSome() must have a navigation"));
@@ -60,7 +63,7 @@ public class GremlinFunctionMapper {
             return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().forSome(navigation, lambdaFunction) : __.forSome(navigation, lambdaFunction);
         });
 
-        CONSTRAINTS_MAP.put(FOR_NONE, gremlinConstraint -> {
+        mapper.put(FOR_NONE, gremlinConstraint -> {
             List<String> navigation = gremlinConstraint
                     .navigation()
                     .orElseThrow(() -> new GraphConstraintException("ForNone() must have a navigation"));
@@ -70,7 +73,7 @@ public class GremlinFunctionMapper {
             return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().forNone(navigation, lambdaFunction) : __.forNone(navigation, lambdaFunction);
         });
 
-        CONSTRAINTS_MAP.put(FOR_EXACTLY, gremlinConstraint -> {
+        mapper.put(FOR_EXACTLY, gremlinConstraint -> {
             List<String> navigation = gremlinConstraint
                     .navigation()
                     .orElseThrow(() -> new GraphConstraintException("ForExactly() must have a navigation"));
@@ -84,7 +87,14 @@ public class GremlinFunctionMapper {
             return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().forExactly(navigation, lambdaFunction, matchNumber) : __.forExactly(navigation, lambdaFunction, matchNumber);
         });
 
-        CONSTRAINTS_MAP.put(GREATER_THAN, gremlinConstraint -> {
+        return mapper;
+    }
+
+    @Override
+    public Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapRangeBasedFunctions() {
+        Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapper = new HashMap<>();
+
+        mapper.put(GREATER_THAN, gremlinConstraint -> {
             String attribute = gremlinConstraint
                     .attribute()
                     .orElseThrow(() -> new GraphConstraintException("GreaterThan() must have an attribute!"));
@@ -94,7 +104,7 @@ public class GremlinFunctionMapper {
             return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().greaterThan(attribute, value) : __.greaterThan(attribute, value);
         });
 
-        CONSTRAINTS_MAP.put(GREATER_THAN_OR_EQUALS, gremlinConstraint -> {
+        mapper.put(GREATER_THAN_OR_EQUALS, gremlinConstraint -> {
             String attribute = gremlinConstraint
                     .attribute()
                     .orElseThrow(() -> new GraphConstraintException("GreaterThanOrEquals() must have an attribute!"));
@@ -104,7 +114,7 @@ public class GremlinFunctionMapper {
             return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().greaterThanOrEquals(attribute, value) : __.greaterThanOrEquals(attribute, value);
         });
 
-        CONSTRAINTS_MAP.put(LESS_THAN, gremlinConstraint -> {
+        mapper.put(LESS_THAN, gremlinConstraint -> {
             String attribute = gremlinConstraint
                     .attribute()
                     .orElseThrow(() -> new GraphConstraintException("LessThan() must have an attribute!"));
@@ -115,7 +125,7 @@ public class GremlinFunctionMapper {
             return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().lessThan(attribute, value) : __.lessThan(attribute, value);
         });
 
-        CONSTRAINTS_MAP.put(LESS_THAN_OR_EQUALS, gremlinConstraint -> {
+        mapper.put(LESS_THAN_OR_EQUALS, gremlinConstraint -> {
             String attribute = gremlinConstraint
                     .attribute()
                     .orElseThrow(() -> new GraphConstraintException("LessThanOrEquals() must have an attribute!"));
@@ -126,7 +136,7 @@ public class GremlinFunctionMapper {
             return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().lessThanOrEquals(attribute, value) : __.lessThanOrEquals(attribute, value);
         });
 
-        CONSTRAINTS_MAP.put(EQUALS, gremlinConstraint -> {
+        mapper.put(EQUALS, gremlinConstraint -> {
             String attribute = gremlinConstraint
                     .attribute()
                     .orElseThrow(() -> new GraphConstraintException("Equals() must have an attribute!"));
@@ -137,7 +147,39 @@ public class GremlinFunctionMapper {
             return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().equals(attribute, value) : __.equals(attribute, value);
         });
 
-        CONSTRAINTS_MAP.put(UNIQUE, gremlinConstraint -> {
+        return mapper;
+    }
+
+    @Override
+    public Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapLogicalFunctions() {
+        Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapper = new HashMap<>();
+        mapper.put(AND, gremlinConstraint -> {
+            var context = gremlinConstraint
+                    .context()
+                    .orElseThrow(() -> new GraphConstraintException("And() cannot be used without a context element"));
+            var nestedFunction = gremlinConstraint
+                    .nestedFunctions()
+                    .orElseThrow(() -> new GraphConstraintException("And() cannot be used without a context element"));
+            return context.and(nestedFunction);
+        });
+
+        mapper.put(OR, gremlinConstraint -> {
+            var context = gremlinConstraint
+                    .context()
+                    .orElseThrow(() -> new GraphConstraintException("Or() cannot be used without a context element"));
+            var nestedFunction = gremlinConstraint
+                    .nestedFunctions()
+                    .orElseThrow(() -> new GraphConstraintException("Or() cannot be used without a context element"));
+            return context.or(nestedFunction);
+        });
+        return mapper;
+    }
+
+    @Override
+    public Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapStringBasedFunctions() {
+        Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapper = new HashMap<>();
+
+        mapper.put(UNIQUE, gremlinConstraint -> {
             ConstraintGraphTraversal<?, ?> context = gremlinConstraint
                     .context()
                     .orElseThrow(() -> new GraphConstraintException("This function cannot be used without target context!"));
@@ -148,14 +190,71 @@ public class GremlinFunctionMapper {
             return context.unique(attribute);
         });
 
-        CONSTRAINTS_MAP.put(NOT_NULL_OR_EMPTY, gremlinConstraint -> {
+        mapper.put(NOT_NULL_OR_EMPTY, gremlinConstraint -> {
             String attribute = gremlinConstraint
                     .attribute()
                     .orElseThrow(() -> new GraphConstraintException("NotNullOrEmpty() must have an attribute!"));
             return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().notNullOrEmpty(attribute) : __.notNullOrEmpty(attribute);
         });
 
-        CONSTRAINTS_MAP.put(MIN_CARDINALITY, gremlinConstraint -> {
+        mapper.put(MAX_LENGTH, gremlinConstraint -> {
+            String attribute = gremlinConstraint
+                    .attribute()
+                    .orElseThrow(() -> new GraphConstraintException("MaxLength() must have an attribute!"));
+            String length = gremlinConstraint
+                    .params()
+                    .orElseThrow(() -> new GraphConstraintException("MaxLength() must have a parameter"))
+                    .get(FUNCTION_TO_PARAMETER_NAMES.get(MAX_LENGTH).get(0));
+            return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().maxLength(attribute, length) : __.maxLength(attribute, length);
+        });
+
+        mapper.put(MIN_LENGTH, gremlinConstraint -> {
+            String attribute = gremlinConstraint
+                    .attribute()
+                    .orElseThrow(() -> new GraphConstraintException("MinLength() must have an attribute!"));
+            String length = gremlinConstraint
+                    .params()
+                    .orElseThrow(() -> new GraphConstraintException("MinLength() must have a parameter"))
+                    .get(FUNCTION_TO_PARAMETER_NAMES.get(MIN_LENGTH).get(0));
+            return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().minLength(attribute, length) : __.minLength(attribute, length);
+        });
+
+        return mapper;
+    }
+
+    @Override
+    public Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapConditionBasedFunctions() {
+        Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapper = new HashMap<>();
+
+        mapper.put(IF_THEN, gremlinConstraint -> {
+            var context = gremlinConstraint
+                    .context()
+                    .orElseThrow(() -> new GraphConstraintException("IfThen() cannot be used without a context element"));
+            var clauses = gremlinConstraint
+                    .nestedFunctions()
+                    .filter(graphTraversals -> graphTraversals.size() == 2)
+                    .orElseThrow(() -> new GraphConstraintException("IfThen() cannot be used without clauses"));
+            return context.ifThen(clauses.get(0), clauses.get(1));
+        });
+
+        mapper.put(IF_THEN_ELSE, gremlinConstraint -> {
+            var context = gremlinConstraint
+                    .context()
+                    .orElseThrow(() -> new GraphConstraintException("IfThenElse() cannot be used without a context element"));
+            var clauses = gremlinConstraint
+                    .nestedFunctions()
+                    .filter(graphTraversals -> graphTraversals.size() == 3)
+                    .orElseThrow(() -> new GraphConstraintException("IfThenElse() cannot be used without clauses"));
+            return context.ifThenElse(clauses.get(0), clauses.get(1), clauses.get(2));
+        });
+        return mapper;
+    }
+
+    @Override
+    public Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapAssociationBasedFunctions() {
+        Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapper = new HashMap<>();
+
+        mapper.put(MIN_CARDINALITY, gremlinConstraint -> {
             var params = gremlinConstraint
                     .params()
                     .orElseThrow(() -> new GraphConstraintException("MinCardinality() must have two value attribute"));
@@ -169,7 +268,7 @@ public class GremlinFunctionMapper {
             return context.minCardinality(association, minValue);
         });
 
-        CONSTRAINTS_MAP.put(MAX_CARDINALITY, gremlinConstraint -> {
+        mapper.put(MAX_CARDINALITY, gremlinConstraint -> {
             var params = gremlinConstraint
                     .params()
                     .orElseThrow(() -> new GraphConstraintException("MaxCardinality() must have two value attribute"));
@@ -183,71 +282,12 @@ public class GremlinFunctionMapper {
             return context.maxCardinality(association, maxValue);
         });
 
-        CONSTRAINTS_MAP.put(MAX_LENGTH, gremlinConstraint -> {
-            String attribute = gremlinConstraint
-                    .attribute()
-                    .orElseThrow(() -> new GraphConstraintException("MaxLength() must have an attribute!"));
-            String length = gremlinConstraint
-                    .params()
-                    .orElseThrow(() -> new GraphConstraintException("MaxLength() must have a parameter"))
-                    .get(FUNCTION_TO_PARAMETER_NAMES.get(MAX_LENGTH).get(0));
-            return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().maxLength(attribute, length) : __.maxLength(attribute, length);
-        });
+        return mapper;
+    }
 
-        CONSTRAINTS_MAP.put(MIN_LENGTH, gremlinConstraint -> {
-            String attribute = gremlinConstraint
-                    .attribute()
-                    .orElseThrow(() -> new GraphConstraintException("MinLength() must have an attribute!"));
-            String length = gremlinConstraint
-                    .params()
-                    .orElseThrow(() -> new GraphConstraintException("MinLength() must have a parameter"))
-                    .get(FUNCTION_TO_PARAMETER_NAMES.get(MIN_LENGTH).get(0));
-            return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().minLength(attribute, length) : __.minLength(attribute, length);
-        });
-
-        CONSTRAINTS_MAP.put(AND, gremlinConstraint -> {
-            var context = gremlinConstraint
-                    .context()
-                    .orElseThrow(() -> new GraphConstraintException("And() cannot be used without a context element"));
-            var nestedFunction = gremlinConstraint
-                    .nestedFunctions()
-                    .orElseThrow(() -> new GraphConstraintException("And() cannot be used without a context element"));
-            return context.and(nestedFunction);
-        });
-
-        CONSTRAINTS_MAP.put(OR, gremlinConstraint -> {
-            var context = gremlinConstraint
-                    .context()
-                    .orElseThrow(() -> new GraphConstraintException("Or() cannot be used without a context element"));
-            var nestedFunction = gremlinConstraint
-                    .nestedFunctions()
-                    .orElseThrow(() -> new GraphConstraintException("Or() cannot be used without a context element"));
-            return context.or(nestedFunction);
-        });
-
-        CONSTRAINTS_MAP.put(IF_THEN, gremlinConstraint -> {
-            var context = gremlinConstraint
-                    .context()
-                    .orElseThrow(() -> new GraphConstraintException("IfThen() cannot be used without a context element"));
-            var clauses = gremlinConstraint
-                    .nestedFunctions()
-                    .filter(graphTraversals -> graphTraversals.size() == 2)
-                    .orElseThrow(() -> new GraphConstraintException("IfThen() cannot be used without clauses"));
-            return context.ifThen(clauses.get(0), clauses.get(1));
-        });
-
-        CONSTRAINTS_MAP.put(IF_THEN_ELSE, gremlinConstraint -> {
-            var context = gremlinConstraint
-                    .context()
-                    .orElseThrow(() -> new GraphConstraintException("IfThenElse() cannot be used without a context element"));
-            var clauses = gremlinConstraint
-                    .nestedFunctions()
-                    .filter(graphTraversals -> graphTraversals.size() == 3)
-                    .orElseThrow(() -> new GraphConstraintException("IfThenElse() cannot be used without clauses"));
-            return context.ifThenElse(clauses.get(0), clauses.get(1), clauses.get(2));
-        });
-
-        CONSTRAINTS_MAP.put(RUNTIME_FUNCTION, gremlinConstraint -> {
+    @Override
+    public Pair<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapRuntimeFunction() {
+        return new ImmutablePair<>(RUNTIME_FUNCTION, gremlinConstraint -> {
             var context = gremlinConstraint
                     .context()
                     .orElseThrow(() -> new GraphConstraintException("Runtime function cannot be used without a context element"));

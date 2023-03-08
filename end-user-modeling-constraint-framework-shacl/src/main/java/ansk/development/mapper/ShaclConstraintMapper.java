@@ -32,6 +32,7 @@ import static ansk.development.domain.constraint.functions.FunctionType.RUNTIME_
 public class ShaclConstraintMapper implements AbstractToPSConstraintMapper<ShaclConstraintData, ShaclConstraintShape> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShaclConstraintMapper.class);
+    private static final ShaclFunctionMapper SHACL_FUNCTION_MAPPER = new ShaclFunctionMapper();
 
     private static void measureExecutionTime(String name, Runnable function) {
         long startTime = System.currentTimeMillis();
@@ -65,9 +66,9 @@ public class ShaclConstraintMapper implements AbstractToPSConstraintMapper<Shacl
         });
         constraintFunction.params().ifPresent(shaclConstraint::setParams);
         if (constraintFunction.runtimeFunction().isPresent()) {
-            resource = ShaclFunctionMapper.CONSTRAINTS_MAP.get(RUNTIME_FUNCTION).apply(shaclConstraint);
+            resource = SHACL_FUNCTION_MAPPER.getFunctionByName(RUNTIME_FUNCTION).apply(shaclConstraint);
         } else {
-            resource = ShaclFunctionMapper.CONSTRAINTS_MAP.get(constraintFunction.getName()).apply(shaclConstraint);
+            resource = SHACL_FUNCTION_MAPPER.getFunctionByName(constraintFunction.getName()).apply(shaclConstraint);
         }
         return resource;
     }
