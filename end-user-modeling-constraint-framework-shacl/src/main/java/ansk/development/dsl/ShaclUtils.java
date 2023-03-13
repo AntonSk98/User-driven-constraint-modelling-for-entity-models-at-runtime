@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package ansk.development.domain;
+package ansk.development.dsl;
 
 import org.apache.jena.datatypes.xsd.XSDDatatype;
 

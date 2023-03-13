@@ -13,6 +13,7 @@
 
 package ansk.development.domain;
 
+import ansk.development.dsl.ShaclConstraintShape;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.jena.rdf.model.Resource;

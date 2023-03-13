@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package ansk.development.domain;
+package ansk.development.dsl;
 
 import ansk.development.domain.instance.InstanceElement;
 import ansk.development.domain.instance.Link;
@@ -24,12 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static ansk.development.domain.ShaclUtils.getXsdDatatypeByValue;
+import static ansk.development.dsl.ShaclUtils.getXsdDatatypeByValue;
 
 /**
  * Domain-specific model of a data graph.
  */
-public class ShaclConstraintData extends ModelCom {
+public class ShaclInstanceGraph extends ModelCom {
 
     private final static String CONSTRAINT_PREFIX = "eumcf";
     private final static String CONSTRAINT_NAMESPACE = "http://eumcf/shacl/";
@@ -37,7 +37,7 @@ public class ShaclConstraintData extends ModelCom {
     /**
      * Constructor.
      */
-    public ShaclConstraintData() {
+    public ShaclInstanceGraph() {
         super(org.apache.jena.graph.Factory.createGraphMem());
         this.setUpNamespace();
     }

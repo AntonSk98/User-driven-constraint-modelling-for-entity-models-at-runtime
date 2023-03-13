@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 public class GremlinConstraint {
 
@@ -27,7 +28,7 @@ public class GremlinConstraint {
 
     private List<String> navigation;
 
-    private GraphTraversal<?, Boolean> traversal;
+    private GraphTraversal<?, Boolean> constraintFunction;
 
     private GraphTraversal<?, Boolean> lambdaFunction;
 
@@ -72,6 +73,12 @@ public class GremlinConstraint {
         this.context = context;
     }
 
+    public void setContextByCondition(ConstraintGraphTraversal<?, ?> context, Supplier<Boolean> condition) {
+        if (condition.get()) {
+            this.context = context;
+        }
+    }
+
     public void setNavigation(List<String> navigation) {
         this.navigation = navigation;
     }
@@ -95,12 +102,12 @@ public class GremlinConstraint {
         this.nestedFunctions.add(nestedFunction);
     }
 
-    public void setTraversal(GraphTraversal<?, Boolean> traversal) {
-        this.traversal = traversal;
+    public void setConstraintFunction(GraphTraversal<?, Boolean> constraintFunction) {
+        this.constraintFunction = constraintFunction;
     }
 
-    public GraphTraversal<?, Boolean> getTraversal() {
-        return traversal;
+    public GraphTraversal<?, Boolean> getConstraintFunction() {
+        return constraintFunction;
     }
 
     public void setRuntimeFunction(String runtimeFunction) {

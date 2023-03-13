@@ -15,7 +15,7 @@ package ansk.development.mapper;
 
 import ansk.development.domain.NavigationUtils;
 import ansk.development.domain.ShaclConstraint;
-import ansk.development.domain.ShaclConstraintShape;
+import ansk.development.dsl.ShaclConstraintShape;
 import ansk.development.exception.constraint.GraphConstraintException;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.commons.lang3.tuple.Pair;
@@ -100,6 +100,7 @@ public class ShaclFunctionMapper extends AbstractFunctionMapper<ShaclConstraint,
     @Override
     public Map<String, Function<ShaclConstraint, Resource>> mapRangeBasedFunctions() {
         Map<String, Function<ShaclConstraint, Resource>> mapper = new HashMap<>();
+
         mapper.put(GREATER_THAN, shaclConstraint -> {
             String attribute = shaclConstraint
                     .attribute()
@@ -109,7 +110,6 @@ public class ShaclFunctionMapper extends AbstractFunctionMapper<ShaclConstraint,
                     .get(FUNCTION_TO_PARAMETER_NAMES.get(GREATER_THAN).get(0));
             return shaclConstraint.getContext().greaterThan(attribute, value, shaclConstraint.nested());
         });
-
         mapper.put(GREATER_THAN_OR_EQUALS, shaclConstraint -> {
             String attribute = shaclConstraint
                     .attribute()
@@ -144,7 +144,6 @@ public class ShaclFunctionMapper extends AbstractFunctionMapper<ShaclConstraint,
 
             return shaclConstraint.getContext().lessThanOrEquals(attribute, value, shaclConstraint.nested());
         });
-
         mapper.put(EQUALS, shaclConstraint -> {
             String attribute = shaclConstraint
                     .attribute()
@@ -270,7 +269,7 @@ public class ShaclFunctionMapper extends AbstractFunctionMapper<ShaclConstraint,
                     .orElseThrow(() -> new GraphConstraintException("No function is provided for runtime function"));
             String placeholder = pair.getKey();
             String runtimeFunction = pair.getValue();
-            runtimeFunction = runtimeFunction.replace(placeholder, shaclConstraint.getContext().getTargetInstance());
+            runtimeFunction = runtimeFunction.replace(placeholder, shaclConstraint.getContext().loadTargetInstance());
 
             ShaclConstraintShape shaclConstraintShape = new ShaclConstraintShape();
             InputStream inputStream = new ByteArrayInputStream(runtimeFunction.getBytes());

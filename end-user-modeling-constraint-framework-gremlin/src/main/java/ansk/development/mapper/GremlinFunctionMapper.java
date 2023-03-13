@@ -38,6 +38,64 @@ import static ansk.development.domain.constraint.functions.FunctionType.RUNTIME_
  * Maps function with its concrete Gremlin implementation.
  */
 public class GremlinFunctionMapper extends AbstractFunctionMapper<GremlinConstraint, GraphTraversal<?, Boolean>> {
+
+    @Override
+    public Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapRangeBasedFunctions() {
+        Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapper = new HashMap<>();
+
+        mapper.put(GREATER_THAN, gremlinConstraint -> {
+            String attribute = gremlinConstraint
+                    .attribute()
+                    .orElseThrow(() -> new GraphConstraintException("GreaterThan() must have an attribute!"));
+            String value = gremlinConstraint.params()
+                    .orElseThrow(() -> new GraphConstraintException("GreaterThan() must have a value attribute"))
+                    .get(FUNCTION_TO_PARAMETER_NAMES.get(GREATER_THAN).get(0));
+            return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().greaterThan(attribute, value) : __.greaterThan(attribute, value);
+        });
+        mapper.put(GREATER_THAN_OR_EQUALS, gremlinConstraint -> {
+            String attribute = gremlinConstraint
+                    .attribute()
+                    .orElseThrow(() -> new GraphConstraintException("GreaterThanOrEquals() must have an attribute!"));
+            String value = gremlinConstraint.params()
+                    .orElseThrow(() -> new GraphConstraintException("GreaterThanOrEquals() must have a value attribute"))
+                    .get(FUNCTION_TO_PARAMETER_NAMES.get(GREATER_THAN_OR_EQUALS).get(0));
+            return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().greaterThanOrEquals(attribute, value) : __.greaterThanOrEquals(attribute, value);
+        });
+        mapper.put(LESS_THAN, gremlinConstraint -> {
+            String attribute = gremlinConstraint
+                    .attribute()
+                    .orElseThrow(() -> new GraphConstraintException("LessThan() must have an attribute!"));
+            String value = gremlinConstraint
+                    .params()
+                    .orElseThrow(() -> new GraphConstraintException("LessThan() must have a value attribute"))
+                    .get(FUNCTION_TO_PARAMETER_NAMES.get(LESS_THAN).stream().findFirst().get());
+            return gremlinConstraint.context().isPresent() ?
+                    gremlinConstraint.context().get().lessThan(attribute, value) :
+                    __.lessThan(attribute, value);
+        });
+        mapper.put(LESS_THAN_OR_EQUALS, gremlinConstraint -> {
+            String attribute = gremlinConstraint
+                    .attribute()
+                    .orElseThrow(() -> new GraphConstraintException("LessThanOrEquals() must have an attribute!"));
+            String value = gremlinConstraint
+                    .params()
+                    .orElseThrow(() -> new GraphConstraintException("LessThanOrEquals() must have a value attribute"))
+                    .get(FUNCTION_TO_PARAMETER_NAMES.get(LESS_THAN_OR_EQUALS).get(0));
+            return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().lessThanOrEquals(attribute, value) : __.lessThanOrEquals(attribute, value);
+        });
+        mapper.put(EQUALS, gremlinConstraint -> {
+            String attribute = gremlinConstraint
+                    .attribute()
+                    .orElseThrow(() -> new GraphConstraintException("Equals() must have an attribute!"));
+            String value = gremlinConstraint
+                    .params()
+                    .orElseThrow(() -> new GraphConstraintException("Equals() must have a value attribute"))
+                    .get(FUNCTION_TO_PARAMETER_NAMES.get(EQUALS).get(0));
+            return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().equals(attribute, value) : __.equals(attribute, value);
+        });
+        return mapper;
+    }
+
     @Override
     public Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapCollectionBasedFunctions() {
         Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapper = new HashMap<>();
@@ -85,66 +143,6 @@ public class GremlinFunctionMapper extends AbstractFunctionMapper<GremlinConstra
                             .orElseThrow(() -> new GraphConstraintException("ForExactly() must have a 'match_number' parameter"))
                             .get(FUNCTION_TO_PARAMETER_NAMES.get(FOR_EXACTLY).get(0)));
             return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().forExactly(navigation, lambdaFunction, matchNumber) : __.forExactly(navigation, lambdaFunction, matchNumber);
-        });
-
-        return mapper;
-    }
-
-    @Override
-    public Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapRangeBasedFunctions() {
-        Map<String, Function<GremlinConstraint, GraphTraversal<?, Boolean>>> mapper = new HashMap<>();
-
-        mapper.put(GREATER_THAN, gremlinConstraint -> {
-            String attribute = gremlinConstraint
-                    .attribute()
-                    .orElseThrow(() -> new GraphConstraintException("GreaterThan() must have an attribute!"));
-            String value = gremlinConstraint.params()
-                    .orElseThrow(() -> new GraphConstraintException("GreaterThan() must have a value attribute"))
-                    .get(FUNCTION_TO_PARAMETER_NAMES.get(GREATER_THAN).get(0));
-            return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().greaterThan(attribute, value) : __.greaterThan(attribute, value);
-        });
-
-        mapper.put(GREATER_THAN_OR_EQUALS, gremlinConstraint -> {
-            String attribute = gremlinConstraint
-                    .attribute()
-                    .orElseThrow(() -> new GraphConstraintException("GreaterThanOrEquals() must have an attribute!"));
-            String value = gremlinConstraint.params()
-                    .orElseThrow(() -> new GraphConstraintException("GreaterThanOrEquals() must have a value attribute"))
-                    .get(FUNCTION_TO_PARAMETER_NAMES.get(GREATER_THAN_OR_EQUALS).get(0));
-            return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().greaterThanOrEquals(attribute, value) : __.greaterThanOrEquals(attribute, value);
-        });
-
-        mapper.put(LESS_THAN, gremlinConstraint -> {
-            String attribute = gremlinConstraint
-                    .attribute()
-                    .orElseThrow(() -> new GraphConstraintException("LessThan() must have an attribute!"));
-            String value = gremlinConstraint
-                    .params()
-                    .orElseThrow(() -> new GraphConstraintException("LessThan() must have a value attribute"))
-                    .get(FUNCTION_TO_PARAMETER_NAMES.get(LESS_THAN).get(0));
-            return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().lessThan(attribute, value) : __.lessThan(attribute, value);
-        });
-
-        mapper.put(LESS_THAN_OR_EQUALS, gremlinConstraint -> {
-            String attribute = gremlinConstraint
-                    .attribute()
-                    .orElseThrow(() -> new GraphConstraintException("LessThanOrEquals() must have an attribute!"));
-            String value = gremlinConstraint
-                    .params()
-                    .orElseThrow(() -> new GraphConstraintException("LessThanOrEquals() must have a value attribute"))
-                    .get(FUNCTION_TO_PARAMETER_NAMES.get(LESS_THAN_OR_EQUALS).get(0));
-            return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().lessThanOrEquals(attribute, value) : __.lessThanOrEquals(attribute, value);
-        });
-
-        mapper.put(EQUALS, gremlinConstraint -> {
-            String attribute = gremlinConstraint
-                    .attribute()
-                    .orElseThrow(() -> new GraphConstraintException("Equals() must have an attribute!"));
-            String value = gremlinConstraint
-                    .params()
-                    .orElseThrow(() -> new GraphConstraintException("Equals() must have a value attribute"))
-                    .get(FUNCTION_TO_PARAMETER_NAMES.get(EQUALS).get(0));
-            return gremlinConstraint.context().isPresent() ? gremlinConstraint.context().get().equals(attribute, value) : __.equals(attribute, value);
         });
 
         return mapper;

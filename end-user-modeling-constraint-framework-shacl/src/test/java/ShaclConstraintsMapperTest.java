@@ -11,8 +11,8 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-import ansk.development.domain.ShaclConstraintData;
-import ansk.development.domain.ShaclConstraintShape;
+import ansk.development.dsl.ShaclInstanceGraph;
+import ansk.development.dsl.ShaclConstraintShape;
 import ansk.development.domain.constraint.Constraint;
 import ansk.development.domain.instance.InstanceElement;
 import ansk.development.exception.constraint.GraphConstraintException;
@@ -40,12 +40,12 @@ public class ShaclConstraintsMapperTest {
 
     private static final String JOHN_UUID = "ea9f52ee-a86f-48f1-b9c3-b259764a6b04";
     private final ShaclConstraintMapper constraintMapper = new ShaclConstraintMapper();
-    private ShaclConstraintData shaclConstraintData;
+    private ShaclInstanceGraph shaclInstanceGraph;
 
     @BeforeEach
     public void init() {
         List<InstanceElement> instances = TestGraphProvider.getSubgraph();
-        shaclConstraintData = this.constraintMapper.mapToPlatformSpecificGraph(instances);
+        shaclInstanceGraph = this.constraintMapper.mapToPlatformSpecificGraph(instances);
     }
 
 
@@ -228,7 +228,7 @@ public class ShaclConstraintsMapperTest {
     private Boolean getConstraintEvaluationResult(Constraint constraint) {
         ShaclConstraintShape constraintShape = constraintMapper.mapToPlatformSpecificConstraint(JOHN_UUID, constraint);
         Shapes shapes = Shapes.parse(constraintShape.getGraph());
-        ValidationReport report = ShaclValidator.get().validate(shapes, shaclConstraintData.getGraph());
+        ValidationReport report = ShaclValidator.get().validate(shapes, shaclInstanceGraph.getGraph());
 
         return report.conforms();
     }
@@ -239,7 +239,7 @@ public class ShaclConstraintsMapperTest {
      * @param constraint
      */
     private void printDataAndConstraint(ShaclConstraintShape constraint) {
-        RDFDataMgr.write(System.out, shaclConstraintData, Lang.TTL);
+        RDFDataMgr.write(System.out, shaclInstanceGraph, Lang.TTL);
         RDFDataMgr.write(System.out, constraint, Lang.TTL);
     }
 }

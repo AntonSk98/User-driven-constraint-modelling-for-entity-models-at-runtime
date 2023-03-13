@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 import static ansk.development.domain.constraint.functions.FunctionType.RUNTIME_FUNCTION;
 
@@ -52,25 +53,35 @@ public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<Con
         return mapFunction(uuid, constraintFunction, true);
     }
 
-    private GraphTraversal<?, Boolean> mapFunction(String uuid, ConstraintFunction constraintFunction, boolean traversalStart) {
+    private GraphTraversal<?, Boolean> mapFunction(String uuid, ConstraintFunction function, boolean... traversalStart) {
+        boolean isTraversalStart = traversalStart.length == 1 && traversalStart[0];
         GremlinConstraint gremlinConstraint = new GremlinConstraint();
-        if (traversalStart || constraintFunction.booleanFunctions().isPresent() || constraintFunction.runtimeFunction().isPresent()) {
-            gremlinConstraint.setContext(GremlinRegistry.getConstraintTraversal().instance(uuid));
-        }
-        constraintFunction.runtimeFunction().ifPresent(gremlinConstraint::setRuntimeFunction);
-        constraintFunction.attribute().map(AttributeUtils::getAttributeRoot).ifPresent(gremlinConstraint::setAttribute);
-        constraintFunction.navigation().map(NavigationUtils::getNavigationRoot).ifPresent(gremlinConstraint::setNavigation);
-        constraintFunction.lambdaFunction().ifPresent(lambdaFunction -> gremlinConstraint.setLambdaFunction(mapFunction(uuid, lambdaFunction, false)));
-        constraintFunction.booleanFunctions().ifPresent(booleanFunctions -> {
-            booleanFunctions.forEach(booleanFunction -> gremlinConstraint.addNestedFunction(mapFunction(uuid, booleanFunction, false)));
-        });
-        constraintFunction.params().ifPresent(gremlinConstraint::setParams);
-        if (constraintFunction.runtimeFunction().isPresent()) {
-            gremlinConstraint.setTraversal(GREMLIN_FUNCTION_MAPPER.getFunctionByName(RUNTIME_FUNCTION).apply(gremlinConstraint));
-        } else {
-            gremlinConstraint.setTraversal(GREMLIN_FUNCTION_MAPPER.getFunctionByName(constraintFunction.getName()).apply(gremlinConstraint));
-        }
-        return gremlinConstraint.getTraversal();
+
+        gremlinConstraint.setContextByCondition(
+                GremlinRegistry.getConstraintTraversal().instance(uuid),
+                () -> isTraversalStart
+                        || function.booleanFunctions().isPresent()
+                        || function.runtimeFunction().isPresent());
+
+        function.params().ifPresent(gremlinConstraint::setParams);
+        function.runtimeFunction().ifPresent(gremlinConstraint::setRuntimeFunction);
+        function.attribute().map(AttributeUtils::getAttributeRoot).ifPresent(gremlinConstraint::setAttribute);
+        function.navigation().map(NavigationUtils::getNavigationRoot).ifPresent(gremlinConstraint::setNavigation);
+
+        function.lambdaFunction()
+                .map(lambdaFunction -> mapFunction(uuid, lambdaFunction))
+                .ifPresent(gremlinConstraint::setLambdaFunction);
+        function.booleanFunctions()
+                .ifPresent(booleanFunctions -> booleanFunctions
+                        .forEach(booleanFunction -> gremlinConstraint.addNestedFunction(mapFunction(uuid, booleanFunction))));
+
+        Function<GremlinConstraint, GraphTraversal<?, Boolean>> mappedFunction =
+                function.runtimeFunction().isPresent() ?
+                        GREMLIN_FUNCTION_MAPPER.getFunctionByName(RUNTIME_FUNCTION) :
+                        GREMLIN_FUNCTION_MAPPER.getFunctionByName(function.getName());
+
+        gremlinConstraint.setConstraintFunction(mappedFunction.apply(gremlinConstraint));
+        return gremlinConstraint.getConstraintFunction();
     }
 
     @Override
@@ -85,7 +96,6 @@ public class GremlinConstraintMapper implements AbstractToPSConstraintMapper<Con
                 .filter(instanceElement -> Objects.nonNull(instanceElement.getLinks()))
                 .flatMap(instanceElement -> instanceElement.getLinks().stream())
                 .forEach(graphSource::linkTwoInstances));
-
 
         return graphSource;
     }

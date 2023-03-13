@@ -17,19 +17,22 @@ import ansk.development.domain.*;
 import ansk.development.domain.constraint.Constraint;
 import ansk.development.domain.constraint.functions.ConstraintFunction;
 import ansk.development.domain.instance.InstanceElement;
+import ansk.development.dsl.ShaclConstraintShape;
+import ansk.development.dsl.ShaclInstanceGraph;
 import org.apache.jena.rdf.model.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Function;
 
 import static ansk.development.domain.constraint.functions.FunctionType.RUNTIME_FUNCTION;
 
 /**
  * Implementation of {@link AbstractToPSConstraintMapper}.
  */
-public class ShaclConstraintMapper implements AbstractToPSConstraintMapper<ShaclConstraintData, ShaclConstraintShape> {
+public class ShaclConstraintMapper implements AbstractToPSConstraintMapper<ShaclInstanceGraph, ShaclConstraintShape> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ShaclConstraintMapper.class);
     private static final ShaclFunctionMapper SHACL_FUNCTION_MAPPER = new ShaclFunctionMapper();
@@ -40,43 +43,41 @@ public class ShaclConstraintMapper implements AbstractToPSConstraintMapper<Shacl
         long finishTime = System.currentTimeMillis();
         LOGGER.info("Execution time for '{}' is {} ms", name, finishTime - startTime);
     }
+
     @Override
     public ShaclConstraintShape mapToPlatformSpecificConstraint(String instanceUuid, Constraint constraint) {
         ConstraintFunction constraintFunction = constraint.getConstraintFunction();
-        Resource shaclConstraint = mapFunction(instanceUuid, constraintFunction, true, new ShaclConstraintShape());
+        Resource shaclConstraint = mapFunction(instanceUuid, constraintFunction, new ShaclConstraintShape(), true);
         return (ShaclConstraintShape) shaclConstraint.getModel();
     }
 
-    private Resource mapFunction(String instanceUuid, ConstraintFunction constraintFunction, boolean initial, ShaclConstraintShape shaclConstraintShape) {
+    private Resource mapFunction(String uuid, ConstraintFunction function, ShaclConstraintShape shape, boolean... initial) {
+        boolean initialFlag = initial.length == 1 && initial[0];
         ShaclConstraint shaclConstraint = new ShaclConstraint();
-        shaclConstraint.setNested(!initial);
-        shaclConstraint.setContext(shaclConstraintShape);
-        if (initial) {
-            shaclConstraintShape.getTargetInstance(instanceUuid);
-        }
-        Resource resource;
-        constraintFunction.runtimeFunction().ifPresent(shaclConstraint::setRuntimeFunction);
-        constraintFunction.attribute().map(AttributeUtils::getAttributeRoot).ifPresent(shaclConstraint::setAttribute);
-        constraintFunction.navigation().map(NavigationUtils::getNavigationRoot).ifPresent(shaclConstraint::setNavigation);
-        constraintFunction
+        shaclConstraint.setNested(!initialFlag);
+        shaclConstraint.setContext(shape);
+        shape.loadTargetInstanceByCondition(uuid, () -> initialFlag);
+        function.runtimeFunction().ifPresent(shaclConstraint::setRuntimeFunction);
+        function.attribute().map(AttributeUtils::getAttributeRoot).ifPresent(shaclConstraint::setAttribute);
+        function.navigation().map(NavigationUtils::getNavigationRoot).ifPresent(shaclConstraint::setNavigation);
+        function
                 .lambdaFunction()
-                .ifPresent(lambdaFunction -> shaclConstraint.setLambdaFunction(mapFunction(instanceUuid, lambdaFunction, false, shaclConstraintShape)));
-        constraintFunction.booleanFunctions().ifPresent(booleanFunctions -> {
-            booleanFunctions.forEach(booleanFunction -> shaclConstraint.addNestedFunction(mapFunction(instanceUuid, booleanFunction, false, shaclConstraintShape)));
-        });
-        constraintFunction.params().ifPresent(shaclConstraint::setParams);
-        if (constraintFunction.runtimeFunction().isPresent()) {
-            resource = SHACL_FUNCTION_MAPPER.getFunctionByName(RUNTIME_FUNCTION).apply(shaclConstraint);
-        } else {
-            resource = SHACL_FUNCTION_MAPPER.getFunctionByName(constraintFunction.getName()).apply(shaclConstraint);
-        }
-        return resource;
+                .map(lambdaFunction -> mapFunction(uuid, lambdaFunction, shape))
+                .ifPresent(shaclConstraint::setLambdaFunction);
+        function.booleanFunctions().ifPresent(booleanFunctions -> booleanFunctions
+                .forEach(booleanFunction -> shaclConstraint
+                        .addNestedFunction(mapFunction(uuid, booleanFunction, shape))));
+        function.params().ifPresent(shaclConstraint::setParams);
+        Function<ShaclConstraint, Resource> mappedFunction = function.runtimeFunction().isPresent()
+                ? SHACL_FUNCTION_MAPPER.getFunctionByName(RUNTIME_FUNCTION)
+                : SHACL_FUNCTION_MAPPER.getFunctionByName(function.getName());
+        return mappedFunction.apply(shaclConstraint);
     }
 
     @Override
-    public ShaclConstraintData mapToPlatformSpecificGraph(List<InstanceElement> graph) {
+    public ShaclInstanceGraph mapToPlatformSpecificGraph(List<InstanceElement> graph) {
         LOGGER.info("Total number of graph elements to be mapped: {}", graph.size());
-        ShaclConstraintData model = new ShaclConstraintData();
+        ShaclInstanceGraph model = new ShaclInstanceGraph();
         measureExecutionTime("create elements", () -> graph.forEach(model::createInstance));
         measureExecutionTime("create links", () -> graph
                 .stream()

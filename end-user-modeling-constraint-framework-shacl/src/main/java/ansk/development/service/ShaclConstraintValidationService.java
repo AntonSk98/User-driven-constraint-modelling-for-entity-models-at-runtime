@@ -13,8 +13,8 @@
 
 package ansk.development.service;
 
-import ansk.development.domain.ShaclConstraintData;
-import ansk.development.domain.ShaclConstraintShape;
+import ansk.development.dsl.ShaclInstanceGraph;
+import ansk.development.dsl.ShaclConstraintShape;
 import ansk.development.domain.constraint.Constraint;
 import ansk.development.domain.constraint.ConstraintValidationReport;
 import ansk.development.domain.instance.InstanceElement;
@@ -35,7 +35,7 @@ public class ShaclConstraintValidationService extends AbstractConstraintValidati
 
     @Override
     public ConstraintValidationReport validateConstraint(String uuid, List<InstanceElement> subgraphForValidation, Constraint constraint) {
-        ShaclConstraintData dataGraph = shaclConstraintMapper.mapToPlatformSpecificGraph(subgraphForValidation);
+        ShaclInstanceGraph dataGraph = shaclConstraintMapper.mapToPlatformSpecificGraph(subgraphForValidation);
         ShaclConstraintShape shaclConstraint = shaclConstraintMapper.mapToPlatformSpecificConstraint(uuid, constraint);
         Shapes shapes = Shapes.parse(shaclConstraint.getGraph());
         ValidationReport report = ShaclValidator.get().validate(shapes, dataGraph.getGraph());

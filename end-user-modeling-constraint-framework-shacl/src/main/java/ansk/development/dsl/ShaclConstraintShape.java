@@ -11,7 +11,7 @@
  * See the License for the specific language governing permissions and limitations under the License.
  */
 
-package ansk.development.domain;
+package ansk.development.dsl;
 
 import ansk.development.exception.constraint.GraphConstraintException;
 import org.apache.jena.datatypes.xsd.XSDDatatype;
@@ -21,9 +21,10 @@ import org.apache.jena.rdf.model.impl.ModelCom;
 import org.topbraid.shacl.vocabulary.SH;
 
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-import static ansk.development.domain.ShaclUtils.getXsdDatatypeByValue;
+import static ansk.development.dsl.ShaclUtils.getXsdDatatypeByValue;
 
 /**
  * Domain class to define constraints using SHACL.
@@ -49,7 +50,7 @@ public class ShaclConstraintShape extends ModelCom {
         this.setUpNamespace();
     }
 
-    public String getTargetInstance() {
+    public String loadTargetInstance() {
         return targetInstance;
     }
 
@@ -57,12 +58,17 @@ public class ShaclConstraintShape extends ModelCom {
         return this.getResource(targetInstanceResource);
     }
 
-    public Resource getTargetInstance(String instanceUuid) {
+    public void loadTargetInstanceByCondition(String instanceUuid, Supplier<Boolean> condition) {
+        if (condition.get()) {
+            this.loadTargetInstance(instanceUuid);
+        }
+    }
+
+    public void loadTargetInstance(String instanceUuid) {
         targetInstance = instanceUuid;
         targetInstanceResource = TARGET_INSTANCE_NAMESPACE + instanceUuid;
         Resource context = this.createResource(TARGET_INSTANCE_NAMESPACE + instanceUuid, SH.NodeShape);
         context.addProperty(SH.targetNode, this.createResource(CONSTRAINT_NAMESPACE + instanceUuid));
-        return context;
     }
 
     public Resource minCardinality(String outType, int minValue) {
