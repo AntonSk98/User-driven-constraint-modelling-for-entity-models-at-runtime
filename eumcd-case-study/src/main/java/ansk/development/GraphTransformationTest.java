@@ -20,8 +20,18 @@ import org.apache.jena.shacl.ShaclValidator;
 import org.apache.jena.shacl.Shapes;
 
 import java.util.*;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class GraphTransformationTest {
+
+    private static void removeFirstN(int number, TreeMap<Double, Double> gremlinResults, TreeMap<Double, Double> shaclResults) {
+        for (int i = 0; i < number; i++) {
+            gremlinResults.remove(gremlinResults.firstKey());
+            shaclResults.remove(shaclResults.firstKey());
+        }
+    }
 
     /**
      * Checks time SHACL and Gremlin engines need to validate a constraint.
@@ -53,8 +63,7 @@ public class GraphTransformationTest {
                     measureFunctionExecutionTime(() -> ShaclValidator.get().validate(shaclConstraint, shaclGraph.getGraph()).conforms())
             );
         });
-        gremlinResults.remove(gremlinResults.firstKey());
-        shaclResults.remove(shaclResults.firstKey());
+//        removeFirstN(2, gremlinResults, shaclResults);
         return new ResultData(gremlinResults, shaclResults);
     }
 
@@ -82,8 +91,7 @@ public class GraphTransformationTest {
                     measureFunctionExecutionTime(() -> Configuration.shaclConstraintValidationService().validateConstraint(randomUuid, graph, attributeConstraint))
             );
         });
-        gremlinResults.remove(gremlinResults.firstKey());
-        shaclResults.remove(shaclResults.firstKey());
+//        removeFirstN(2, gremlinResults, shaclResults);
         return new ResultData(gremlinResults, shaclResults);
     }
 
@@ -109,8 +117,7 @@ public class GraphTransformationTest {
                     measureFunctionExecutionTime(() -> Configuration.shaclConstraintMapper().mapToPlatformSpecificGraph(graph))
             );
         });
-        gremlinResults.remove(gremlinResults.firstKey());
-        shaclResults.remove(shaclResults.firstKey());
+//        removeFirstN(2, gremlinResults, shaclResults);
         return new ResultData(gremlinResults, shaclResults);
     }
 
@@ -139,8 +146,7 @@ public class GraphTransformationTest {
                     })
             );
         });
-        gremlinResults.remove(gremlinResults.firstKey());
-        shaclResults.remove(shaclResults.firstKey());
+//        removeFirstN(2, gremlinResults, shaclResults);
         return new ResultData(gremlinResults, shaclResults);
     }
 
@@ -170,8 +176,7 @@ public class GraphTransformationTest {
                     })
             );
         });
-        gremlinResults.remove(gremlinResults.firstKey());
-        shaclResults.remove(shaclResults.firstKey());
+//        removeFirstN(2, gremlinResults, shaclResults);
         return new ResultData(gremlinResults, shaclResults);
     }
 
@@ -180,5 +185,30 @@ public class GraphTransformationTest {
         function.run();
         double finish = System.currentTimeMillis();
         return finish - start;
+    }
+
+    public static ResultData runSeveralTimes(int warmUpPhases, int numberOfRuns, Supplier<ResultData> experiment) {
+        List<ResultData> resultData = new ArrayList<>();
+
+        // A warm-up phase to allow the JVM to optimize the code before you start measuring the time.
+        // This will help to minimize the impact of JVM startup time and optimize the code for better performance.
+        for (int i = 0; i < warmUpPhases; i++) {
+            experiment.get();
+        }
+
+        for (int i = 0; i < numberOfRuns; i++) {
+            resultData.add(experiment.get());
+        }
+
+        var gremlin = resultData.stream().map(ResultData::getGremlinData);
+        var shacl = resultData.stream().map(ResultData::getShaclData);
+
+        return new ResultData(computeAverage(gremlin), computeAverage(shacl));
+    }
+
+    private static Map<Double, Double> computeAverage(Stream<Map<Double, Double>> stream) {
+        return stream
+                .flatMap(map -> map.entrySet().stream())
+                .collect(Collectors.groupingBy(Map.Entry::getKey, Collectors.averagingDouble(Map.Entry::getValue)));
     }
 }

@@ -20,6 +20,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import static ansk.development.AbstractDataGenerator.generateIntervalsByAddition;
+import static ansk.development.GraphTransformationTest.runSeveralTimes;
 
 /**
  * Static class that starts experiments.
@@ -28,11 +29,15 @@ public class ExperimentRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ExperimentRunner.class);
 
-    private static final String EVALUATION_ONE = "graph transformation";
-    private static final String EVALUATION_TWO = "attribute-based constraint transformation";
-    private static final String EVALUATION_THREE = "collection-based constraint transformation";
-    private static final String EVALUATION_FOUR = "constraint validation time";
-    private static final String EVALUATION_FIVE = "all in one";
+    private static final String EVALUATION_ONE = "Graph transformation experiment";
+    private static final String EVALUATION_TWO = "Constraint mapping experiment";
+    private static final String EVALUATION_THREE = "Instance-object-nets constraint mapping experiment";
+    private static final String EVALUATION_FOUR = "Constraint validation time experiment";
+    private static final String EVALUATION_FIVE = "Overall constraint validation experiment";
+
+    private static final String TOTAL_NUMBER_OF_INSTANCES = "Total number of instances";
+
+    private static final String TOTAL_NUMBER_OF_CONSTRAINT_FUNCTIONS = "Total number of constraint functions";
 
     private ExperimentRunner() {
 
@@ -54,20 +59,20 @@ public class ExperimentRunner {
 
         var results = measureTime(() ->
                 Map.of(
-                        EVALUATION_ONE, graphTransformationTest.transformationGraphExperiment(generateIntervalsByAddition(100, 5)),
-                        EVALUATION_TWO, graphTransformationTest.attributeBasedConstraintsExperiment(generateIntervalsByAddition(100, 5)),
-                        EVALUATION_THREE, graphTransformationTest.collectionBasedConstraintsExperiment(generateIntervalsByAddition(100, 5)),
-                        EVALUATION_FOUR, graphTransformationTest.checkConstraintValidationTime(generateIntervalsByAddition(100, 5)),
-                        EVALUATION_FIVE, graphTransformationTest.validateConstraintExperiment(generateIntervalsByAddition(100, 5))
+//                        EVALUATION_ONE, runSeveralTimes(1, 5, () -> graphTransformationTest.transformationGraphExperiment(generateIntervalsByAddition(100, 5))),
+//                        EVALUATION_TWO, runSeveralTimes(1, 5, () -> graphTransformationTest.attributeBasedConstraintsExperiment(generateIntervalsByAddition(100, 5))),
+//                        EVALUATION_THREE,  runSeveralTimes(1, 5, () -> graphTransformationTest.collectionBasedConstraintsExperiment(generateIntervalsByAddition(100, 5))),
+                        EVALUATION_FOUR, runSeveralTimes(1, 5, () -> graphTransformationTest.checkConstraintValidationTime(generateIntervalsByAddition(50, 80)))
+//                        EVALUATION_FIVE, runSeveralTimes(1, 5, () -> graphTransformationTest.validateConstraintExperiment(generateIntervalsByAddition(100, 5)))
                 )
         );
 
 
-        chartConstructor.saveChart(EVALUATION_ONE, results.get(EVALUATION_ONE).getGremlinData(), results.get(EVALUATION_ONE).getShaclData());
-        chartConstructor.saveChart(EVALUATION_TWO, results.get(EVALUATION_TWO).getGremlinData(), results.get(EVALUATION_TWO).getShaclData());
-        chartConstructor.saveChart(EVALUATION_THREE, results.get(EVALUATION_THREE).getGremlinData(), results.get(EVALUATION_THREE).getShaclData());
-        chartConstructor.saveChart(EVALUATION_FOUR, results.get(EVALUATION_FOUR).getGremlinData(), results.get(EVALUATION_FOUR).getShaclData());
-        chartConstructor.saveChart(EVALUATION_FIVE, results.get(EVALUATION_FIVE).getGremlinData(), results.get(EVALUATION_FIVE).getShaclData());
+//        chartConstructor.saveChart(EVALUATION_ONE, TOTAL_NUMBER_OF_INSTANCES, results.get(EVALUATION_ONE).getGremlinData(), results.get(EVALUATION_ONE).getShaclData());
+//        chartConstructor.saveChart(EVALUATION_TWO, TOTAL_NUMBER_OF_CONSTRAINT_FUNCTIONS, results.get(EVALUATION_TWO).getGremlinData(), results.get(EVALUATION_TWO).getShaclData());
+//        chartConstructor.saveChart(EVALUATION_THREE, TOTAL_NUMBER_OF_CONSTRAINT_FUNCTIONS, results.get(EVALUATION_THREE).getGremlinData(), results.get(EVALUATION_THREE).getShaclData());
+        chartConstructor.saveChart(EVALUATION_FOUR, TOTAL_NUMBER_OF_CONSTRAINT_FUNCTIONS, results.get(EVALUATION_FOUR).getGremlinData(), results.get(EVALUATION_FOUR).getShaclData());
+//        chartConstructor.saveChart(EVALUATION_FIVE, TOTAL_NUMBER_OF_INSTANCES, results.get(EVALUATION_FIVE).getGremlinData(), results.get(EVALUATION_FIVE).getShaclData());
     }
 
     private static Map<String, ResultData> measureTime(Supplier<Map<String, ResultData>> experimentMethods) {

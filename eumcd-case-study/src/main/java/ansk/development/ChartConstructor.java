@@ -44,11 +44,12 @@ public class ChartConstructor extends JFrame {
      * Displays a chart in a frame and saves it.
      *
      * @param name        of a chart
+     * @param xName       name of X axis
      * @param gremlinData data for gremlin
      * @param shaclData   data for shacl
      */
-    public void displayAndSave(String name, Map<Double, Double> gremlinData, Map<Double, Double> shaclData) {
-        JFreeChart chart = constructChart(name, gremlinData, shaclData);
+    public void displayAndSave(String name, String xName, Map<Double, Double> gremlinData, Map<Double, Double> shaclData) {
+        JFreeChart chart = constructChart(name, xName, gremlinData, shaclData);
         displayChart(chart);
         saveChart(name, chart);
     }
@@ -57,11 +58,12 @@ public class ChartConstructor extends JFrame {
      * Displays a chart in a frame.
      *
      * @param name        of a chart
+     * @param xName       name of X axis
      * @param gremlinData data for gremlin
      * @param shaclData   data for shacl
      */
-    public void displayChart(String name, Map<Double, Double> gremlinData, Map<Double, Double> shaclData) {
-        JFreeChart chart = constructChart(name, gremlinData, shaclData);
+    public void displayChart(String name, String xName, Map<Double, Double> gremlinData, Map<Double, Double> shaclData) {
+        JFreeChart chart = constructChart(name, xName, gremlinData, shaclData);
         displayChart(chart);
     }
 
@@ -69,18 +71,19 @@ public class ChartConstructor extends JFrame {
      * Saves a chart.
      *
      * @param name        of a chart
+     * @param xName       name of X axis
      * @param gremlinData data for gremlin
      * @param shaclData   data for shacl
      */
-    public void saveChart(String name, Map<Double, Double> gremlinData, Map<Double, Double> shaclData) {
-        JFreeChart chart = constructChart(name, gremlinData, shaclData);
+    public void saveChart(String name, String xName, Map<Double, Double> gremlinData, Map<Double, Double> shaclData) {
+        JFreeChart chart = constructChart(name, xName, gremlinData, shaclData);
         saveChart(name, chart);
     }
 
-    private JFreeChart constructChart(String name, Map<Double, Double> gremlinData, Map<Double, Double> shaclData) {
+    private JFreeChart constructChart(String name, String xName, Map<Double, Double> gremlinData, Map<Double, Double> shaclData) {
         JFreeChart chart = ChartFactory.createXYLineChart(
                 name, // Chart title
-                "Total number of instances",
+                xName,
                 "Execution time (ms)",
                 constructDataset(gremlinData, shaclData),
                 PlotOrientation.VERTICAL,
