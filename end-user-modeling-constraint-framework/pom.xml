@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>anton.skripin.development</groupId>
 	<artifactId>end-user-modeling-constraint-framework</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.0</version>
 	<name>end-user-modeling-constraint-framework</name>
 	<description>end-user-modeling-constraint-framework</description>
 	<properties>
