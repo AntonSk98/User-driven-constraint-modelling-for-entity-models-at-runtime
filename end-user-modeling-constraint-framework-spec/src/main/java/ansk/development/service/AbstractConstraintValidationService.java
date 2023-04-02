@@ -49,6 +49,16 @@ public class AbstractConstraintValidationService implements ConstraintValidation
     }
 
     private void addToPath(ConstraintFunction constraintFunction, LinkedHashSet<String> typesForSubgraph) {
+        constraintFunction
+                .params()
+                .stream()
+                .map(Map::values)
+                .flatMap(Collection::stream)
+                .filter(parameter -> parameter.contains("(") && parameter.contains(")"))
+                .map(parameter -> StringUtils.substringsBetween(parameter, "(", ")"))
+                .flatMap(Arrays::stream)
+                .forEach(typesForSubgraph::add);
+
         constraintFunction.navigation().ifPresent(path -> {
             var navigationTypes = Optional.ofNullable(StringUtils.substringsBetween(path, "(", ")"));
             navigationTypes.ifPresent(types -> typesForSubgraph.addAll(List.of(types)));
