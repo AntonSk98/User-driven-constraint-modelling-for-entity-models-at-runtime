@@ -9,8 +9,8 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>15</maven.compiler.source>
-        <maven.compiler.target>15</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <end-user-modeling-constraint-framework-gremlin.version>1.0</end-user-modeling-constraint-framework-gremlin.version>
         <end-user-modeling-constraint-framework-shacl>1.0</end-user-modeling-constraint-framework-shacl>
