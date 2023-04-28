@@ -1,0 +1,31 @@
+<mxfile host="app.diagrams.net" modified="2023-04-26T09:47:30.326Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="mdl_parNM9zaGvNJijRD" version="21.1.8" type="device">
+  <diagram name="Page-1" id="tdMDTzszryH6sTnslmfX">
+    <mxGraphModel dx="2284" dy="749" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="68UD8DJFc3vvW7mv0qVd-24" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="68UD8DJFc3vvW7mv0qVd-13" target="68UD8DJFc3vvW7mv0qVd-22">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="68UD8DJFc3vvW7mv0qVd-13" value="&lt;font style=&quot;&quot;&gt;&lt;font style=&quot;font-size: 17px;&quot;&gt;&amp;lt;&amp;lt;abstract&amp;gt;&amp;gt;&lt;/font&gt;&lt;br&gt;&lt;span style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;Specification&lt;/b&gt;&lt;/span&gt;&lt;/font&gt;" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;strokeColor=#000000;strokeWidth=3;fillColor=#FFD966;perimeterSpacing=0;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="145" y="180" width="150" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="68UD8DJFc3vvW7mv0qVd-23" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;strokeWidth=2;" edge="1" parent="1" source="68UD8DJFc3vvW7mv0qVd-21" target="68UD8DJFc3vvW7mv0qVd-13">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="68UD8DJFc3vvW7mv0qVd-21" value="&lt;b style=&quot;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;Client software&lt;/font&gt;&lt;/b&gt;" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;strokeColor=#000000;strokeWidth=3;fillColor=#FFD966;perimeterSpacing=0;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="-110" y="180" width="150" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="68UD8DJFc3vvW7mv0qVd-22" value="&lt;span style=&quot;font-size: 17px;&quot;&gt;&lt;b&gt;Concrete implementation&lt;br&gt;&lt;/b&gt;&lt;/span&gt;" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;strokeColor=#000000;strokeWidth=3;fillColor=#FFD966;perimeterSpacing=0;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="400" y="180" width="150" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="68UD8DJFc3vvW7mv0qVd-25" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Interacts with&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="44" y="224" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="68UD8DJFc3vvW7mv0qVd-27" value="&lt;font style=&quot;font-size: 16px;&quot;&gt;Delegates to&lt;/font&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="297" y="224" width="100" height="30" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

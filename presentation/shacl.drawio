@@ -1,0 +1,28 @@
+<mxfile host="app.diagrams.net" modified="2023-04-26T09:47:32.761Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/112.0.0.0 Safari/537.36" etag="9yFIFtnL8ts96oOhSu14" version="21.1.8" type="device">
+  <diagram name="Page-1" id="xyAzrZpw5bv4GO_4QFsp">
+    <mxGraphModel dx="1434" dy="749" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="fxhizVSYjq276RkdOzs1-1" value="" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;strokeColor=#000000;strokeWidth=3;fillColor=#FFD966;perimeterSpacing=0;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="170" y="100" width="370" height="300" as="geometry" />
+        </mxCell>
+        <mxCell id="fxhizVSYjq276RkdOzs1-2" value="SHACL SHAPE" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="200" y="120" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="fxhizVSYjq276RkdOzs1-3" value="&lt;div style=&quot;font-size: 18px;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;b&gt;ex:&lt;/b&gt;PasswordShape&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 18px;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;	&lt;span style=&quot;white-space: pre;&quot;&gt;	&lt;/span&gt;a sh:NodeShape ;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 18px;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;span style=&quot;&quot;&gt;	&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;	&lt;/span&gt;sh:targetNode ex:a1, ex:a2;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 18px;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;span style=&quot;&quot;&gt;	&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;	&lt;/span&gt;sh:property [&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 18px;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;span style=&quot;&quot;&gt;		&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;	&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;	&lt;/span&gt;sh:path ex:password ;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 18px;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;span style=&quot;&quot;&gt;		&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;	&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;	&lt;/span&gt;sh:minLength 8 ;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 18px;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;&lt;span style=&quot;&quot;&gt;		&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;	&lt;/span&gt;&lt;span style=&quot;white-space: pre;&quot;&gt;	&lt;/span&gt;sh:maxLength 10 ;&lt;/font&gt;&lt;/div&gt;&lt;div style=&quot;font-size: 18px;&quot;&gt;&lt;font style=&quot;font-size: 18px;&quot;&gt;	&lt;span style=&quot;white-space: pre;&quot;&gt;	&lt;/span&gt;] .&lt;/font&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="200" y="150" width="310" height="230" as="geometry" />
+        </mxCell>
+        <mxCell id="fxhizVSYjq276RkdOzs1-4" value="" style="rounded=1;arcSize=10;whiteSpace=wrap;html=1;align=center;strokeColor=#000000;strokeWidth=3;fillColor=#FFD966;perimeterSpacing=0;shadow=1;" vertex="1" parent="1">
+          <mxGeometry x="600" y="175" width="350" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="fxhizVSYjq276RkdOzs1-5" value="RDF GRAPH" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontSize=18;fontStyle=1" vertex="1" parent="1">
+          <mxGeometry x="630" y="195" width="140" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="fxhizVSYjq276RkdOzs1-6" value="&lt;div style=&quot;font-size: 18px;&quot;&gt;&lt;div&gt;&lt;font color=&quot;#009900&quot;&gt;&lt;b&gt;ex:a1 ex:password &quot;123456789&quot;&lt;/b&gt;&lt;/font&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;font color=&quot;#ff0000&quot;&gt;ex:a2 ex:password &quot;12345C&quot; .&lt;/font&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="630" y="225" width="310" height="80" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
